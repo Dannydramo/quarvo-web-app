@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model EventCentre {
+  id                String   @id @default(uuid())
+  email             String   @unique
+  password          String
+  event_centre_name String
+  phone_number      String
+  main_image        String
+  images            String[]
+  description       String
+  open_time         String
+  close_time        String
+  open_days         String
+  slug              String   @unique
+  price             String
+  amenities         String[]
+  video             String
+  reviews           Review[]
+  location_id       String
+  location          Location @relation(fields: [location_id], references: [id])
+  created_at        DateTime @default(now())
+}
+
+model Location {
+  id            String        @id @default(uuid())
+  state         String
+  event_centres EventCentre[]
+  created_at    DateTime      @default(now())
+}
+
+model Review {
+  id                    String      @id @default(uuid())
+  full_name             String
+  review_comment        String
+  user_comment_id       String
+  created_at            DateTime    @default(now())
+  user_commented        User        @relation(fields: [user_comment_id], references: [id])
+  event_centre_id       String
+  event_centre_reviewed EventCentre @relation(fields: [event_centre_id], references: [id])
+}
+
+model User {
+  id           String   @id @default(uuid())
+  first_name   String
+  last_name    String
+  full_name    String
+  email        String   @unique
+  phone_number String
+  password     String
+  reviews      Review[]
+  created_at   DateTime @default(now())
+}
+
+model ActivationToken {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+}
