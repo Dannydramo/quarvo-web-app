@@ -53,6 +53,23 @@ const Form = () => {
             }
         }
 
+
+        try {
+            const res = await fetch('/api/user-signup', {
+                method: "POST",
+                body: JSON.stringify(userRegDetails)
+            })
+            if (res.status === 200) {
+                const data = await res.json()
+                console.log(data);
+            }
+
+
+        } catch (error) {
+            console.log(error);
+
+        }
+
     };
 
 

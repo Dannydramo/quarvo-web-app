@@ -18,30 +18,6 @@ import {
 } from "@/components/ui/popover"
 import NaijaStates from 'naija-state-local-government'
 import { EventCentreReg } from '@/types/onboarding';
-import { POST } from '@/app/api/event-center-signup/route';
-
-const frameworks = [
-    {
-        value: "next.js",
-        label: "Next.js",
-    },
-    {
-        value: "sveltekit",
-        label: "SvelteKit",
-    },
-    {
-        value: "nuxt.js",
-        label: "Nuxt.js",
-    },
-    {
-        value: "remix",
-        label: "Remix",
-    },
-    {
-        value: "astro",
-        label: "Astro",
-    },
-]
 
 const Form = () => {
     const [eventRegisterDetails, setEventRegisterDetails] = useState<EventCentreReg>({
@@ -65,7 +41,6 @@ const Form = () => {
 
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState("")
-    // const [states, setStates] = useState<String[]>(NaijaStates.states())
     const states: String[] = NaijaStates.states()
 
     const stateArr = states.map((state) => {
@@ -107,19 +82,27 @@ const Form = () => {
             }
         }
 
+        if (eventRegisterDetails.password !== eventRegisterDetails.confirmPassword) {
+            return
+        }
+
         try {
             const res = await fetch('/api/event-center-signup', {
                 method: "POST",
                 body: JSON.stringify(eventRegisterDetails)
             })
-            if (res.status === 200) {
-                const data = await res.json()
-                console.log(data);
+
+            if (res.status !== 200) {
+                const errorData = await res.json()
+                console.log(errorData.message);
             }
+
+            const data = await res.json()
+            console.log(data);
 
 
         } catch (error) {
-            console.log(error);
+            console.error('Error registering event center:', error);
 
         }
 
