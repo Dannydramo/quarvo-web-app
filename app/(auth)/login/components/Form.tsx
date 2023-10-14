@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from 'next/link'
@@ -11,9 +11,64 @@ const Form = () => {
         email: '',
         password: ''
     })
+    const [inputValidity, setInputValidity] = useState({
+        password: false,
+        email: false,
+
+    });
+
+    const handleInputChange = (
+        e: ChangeEvent<HTMLInputElement>,
+        inputField: string
+    ) => {
+        const { value } = e.target;
+        setLoginDetails((prevState) => ({
+            ...prevState,
+            [inputField]: value,
+        }));
+
+        // Reset inputValidity to false when input value changes
+        setInputValidity((prevState) => ({
+            ...prevState,
+            [inputField]: false,
+        }));
+    };
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        // Check if all fields are filled
+        for (const key in loginDetails) {
+            if (!loginDetails[key as keyof LoginDetails]) {
+                // If the field is empty, set its validity to true
+                setInputValidity((prevState) => ({
+                    ...prevState,
+                    [key]: true,
+                }));
+            }
+        }
+
+
+        try {
+            const res = await fetch('/api/user-login', {
+                method: "POST",
+                body: JSON.stringify(loginDetails)
+            })
+            if (res.status === 200) {
+                const data = await res.json()
+                console.log(data);
+            }
+
+
+        } catch (error) {
+            console.log(error);
+
+        }
+
+    };
     return (
         <>
-            <form action="">
+            <form action="" onSubmit={handleSubmit}>
                 <div className="grid gap-4">
                     <div className="">
                         <label htmlFor="email">Email</label>

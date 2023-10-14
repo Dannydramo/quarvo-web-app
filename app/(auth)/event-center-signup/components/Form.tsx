@@ -98,7 +98,13 @@ const Form = () => {
             }
 
             const data = await res.json()
-            console.log(data);
+
+            if (data.status !== 200) {
+                console.error(data)
+            } else {
+                console.log(data);
+
+            }
 
 
         } catch (error) {
