@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { UserReg } from '@/types/onboarding'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { toast } from 'sonner'
 
 const Form = () => {
     const [userRegDetails, setUserRegDetails] = useState<UserReg>({
@@ -59,15 +60,26 @@ const Form = () => {
                 method: "POST",
                 body: JSON.stringify(userRegDetails)
             })
-            if (res.status === 200) {
-                const data = await res.json()
-                console.log(data);
+            // if (res.status === 200) {
+            //     const data = await res.json()
+            //     console.log(data);
+            //     toast.success(data.message)
+            // }
+            // if (res.status !== 200) {
+            //     console.log(res);
+
+            // }
+            const data = await res.json()
+            console.log(data);
+
+            if (data.status !== 200) {
+                toast.error(data.message)
             }
+            toast.success(data.message)
 
-
-        } catch (error) {
-            console.log(error);
-
+        } catch (error: any) {
+            console.log(error.message);
+            toast.error("Unable to process form submission")
         }
 
     };
@@ -136,6 +148,9 @@ const Form = () => {
 
                 <Button type="submit" className="mt-4 text-base w-full py-4 lg:text-lg">Register</Button>
             </form>
+            <button onClick={() => toast('My first toast')}>
+                Give me a toast
+            </button>
         </>
     )
 }

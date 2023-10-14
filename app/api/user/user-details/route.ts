@@ -32,10 +32,10 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ message: 'Unable to get user details', status: 401 })
     }
 
-    const eventCentre = await prisma.eventCentre.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             email: payload.email
         }
     })
-    return NextResponse.json({ message: 'Event Centre Details', status: 200, eventCentre })
+    return NextResponse.json({ message: 'User Details', status: 200, user })
 }

@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/popover"
 import NaijaStates from 'naija-state-local-government'
 import { EventCentreReg } from '@/types/onboarding';
+import { toast } from 'sonner'
 
 const Form = () => {
     const [eventRegisterDetails, setEventRegisterDetails] = useState<EventCentreReg>({
@@ -41,6 +42,7 @@ const Form = () => {
 
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState("")
+    const [loading, setLoading] = useState(false)
     const states: String[] = NaijaStates.states()
 
     const stateArr = states.map((state) => {
@@ -87,6 +89,7 @@ const Form = () => {
         }
 
         try {
+            setLoading(true)
             const res = await fetch('/api/event-center-signup', {
                 method: "POST",
                 body: JSON.stringify(eventRegisterDetails)
@@ -100,16 +103,16 @@ const Form = () => {
             const data = await res.json()
 
             if (data.status !== 200) {
-                console.error(data)
+                toast.error(data.message)
+                setLoading(false)
             } else {
-                console.log(data);
-
+                toast.success(data.message)
+                setLoading(false)
             }
 
-
         } catch (error) {
-            console.error('Error registering event center:', error);
-
+            toast.error('Unable to process form submission')
+            setLoading(false)
         }
 
     };
@@ -222,7 +225,7 @@ const Form = () => {
                     </div>
                 </div>
 
-                <Button type="submit" className="mt-4 text-base w-full py-6 lg:text-lg">Register</Button>
+                <Button type="submit" disabled={loading} className="mt-4 text-base w-full py-6 lg:text-lg">{loading ? 'Register' : 'Loading'}</Button>
             </form>
         </>
     )
