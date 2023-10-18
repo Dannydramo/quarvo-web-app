@@ -49,7 +49,6 @@ export async function POST(req: NextRequest) {
             open_time: '',
             close_time: '',
             open_days: '',
-            lga: '',
             price: '',
             video: '',
         },
