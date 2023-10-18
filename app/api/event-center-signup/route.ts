@@ -24,9 +24,9 @@ export async function POST(req: NextRequest) {
 
     let location = await prisma.location.findUnique({
         where: {
-            state
+            state: state,
         },
-    })
+    });
 
     if (!location) {
         location = await prisma.location.create({
@@ -48,12 +48,13 @@ export async function POST(req: NextRequest) {
         },
     });
 
-     // Add the created EventCentre to the associated Location's eventCentres array
-     const updatedLocation = await prisma.location.update({
+    // Add the created EventCentre to the associated Location's eventCentres array
+    const updatedLocation = await prisma.location.update({
         where: { id: location.id },
         data: { event_centres: { connect: { id: eventCentre.id } } },
     });
-    
+
+
 
     const alg = "HS256"
     const secret = new TextEncoder().encode(process.env.JWT_SECRET)
