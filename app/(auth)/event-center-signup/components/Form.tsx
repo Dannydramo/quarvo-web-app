@@ -225,7 +225,7 @@ const Form = () => {
                     </div>
                 </div>
 
-                <Button type="submit" disabled={loading} className="mt-4 text-base w-full py-6 lg:text-lg">{loading ? 'Register' : 'Loading'}</Button>
+                <Button type="submit" disabled={loading} className="mt-4 text-base w-full py-6 lg:text-lg">{loading ? 'Loading' : 'Register'}</Button>
             </form>
         </>
     )

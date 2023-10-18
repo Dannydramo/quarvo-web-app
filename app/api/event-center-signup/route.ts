@@ -22,18 +22,13 @@ export async function POST(req: NextRequest) {
     const hashedPassword = await hash(password, 12);
     const slugText = eventCentreName.toLowerCase().replace(/ /g, '-')
 
-    let location = await prisma.location.findUnique({
-        where: {
-            state: state,
-        },
-    });
+    let location = await prisma.location.findMany()
+    const locationId = location.find((locations) => locations.state === state)?.id || 1;
 
+    let createLocation;
 
-
-
-
-    if (!location) {
-        location = await prisma.location.create({
+    if (!locationId) {
+        createLocation = await prisma.location.create({
             data: {
                 state: state,
             }
@@ -48,17 +43,9 @@ export async function POST(req: NextRequest) {
             state: state,
             phone_number: phoneNumber,
             slug: slugText,
-            location: { connect: { id: location.id } }
+            location: { connect: { id: createLocation?.id } }
         },
     });
-
-    // Add the created EventCentre to the associated Location's eventCentres array
-    const updatedLocation = await prisma.location.update({
-        where: { id: location.id },
-        data: { event_centres: { connect: { id: eventCentre.id } } },
-    });
-
-
 
     const alg = "HS256"
     const secret = new TextEncoder().encode(process.env.JWT_SECRET)
