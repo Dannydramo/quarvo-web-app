@@ -43,7 +43,8 @@ export async function POST(req: NextRequest) {
             state: state,
             phone_number: phoneNumber,
             slug: slugText,
-            location: { connect: { id: createLocation?.id } }
+            location: { connect: { id: createLocation?.id } },
+            event_centre_details: {}
         },
     });
 
