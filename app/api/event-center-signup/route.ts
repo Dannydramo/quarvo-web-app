@@ -28,6 +28,10 @@ export async function POST(req: NextRequest) {
         },
     });
 
+
+
+
+
     if (!location) {
         location = await prisma.location.create({
             data: {
