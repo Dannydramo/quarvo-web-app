@@ -11,19 +11,19 @@ datasource db {
 }
 
 model EventCentre {
-  id                   String               @id @default(uuid())
-  email                String               @unique
+  id                   String              @id @default(uuid())
+  email                String              @unique
   password             String
-  event_centre_name    String               @unique
+  event_centre_name    String              @unique
   phone_number         String
   state                String
-  slug                 String               @unique
-  created_at           DateTime             @default(now())
-  updatedAt            DateTime             @updatedAt
+  slug                 String              @unique
+  created_at           DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
   reviews              Review[]
   location_id          String
-  location             Location             @relation(fields: [location_id], references: [id])
-  event_centre_details EventCentreDetails[]
+  location             Location            @relation(fields: [location_id], references: [id])
+  event_centre_details EventCentreDetails?
 }
 
 model EventCentreDetails {
@@ -40,7 +40,7 @@ model EventCentreDetails {
   video           String
   created_at      DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
-  event_centre_id String
+  event_centre_id String      @unique
   event_centre    EventCentre @relation(fields: [event_centre_id], references: [id])
 }
 
