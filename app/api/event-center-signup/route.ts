@@ -44,6 +44,14 @@ export async function POST(req: NextRequest) {
             phone_number: phoneNumber,
             slug: slugText,
             location: { connect: { id: createLocation?.id } },
+            main_image: '',
+            description: '',
+            open_time: '',
+            close_time: '',
+            open_days: '',
+            lga: '',
+            price: '',
+            video: '',
         },
     });
 
