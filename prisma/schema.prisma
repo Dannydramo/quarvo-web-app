@@ -27,20 +27,19 @@ model EventCentre {
 }
 
 model EventCentreDetails {
-  id              String       @id @default(uuid())
-  main_image      String
-  images          String[]
-  description     String
-  open_time       String
-  close_time      String
-  open_days       String
-  lga             String
-  price           String
-  amenities       String[]
-  video           String
-  created_at      DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
-  event_centre_id String       @unique
+  id          String  @id @default(uuid())
+  main_image  String?
+  description String?
+  open_time   String?
+  close_time  String?
+  open_days   String?
+  lga         String?
+  price       String?
+
+  video           String?
+  created_at      DateTime?    @default(now())
+  updatedAt       DateTime?    @updatedAt
+  event_centre_id String?      @unique
   event_centre    EventCentre? @relation(fields: [event_centre_id], references: [id])
 }
 

@@ -47,14 +47,12 @@ export async function POST(req: NextRequest) {
             event_centre_details: {
                 create: {
                     main_image: '',
-                    images: [],
                     description: '',
                     open_time: '',
                     close_time: '',
                     open_days: '',
                     lga: '',
                     price: '',
-                    amenities: [],
                     video: '',
                 },
             },
