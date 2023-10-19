@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from 'next/link'
 import { LoginDetails } from '@/types/onboarding'
+import { loginEventCentre } from '@/utils/eventUtils'
+import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import EyeOff from '@/svgs/EyeOff'
-import Eye from '@/svgs/Eye'
 import Spinner from '@/svgs/Spinner'
+import Eye from '@/svgs/Eye'
+import EyeOff from '@/svgs/EyeOff'
 
 const Form = () => {
     const [loginDetails, setLoginDetails] = useState<LoginDetails>({
@@ -18,7 +20,6 @@ const Form = () => {
     const [inputValidity, setInputValidity] = useState({
         password: false,
         email: false,
-
     });
     const [loading, setLoading] = useState(false)
     const router = useRouter()
@@ -57,19 +58,21 @@ const Form = () => {
 
 
         try {
-            const res = await fetch('/api/user-login', {
-                method: "POST",
-                body: JSON.stringify(loginDetails)
-            })
-            if (res.status === 200) {
-                const data = await res.json()
-                console.log(data);
+            setLoading(true)
+            const { message, status } = await loginEventCentre(loginDetails)
+            if (status !== 200) {
+                toast.error(message)
+                setLoading(false)
+                return
             }
-
+            toast.success(message)
+            setLoading(false)
+            router.replace('/dashboard')
 
         } catch (error) {
-            console.log(error);
-
+            toast.error('Unable to process form submission')
+            setLoading(false)
+            return
         }
 
     };
@@ -107,26 +110,19 @@ const Form = () => {
                         )}
                     </div>
                 </div>
-
-                <div className="mt-1">
+                <div className="mt-2">
                     <Link
                         href="/forgot-password"
-                        className="underline float-right"
+                        className="underline float-right text-sm"
                     >
                         Forgot Password
                     </Link>
                 </div>
                 <Button type="submit" disabled={loading} className="mt-2 text-base py-6 lg:text-lg w-full">{loading ? <Spinner className="mx-auto h-7 w-7 animate-spin" /> : 'Login'}</Button>
             </form>
-            <div className="lg:flex justify-between">
-                <div className="flex justify-center my-4 space-x-1 text-sm">
-                    <p>Event Centre Account?</p>
-                    <Link href={'/event-center-login'} className='underline'>Login </Link>
-                </div>
-                <div className="flex justify-center mb-4 lg:my-4 space-x-1 text-sm">
-                    <p>Don't have an account?</p>
-                    <Link href={'/signup'} className='underline'>Signup </Link>
-                </div>
+            <div className="flex justify-center my-4 space-x-1 text-sm">
+                <p>Don't have an account?</p>
+                <Link href={'/event-center-signup'} className='underline'>Signup </Link>
             </div>
         </>
     )

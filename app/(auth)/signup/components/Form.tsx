@@ -1,7 +1,12 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import Eye from '@/svgs/Eye'
+import EyeOff from '@/svgs/EyeOff'
+import Spinner from '@/svgs/Spinner'
 import { UserReg } from '@/types/onboarding'
+import { registerUser } from '@/utils/userUtils'
+import Link from 'next/link'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -22,6 +27,9 @@ const Form = () => {
         email: false,
         confirmPassword: false,
     });
+    const [loading, setLoading] = useState(false)
+    const [seePassword, setSeePassword] = useState<boolean>(false);
+    const [seeConfirmPassword, setSeeConfirmPassword] = useState<boolean>(false);
 
     const handleInputChange = (
         e: ChangeEvent<HTMLInputElement>,
@@ -54,34 +62,27 @@ const Form = () => {
             }
         }
 
-
-        try {
-            const res = await fetch('/api/user-signup', {
-                method: "POST",
-                body: JSON.stringify(userRegDetails)
-            })
-            // if (res.status === 200) {
-            //     const data = await res.json()
-            //     console.log(data);
-            //     toast.success(data.message)
-            // }
-            // if (res.status !== 200) {
-            //     console.log(res);
-
-            // }
-            const data = await res.json()
-            console.log(data);
-
-            if (data.status !== 200) {
-                toast.error(data.message)
-            }
-            toast.success(data.message)
-
-        } catch (error: any) {
-            console.log(error.message);
-            toast.error("Unable to process form submission")
+        if (userRegDetails.password.trim() !== userRegDetails.confirmPassword.trim()) {
+            toast.error('Password and confirm password must be the same')
+            return
         }
 
+        try {
+            setLoading(true)
+            const { message, status } = await registerUser(userRegDetails)
+            if (status !== 200) {
+                toast.error(message)
+                setLoading(false)
+                return
+            }
+            toast.success(message)
+            setLoading(false)
+
+        } catch (error) {
+            toast.error('Unable to process form submission')
+            setLoading(false)
+            return
+        }
     };
 
 
@@ -128,7 +129,18 @@ const Form = () => {
                     </div>
                     <div className="">
                         <label htmlFor="password" className='text-sm text-white font-medium'>Password</label>
-                        <Input type="password" className={`outline-none mt-1 border focus:border-none ${inputValidity.password ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "password")} />
+                        <div className="flex">
+                            <Input type={seePassword ? "text" : "password"} className={`outline-none mt-1 border focus:border-none ${inputValidity.password ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "password")} />
+
+                            <div className="flex justify-end">
+                                <span
+                                    className="absolute mr-[1rem] mt-[.75rem] text-sm cursor-pointer"
+                                    onClick={() => setSeePassword(!seePassword)}
+                                >
+                                    {seePassword ? <Eye /> : <EyeOff />}
+                                </span>
+                            </div>
+                        </div>
                         {inputValidity.password && (
                             <p className="text-red-500 text-sm mt-1">
                                 Password is required.
@@ -137,7 +149,17 @@ const Form = () => {
                     </div>
                     <div className="">
                         <label htmlFor="confirmpassword" className='text-sm text-white font-medium'>Confirm Password</label>
-                        <Input type="password" className={`outline-none mt-1 border focus:border-none ${inputValidity.confirmPassword ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "confirmPassword")} />
+                        <div className="flex">
+                            <Input type={seeConfirmPassword ? "text" : "password"} className={`outline-none mt-1 border focus:border-none ${inputValidity.confirmPassword ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "confirmPassword")} />
+                            <div className="flex justify-end">
+                                <span
+                                    className="absolute mr-[1rem] mt-[.75rem] text-sm cursor-pointer"
+                                    onClick={() => setSeeConfirmPassword(!seeConfirmPassword)}
+                                >
+                                    {seeConfirmPassword ? <Eye /> : <EyeOff />}
+                                </span>
+                            </div>
+                        </div>
                         {inputValidity.confirmPassword && (
                             <p className="text-red-500 text-sm mt-1">
                                 Confirm Password is required.
@@ -146,11 +168,12 @@ const Form = () => {
                     </div>
                 </div>
 
-                <Button type="submit" className="mt-4 text-base w-full py-4 lg:text-lg">Register</Button>
+                <Button type="submit" disabled={loading} className="mt-4 text-base w-full py-6 lg:text-lg">{loading ? <Spinner className="mx-auto h-6 w-6 animate-spin" /> : 'Register'}</Button>
             </form>
-            <button onClick={() => toast('My first toast')}>
-                Give me a toast
-            </button>
+            <div className="flex justify-center my-4 space-x-1 text-sm">
+                <p>Already have an account?</p>
+                <Link href={'/login'} className='underline'>Login </Link>
+            </div>
         </>
     )
 }

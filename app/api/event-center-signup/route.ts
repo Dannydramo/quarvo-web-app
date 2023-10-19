@@ -22,18 +22,7 @@ export async function POST(req: NextRequest) {
     const hashedPassword = await hash(password, 12);
     const slugText = eventCentreName.toLowerCase().replace(/ /g, '-')
 
-    let location = await prisma.location.findMany()
-    const locationId = location.find((locations) => locations.state === state)?.id || 1;
 
-    let createLocation;
-
-    if (!locationId) {
-        createLocation = await prisma.location.create({
-            data: {
-                state: state,
-            }
-        });
-    }
 
     const eventCentre = await prisma.eventCentre.create({
         data: {
@@ -43,7 +32,6 @@ export async function POST(req: NextRequest) {
             state: state,
             phone_number: phoneNumber,
             slug: slugText,
-            location: { connect: { id: createLocation?.id } },
         },
     });
 

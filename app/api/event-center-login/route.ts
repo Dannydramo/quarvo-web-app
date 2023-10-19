@@ -29,5 +29,3 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: 'Login successfully', status: 200, token });
 }
-// crystalcasadecenter
-// crystalcasadecenter@gmail.com

@@ -21,8 +21,6 @@ model EventCentre {
   created_at           DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
   reviews              Review[]
-  location_id          String
-  location             Location            @relation(fields: [location_id], references: [id])
   event_centre_details EventCentreDetails?
 }
 
@@ -42,14 +40,6 @@ model EventCentreDetails {
   updatedAt       DateTime    @updatedAt
   event_centre_id String      @unique
   event_centre    EventCentre @relation(fields: [event_centre_id], references: [id])
-}
-
-model Location {
-  id           String        @id @default(uuid())
-  state        String
-  eventCentres EventCentre[]
-  created_at   DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
 }
 
 model Review {

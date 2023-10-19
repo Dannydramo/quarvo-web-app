@@ -3,11 +3,11 @@ import Sidebar from "./Sidebar";
 const Navigation = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
-            <section className="lg:grid lg:grid-cols-6">
-                <aside className="lg:col-span-1 fixed">
+            <section className="md:grid md:grid-cols-6">
+                <aside className="fixed">
                     <Sidebar />
                 </aside>
-                <main className="lg:col-span-5 w-full lg:ml-[200px] xl:ml-[220px]">{children}</main>
+                <main className="w-full md:ml-[180px] lg:ml-[200px] xl:ml-[220px]">{children}</main>
             </section>
         </>
     );

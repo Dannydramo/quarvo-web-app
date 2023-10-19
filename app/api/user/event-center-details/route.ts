@@ -35,6 +35,14 @@ export async function GET(req: NextRequest) {
     const eventCentre = await prisma.eventCentre.findUnique({
         where: {
             email: payload.email
+        },
+        select: {
+            id: true,
+            state: true,
+            event_centre_name: true,
+            email: true,
+            phone_number: true,
+            slug: true,
         }
     })
     return NextResponse.json({ message: 'Event Centre Details', status: 200, eventCentre })
