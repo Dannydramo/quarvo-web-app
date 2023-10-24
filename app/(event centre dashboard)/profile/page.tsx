@@ -1,12 +1,15 @@
 import React from 'react'
 import Navigation from '../components/Navigation'
+import Form from './component/Form'
+
 
 const Profile = () => {
     return (
         <>
             <Navigation>
-                <section className="lg:col-span-5">
+                <section className="w-[95%] mx-auto">
                     <p>Profile</p>
+                    <Form />
                 </section>
             </Navigation>
         </>

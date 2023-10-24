@@ -30,6 +30,7 @@ model EventCentreDetails {
   images          String[]
   description     String
   open_time       String
+  address         String
   close_time      String
   open_days       String
   lga             String

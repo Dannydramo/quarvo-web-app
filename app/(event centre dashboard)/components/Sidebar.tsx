@@ -1,18 +1,21 @@
 "use client";
 
 
+import { EventStore } from "@/store/eventInfo";
 import { fetchEventCentreDetails } from "@/utils/eventUtils";
 import { deleteCookie } from "cookies-next";
 import { LayoutDashboardIcon, LogOutIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, } from "react";
+import React, { useLayoutEffect, } from "react";
 import { toast } from "sonner";
 
 
 const Sidebar = () => {
     const router = useRouter()
-    useEffect(() => {
+    const { setEventDetails } = EventStore()
+
+    useLayoutEffect(() => {
         const fetchEventDetails = async () => {
             try {
 
@@ -22,8 +25,9 @@ const Sidebar = () => {
                 }
                 console.log(message);
                 console.log(data);
+                setEventDetails(data)
             } catch (error) {
-                console.log('Unabl to fetch user details');
+                console.log('Unable to fetch user details');
             }
         }
         fetchEventDetails()
@@ -36,13 +40,12 @@ const Sidebar = () => {
     }
 
     return (
-        <aside className="">
-            <nav className="fixed md:relative bottom-0 right-0 left-0 bg-[#571b0b] z-50 active:z-50 md:shadow-none shadow-2xl">
+        <aside>
+            <nav>
 
                 <nav
-                    className={`md:h-screen md:p-6 lg:w-[210px]  md:mx-auto md:flex md:justify-center lg:relative  `}
                 >
-                    <nav className="flex md:block shadow-md md:shadow-none md:justify-normal justify-between  py-4 z-50 active:z-50 relative m-6 px-6 md:m-0 md:px-0 rounded-lg md:rounded-none bg-white-1 ">
+                    <nav className="flex md:h-screen md:p-6 lg:w-[210px] md:w-[190px] md:mx-auto md:flex md:justify-center lg:relative  fixed md:relative bottom-0 right-0 left-0  md:block shadow-md bg-[#571b0b] md:shadow-none md:justify-normal justify-between  py-4 z-50 active:z-50 m-6 px-6 md:m-0 md:px-0 rounded-lg md:rounded-none bg-white-1 ">
                         {/* Logos | Desktop | Mobile */}
                         {/* <BlackLogo className=" lg:border-b-2 pb-1 border-pink-barbie-1 hover:scale-110 duration-200 lg:block hidden cursor-pointer active:scale-100" /> */}
 
@@ -83,23 +86,21 @@ const Sidebar = () => {
 
                         <ul className="flex justify-between gap-4 w-full md:hidden">
                             <Link href={`/dashboard`} className="hover:scale-125">
-                                <li className="hover:scale-110 duration-200 active:scale-100 cursor-pointer rounded-lg ">
+                                <li className="hover:scale-110 duration-200 flex flex-col items-center text-sm active:scale-100 cursor-pointer rounded-lg ">
                                     <LayoutDashboardIcon className="" />
+                                    <span className="">Dashboard</span>
                                 </li>
                             </Link>
-                            <Link href={`/transactions`} className="hover:scale-125">
-                                <li className="hover:scale-110 duration-200 active:scale-100 cursor-pointer rounded-lg ">
-                                    {/* <MobileWallet className="inline text-black" /> */}
+                            <Link href={`/profile`} className="hover:scale-125">
+                                <li className="hover:scale-110 duration-200 flex flex-col items-center text-sm active:scale-100 cursor-pointer rounded-lg ">
+                                    <LayoutDashboardIcon className="" />
+                                    <span className="">Profile</span>
                                 </li>
                             </Link>
-                            <Link href={`/history`} className="hover:scale-125">
-                                <li className="hover:scale-110 duration-200 active:scale-100 cursor-pointer rounded-lg ">
-                                    {/* <MobileHistory className="inline text-black" /> */}
-                                </li>
-                            </Link>
-                            <Link href={`/account`} className="hover:scale-125">
-                                <li className="hover:scale-110 duration-200 active:scale-100 cursor-pointer rounded-lg ">
-                                    {/* <MobileUserLogo className="inline text-black" /> */}
+                            <Link href={`/booking`} className="hover:scale-125">
+                                <li className="hover:scale-110 duration-200 flex flex-col items-center text-sm active:scale-100 cursor-pointer rounded-lg ">
+                                    <LayoutDashboardIcon className="" />
+                                    <span className="">Bookings</span>
                                 </li>
                             </Link>
                         </ul>

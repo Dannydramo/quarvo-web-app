@@ -58,3 +58,19 @@ export const fetchEventCentreDetails = async () => {
     }
     return { status, data, message }
 }
+
+export const postEventCentreDetails = async (payload: any) => {
+    try {
+        const response = await Axios({
+            url: '/api/user/event-centre-details',
+            method: 'post',
+            body: payload
+        })
+        status = 200
+        data = response.data.eventCentreDetails
+    } catch (err: any) {
+        status = err.response.status;
+        message = err.response.data.message;
+    }
+    return { status, data, message }
+}
