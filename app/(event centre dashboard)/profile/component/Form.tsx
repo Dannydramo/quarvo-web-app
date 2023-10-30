@@ -43,12 +43,12 @@ const Form = () => {
     })
     const [open, setOpen] = useState(false)
     const state = eventDetails?.state
-    const stateLga: string[] = NaijaStates.lgas(state).lgas
+    const stateLga: string[] = state ? NaijaStates.lgas(state).lgas : [];
     const [value, setValue] = useState("")
 
-    const stateArr = stateLga.map((state) => {
+    const stateArr = stateLga?.map((state) => {
         return {
-            value: state.toLocaleLowerCase(),
+            value: state,
             label: state,
         }
     })
@@ -139,6 +139,7 @@ const Form = () => {
             });
             const data = await res.json();
             const secureUrls = data.uploadedImages.map((image: { secure_url: string }) => image.secure_url);
+            console.log(secureUrls)
             return secureUrls;
         } catch (error: any) {
             console.error('Image upload error:', error.message);
@@ -160,6 +161,8 @@ const Form = () => {
             });
             const data = await res.json();
             const videoUrl = data?.uploadedVideo.secure_url;
+            console.log(videoUrl);
+
             return videoUrl;
         } catch (error: any) {
             console.error('Video upload error:', error.message);
@@ -171,14 +174,16 @@ const Form = () => {
         e.preventDefault();
 
         try {
-            const imageUrls = await handleImageUpload(multipleFiles);
             const videoUrl = await handleVideoUpload(videoFile);
-
-            setEventCentreDetails({
-                ...eventCentreDetails,
-                images: imageUrls,
-                mainImage: imageUrls[0],
-                video: videoUrl || '',
+            const imageUrls = await handleImageUpload(multipleFiles);
+            console.log(videoUrl, imageUrls)
+            setEventCentreDetails((prevDetails) => {
+                return {
+                    ...prevDetails,
+                    images: imageUrls,
+                    mainImage: imageUrls[0],
+                    video: videoUrl || '',
+                };
             });
 
             console.log('Event details:', eventCentreDetails);

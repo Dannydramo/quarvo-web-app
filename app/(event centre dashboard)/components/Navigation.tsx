@@ -14,7 +14,3 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
 }
 
 export default Navigation
-
-// #fef9ee #571b0b
-// #4f2f0c #e8d5bf
-// #bc6342 #eedfd6

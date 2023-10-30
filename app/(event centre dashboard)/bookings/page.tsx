@@ -5,7 +5,7 @@ const Bookings = () => {
     return (
         <>
             <Navigation>
-                <section className="lg:col-span-5">
+                <section className="w-[95%] mx-auto">
                     <p>Bookings</p>
                 </section>
             </Navigation>

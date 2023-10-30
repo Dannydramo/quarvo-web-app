@@ -5,7 +5,7 @@ const Dashboard = () => {
     return (
         <>
             <Navigation>
-                <section className="lg:col-span-5">
+                <section className="w-[95%] mx-auto">
                     <p>Dashboard</p>
                 </section>
             </Navigation>

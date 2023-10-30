@@ -40,11 +40,11 @@ export const loginEventCentre = async (payload: LoginDetails) => {
     return { message, status }
 }
 
-export const fetchEventCentreDetails = async () => {
+export const fetchEventCentre = async () => {
     const token = getCookie('jwtToken')
     try {
         const response = await Axios({
-            url: '/api/user/event-center-details',
+            url: '/api/user/event-center',
             method: 'get',
             headers: {
                 Authorization: `Bearer ${token}`
@@ -62,7 +62,7 @@ export const fetchEventCentreDetails = async () => {
 export const postEventCentreDetails = async (payload: any) => {
     try {
         const response = await Axios({
-            url: '/api/user/event-centre-details',
+            url: '/api/event-centre-details',
             method: 'post',
             body: payload
         })
@@ -74,3 +74,23 @@ export const postEventCentreDetails = async (payload: any) => {
     }
     return { status, data, message }
 }
+
+export const fetchEventCentreDetails = async () => {
+    const token = getCookie('jwtToken')
+    try {
+        const response = await Axios({
+            url: '/api/fetch-centre-details',
+            method: 'get',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        status = 200
+        data = response.data.eventCentreDetails
+    } catch (err: any) {
+        status = err.response.status;
+        message = err.response.data.message;
+    }
+    return { status, data, message }
+}
+

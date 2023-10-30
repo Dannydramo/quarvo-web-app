@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!userWithEmail) {
-        return NextResponse.json({ message: 'Accont not found', status: 401 })
+        return NextResponse.json({ message: 'Account not found', status: 401 })
     }
     const passwordIsMatch = await compare(password, userWithEmail.password)
     if (!passwordIsMatch) {
@@ -29,5 +29,3 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: 'Login successfully', status: 200, token });
 }
-// crystalcasadecenter
-// crystalcasadecenter@gmail.com
