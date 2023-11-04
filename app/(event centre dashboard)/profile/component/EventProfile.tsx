@@ -1,14 +1,15 @@
 'use client'
 import { EventCentreDetails } from "@/types/eventTypes";
 import { fetchEventCentreDetails } from "@/utils/eventUtils"
-import { useLayoutEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Form from "./Form";
+import EventDetails from "./EventDetails";
 
 
 const EventProfile = () => {
     const [eventDetails, setEventDetails] = useState<EventCentreDetails>();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const fetchEventDetails = async () => {
             try {
 
@@ -31,9 +32,7 @@ const EventProfile = () => {
         <>
             <div>
                 {eventDetails ? (
-                    <div>
-                        <p>{eventDetails.description}</p>
-                    </div>
+                    <EventDetails eventCentreDetails={eventDetails} />
                 ) : (
                     <Form />
                 )}

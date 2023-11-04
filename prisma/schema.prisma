@@ -22,6 +22,7 @@ model EventCentre {
   updatedAt            DateTime            @updatedAt
   reviews              Review[]
   event_centre_details EventCentreDetails?
+  event_logo           String?
 }
 
 model EventCentreDetails {

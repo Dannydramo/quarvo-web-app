@@ -43,6 +43,7 @@ export async function GET(req: NextRequest) {
             email: true,
             phone_number: true,
             slug: true,
+            event_logo: true
         }
     })
     return NextResponse.json({ message: 'Event Centre Details', status: 200, eventCentre })

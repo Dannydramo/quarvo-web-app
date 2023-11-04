@@ -275,7 +275,7 @@ const Form = () => {
                     })} className="outline-none mt-4 border" />
 
                 </div>
-                <Button type="submit">Submit Details</Button>
+                <Button type="submit" className="mt-4 outline-none">Submit Details</Button>
             </form>
 
         </>
