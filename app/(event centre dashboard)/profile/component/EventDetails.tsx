@@ -3,7 +3,7 @@ import { EventCentreDetails } from "@/types/eventTypes";
 import { EventStore } from "@/store/eventInfo";
 import { Carousel } from "antd";
 import EditProfile from "./EditProfile";
-import ReactPlayer from "react-player";
+
 
 const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ eventCentreDetails }) => {
     const { eventDetails } = EventStore()
@@ -76,11 +76,6 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ ev
                         ))}
                 </div>
             </div>
-
-
-            {eventCentreDetails.video && eventCentreDetails.video.length > 0 && (
-                <ReactPlayer url={eventCentreDetails.video} controls width="100%" />
-            )}
 
             <div className="mt-8">
                 <EditProfile eventCentreDetails={eventCentreDetails} />

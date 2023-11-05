@@ -8,7 +8,7 @@ const prisma = new PrismaClient()
 
 export async function POST(req: NextRequest) {
     try {
-        const { id, amenities, address, mainImage, images, video, openingTime, closingTime, lga, description, openDays, price } = await req.json()
+        const { id, amenities, address, mainImage, images, openingTime, closingTime, lga, description, openDays, price } = await req.json()
 
         const eventCentreDetails = await prisma.eventCentreDetails.create({
             data: {
@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
                 lga: lga,
                 price: price,
                 amenities: amenities,
-                video: video,
                 event_centre: {
                     connect: {
                         id: id,

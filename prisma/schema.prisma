@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -37,7 +34,6 @@ model EventCentreDetails {
   lga             String
   price           String
   amenities       String[]
-  video           String
   created_at      DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   event_centre_id String      @unique

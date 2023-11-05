@@ -9,7 +9,6 @@ const Profile = () => {
         <>
             <Navigation>
                 <section className="w-[95%] mx-auto">
-                    <p>Profile</p>
                     <EventProfile />
                 </section>
             </Navigation>

@@ -44,7 +44,7 @@ const Sidebar = () => {
 
                 <nav
                 >
-                    <nav className="flex md:h-screen md:p-6 lg:w-[210px] md:w-[190px] md:mx-auto md:flex md:justify-center lg:relative  fixed md:relative bottom-0 right-0 left-0  shadow-md bg-[#571b0b] md:shadow-none justify-between  py-4 z-50 active:z-50 m-6 px-6 md:m-0 md:px-0 rounded-lg md:rounded-none bg-white-1 ">
+                    <nav className="flex md:h-screen md:p-6 lg:w-[210px] md:w-[190px] md:mx-auto md:flex md:justify-center lg:relative  fixed md:relative bottom-0 right-0 left-0  shadow-md bg-[#571b0b] md:shadow-none justify-between  py-4 z-100 active:z-100 m-6 px-6 md:m-0 md:px-0 rounded-lg md:rounded-none bg-white-1 ">
                         {/* Logos | Desktop | Mobile */}
                         {/* <BlackLogo className=" lg:border-b-2 pb-1 border-pink-barbie-1 hover:scale-110 duration-200 lg:block hidden cursor-pointer active:scale-100" /> */}
 

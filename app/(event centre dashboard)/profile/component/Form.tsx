@@ -33,7 +33,6 @@ const Form = () => {
         address: '',
         mainImage: '',
         images: [''],
-        video: '',
         openingTime: '',
         closingTime: '',
         lga: '',
@@ -48,13 +47,13 @@ const Form = () => {
 
     const stateArr = stateLga?.map((state) => {
         return {
-            value: state,
+            value: state.toLowerCase(),
             label: state,
         }
     })
 
     const [multipleFiles, setMultipleFiles] = useState<File[]>([]);
-    const [videoFile, setVideoFile] = useState<File>()
+
 
     const handleMultipleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
@@ -63,13 +62,6 @@ const Form = () => {
 
 
     };
-
-    const handleVideoChange = async (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]; // Get the first selected file
-
-        setVideoFile(file)
-    };
-
 
     const convertFileToBase64 = (file: any) => {
         return new Promise((resolve, reject) => {
@@ -147,52 +139,27 @@ const Form = () => {
         }
     };
 
-    const handleVideoUpload = async (file: File | undefined): Promise<string | undefined> => {
-        if (!file) {
-            return undefined;
-        }
-
-        try {
-            console.log('Uploading video');
-            const base64File = await convertFileToBase64(file);
-            const res = await fetch('/api/uploadVideo', {
-                method: 'POST',
-                body: JSON.stringify(base64File),
-            });
-            const data = await res.json();
-            const videoUrl = data?.uploadedVideo.secure_url;
-            console.log(videoUrl);
-
-            return videoUrl;
-        } catch (error: any) {
-            console.error('Video upload error:', error.message);
-            throw error;
-        }
-    };
-
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
-            const videoUrl = await handleVideoUpload(videoFile);
-            const imageUrls = await handleImageUpload(multipleFiles);
-            console.log(videoUrl, imageUrls)
-            setEventCentreDetails((prevDetails) => {
-                return {
-                    ...prevDetails,
-                    images: imageUrls,
-                    mainImage: imageUrls[0],
-                    video: videoUrl || '',
-                };
-            });
 
-            console.log('Event details:', eventCentreDetails);
-            const { message, data, status } = await postEventCentreDetails(eventCentreDetails)
-            if (status !== 200) {
-                console.log(message);
+            const imageUrls = await handleImageUpload(multipleFiles);
+            console.log(imageUrls.length)
+            if (imageUrls.length > 0) {
+                setEventCentreDetails((prevDetails) => {
+                    return {
+                        ...prevDetails,
+                        images: imageUrls,
+                        mainImage: imageUrls[0],
+                    };
+                });
+                console.log(eventCentreDetails)
+                const { message, data, status } = await postEventCentreDetails(eventCentreDetails)
+                if (status !== 200) {
+                    console.log(message);
+                }
             }
-            console.log(message);
-            console.log(data)
         } catch (error: any) {
             console.error('Form submission error:', error.message);
         }
@@ -205,31 +172,50 @@ const Form = () => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <div className="grid md:grid-cols-2 gap-4 my-4">
-                        <Input type="text" placeholder="Amenities (Comma Seperated)" className="outline-none mt-1 border h-12" onChange={handleArrayInputChange} />
-                        <Input type="text" placeholder="Price" onChange={(e) => handleInputChange(e, "price")} className="outline-none mt-1 border h-12" />
+                        <div>
+                            <label htmlFor="amenities">Amenities</label>
+                            <Input type="text" placeholder="Amenities (Comma Seperated)" className="outline-none mt-1 border h-12" onChange={handleArrayInputChange} />
+                        </div>
+                        <div className="">
+                            <label htmlFor="price">Price</label>
+                            <Input type="text" placeholder="Price" onChange={(e) => handleInputChange(e, "price")} className="outline-none mt-1 border h-12" />
+                        </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-4 my-4">
-                        <Input type="text" placeholder="Address" className="outline-none mt-1 border h-12" onChange={(e) => handleInputChange(e, "address")} />
-                        <Input type="text" placeholder="Opening Days" onChange={(e) => handleInputChange(e, "openDays")} className="outline-none mt-1 border h-12" />
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-4 my-4">
-                        <TimePicker use12Hours format="h:mm a" placeholder="Select Opening Time" className='outline-none mt-1 border h-12 w-full' onChange={onOpenTime} />
-                        <TimePicker use12Hours format="h:mm a" placeholder="Select Closing Time" className='outline-none mt-1 border h-12 w-full' onChange={onCloseTime} />
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-4 my-4">
-                        <Input type="file" accept=".mp4" className="outline-none mt-1 border h-12" onChange={handleVideoChange} />
-                        <Input type="file" accept=".jpg, .jpeg, .png" multiple onChange={handleMultipleFileChange} className="outline-none mt-1 border h-12" />
-                    </div>
-                    <div className="">
                         <div className="">
+                            <label htmlFor="address">Address</label>
+                            <Input type="text" placeholder="Address" className="outline-none mt-1 border h-12" onChange={(e) => handleInputChange(e, "address")} />
+                        </div>
+                        <div className="">
+                            <label htmlFor="openingdays">Opening Days</label>
+                            <Input type="text" placeholder="Opening Days" onChange={(e) => handleInputChange(e, "openDays")} className="outline-none mt-1 border h-12" />
+                        </div>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4 my-4">
+                        <div className="">
+                            <label htmlFor="openitime">Opening Time</label>
+                            <TimePicker use12Hours format="h:mm a" placeholder="Select Opening Time" className='outline-none mt-1 border h-12 w-full' onChange={onOpenTime} />
+                        </div>
+                        <div className="">
+                            <label htmlFor="closetime">Closing Time</label>
+                            <TimePicker use12Hours format="h:mm a" placeholder="Select Closing Time" className='outline-none mt-1 border h-12 w-full' onChange={onCloseTime} />
+                        </div>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4 my-4">
+                        <div className="">
+                            <label htmlFor="upload">{"Upload Image(s)"}</label>
+                            <Input type="file" accept=".jpg, .jpeg, .png" multiple onChange={handleMultipleFileChange} className="outline-none mt-1 border h-12" />
+                        </div>
+                        <div className="">
+                            <label htmlFor="lga">L.G.A</label>
                             <Popover open={open} onOpenChange={setOpen}>
                                 <PopoverTrigger asChild>
                                     <Button
                                         variant="outline"
                                         role="combobox"
                                         aria-expanded={open}
-                                        className={`w-full h-10 flex justify-between mt-1 `}
+                                        className={`w-full h-12 flex justify-between mt-1`}
                                     >
                                         {value
                                             ? stateArr.find((state) => state.value === value)?.label
@@ -269,10 +255,13 @@ const Form = () => {
                             </Popover>
                         </div>
                     </div>
-                    <Textarea placeholder="Description" onChange={(e) => setEventCentreDetails({
-                        ...eventCentreDetails,
-                        description: e.target.value
-                    })} className="outline-none mt-4 border" />
+                    <div className="mt-4">
+                        <label htmlFor="description">Description</label>
+                        <Textarea placeholder="Description" onChange={(e) => setEventCentreDetails({
+                            ...eventCentreDetails,
+                            description: e.target.value
+                        })} className="outline-none border" />
+                    </div>
 
                 </div>
                 <Button type="submit" className="mt-4 outline-none">Submit Details</Button>

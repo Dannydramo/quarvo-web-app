@@ -20,5 +20,4 @@ export interface EventCentreDetails {
     lga: string;
     price: string;
     amenities: string[];
-    video: string;
 }
