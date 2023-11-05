@@ -131,7 +131,6 @@ const Form = () => {
             });
             const data = await res.json();
             const secureUrls = data.uploadedImages.map((image: { secure_url: string }) => image.secure_url);
-            console.log(secureUrls)
             return secureUrls;
         } catch (error: any) {
             console.error('Image upload error:', error.message);
@@ -145,21 +144,21 @@ const Form = () => {
         try {
 
             const imageUrls = await handleImageUpload(multipleFiles);
-            console.log(imageUrls.length)
-            if (imageUrls.length > 0) {
-                setEventCentreDetails((prevDetails) => {
-                    return {
-                        ...prevDetails,
-                        images: imageUrls,
-                        mainImage: imageUrls[0],
-                    };
-                });
-                console.log(eventCentreDetails)
-                const { message, data, status } = await postEventCentreDetails(eventCentreDetails)
-                if (status !== 200) {
-                    console.log(message);
-                }
+
+            setEventCentreDetails((prevDetails) => {
+                return {
+                    ...prevDetails,
+                    images: imageUrls,
+                    mainImage: imageUrls[0],
+                };
+            });
+            console.log(eventCentreDetails)
+            const { message, data, status } = await postEventCentreDetails(eventCentreDetails)
+            if (status !== 200) {
+                console.log(message);
             }
+            console.log(message, data)
+
         } catch (error: any) {
             console.error('Form submission error:', error.message);
         }
