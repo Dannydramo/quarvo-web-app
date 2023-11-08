@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button";
 import { postEventCentreDetails } from "@/utils/eventUtils";
+import { toast } from 'sonner'
 
 const Form = () => {
     const { eventDetails } = EventStore()
@@ -44,6 +45,7 @@ const Form = () => {
     const state = eventDetails?.state
     const stateLga: string[] = state ? NaijaStates.lgas(state).lgas : [];
     const [value, setValue] = useState("")
+    const [loading, setLoading] = useState(false)
 
     const stateArr = stateLga?.map((state) => {
         return {
@@ -123,6 +125,7 @@ const Form = () => {
 
     const handleImageUpload = async (files: File[]): Promise<string[]> => {
         try {
+            setLoading(true)
             console.log('Uploading images');
             const base64Files = await Promise.all(files.map(convertFileToBase64));
             const res = await fetch('/api/uploadFile', {
@@ -134,6 +137,7 @@ const Form = () => {
             return secureUrls;
         } catch (error: any) {
             console.error('Image upload error:', error.message);
+            setLoading(false)
             throw error;
         }
     };
@@ -142,7 +146,7 @@ const Form = () => {
         e.preventDefault();
 
         try {
-
+            setLoading(true)
             const imageUrls = await handleImageUpload(multipleFiles);
 
             setEventCentreDetails((prevDetails) => {
@@ -153,13 +157,23 @@ const Form = () => {
                 };
             });
             console.log(eventCentreDetails)
-            const { message, data, status } = await postEventCentreDetails(eventCentreDetails)
-            if (status !== 200) {
-                console.log(message);
+            if (eventCentreDetails.images.length < 0 && eventCentreDetails.mainImage === '') {
+                setLoading(false)
+                console.log('Add Event Centre Images')
+                toast.error('Add event centre images')
+                return
+            } else {
+                const { message, data, status } = await postEventCentreDetails(eventCentreDetails)
+                if (status !== 200) {
+                    console.log(message);
+                }
+                console.log(message, data)
+                setLoading(false)
             }
-            console.log(message, data)
+
 
         } catch (error: any) {
+            setLoading(false)
             console.error('Form submission error:', error.message);
         }
     };
@@ -263,7 +277,7 @@ const Form = () => {
                     </div>
 
                 </div>
-                <Button type="submit" className="mt-4 outline-none">Submit Details</Button>
+                <Button type="submit" disabled={loading} className="mt-4 outline-none">{loading ? "Submiting Details" : 'Submit Details'}</Button>
             </form>
 
         </>

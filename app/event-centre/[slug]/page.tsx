@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import EventDetails from '../components/EventDetails'
 
 const prisma = new PrismaClient()
 const fetchEventCentreDetails = async (slug: string) => {
@@ -13,6 +14,7 @@ const fetchEventCentreDetails = async (slug: string) => {
             email: true,
             phone_number: true,
             slug: true,
+            event_logo: true
         }
     })
     const eventCentreDetails = await prisma.eventCentreDetails.findUnique({
@@ -28,7 +30,9 @@ const EventCentreDetails = async ({ params }: { params: { slug: string } }) => {
     console.log(eventCentre, eventCentreDetails, params.slug);
 
     return (
-        <div>page</div>
+        <>
+            {eventCentreDetails && eventCentre && <EventDetails eventCentreDetails={eventCentreDetails} eventCentre={eventCentre} />}
+        </>
     )
 }
 

@@ -5,7 +5,7 @@ export interface eventRegDetails {
     email: string
     phone_number: string
     slug: string
-    event_logo: string
+    event_logo: string | null
 }
 
 export interface EventCentreDetails {

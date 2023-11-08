@@ -34,6 +34,6 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ message: 'Event Centre Details created successfully', status: 200, eventCentreDetails });
     } catch (error) {
-        return NextResponse.json({ message: "An error occurred while creating the event center account.", status: 500, });
+        return NextResponse.json({ message: "An error occurred while creating the event center details.", status: 500, });
     }
 }

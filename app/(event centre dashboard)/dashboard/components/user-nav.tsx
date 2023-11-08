@@ -12,7 +12,6 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -50,53 +49,73 @@ const UserNav = () => {
         }
     }
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-8 w-8">
-                        {
-                            eventDetails?.event_logo && <AvatarImage src={eventDetails.event_logo} alt="event logo" />
-                        }
+        <>
+            {
+                !eventDetails?.event_logo ? <>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                                <Avatar className="h-8 w-8">
+                                    {
+                                        eventDetails?.event_logo && <AvatarImage src={eventDetails.event_logo} alt="event logo" />
+                                    }
 
-                        <AvatarFallback>SC</AvatarFallback>
-                    </Avatar>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                    {
-                        !eventDetails?.event_logo &&
-                        <>
-                            <div className="relative h-[20px]">
-                                <div className="absolute bottom-0 right-0 h-[20px] w-full overflow-hidden">
-                                    <div className="relative">
-                                        <p>Uplaod Event Logo</p>
-                                        <Input
-                                            type="file"
-                                            className="w-full h-full absolute cursor-pointer bottom-0 right-0 z-12 opacity-0"
-                                            accept=".jpg, .jpeg, .png"
-                                            onChange={handleLogoChange}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                                    <AvatarFallback>SC</AvatarFallback>
+                                </Avatar>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56" align="end" forceMount>
+                            <DropdownMenuLabel className="font-normal">
+                                {
+                                    !eventDetails?.event_logo &&
+                                    <>
+                                        <div className="relative h-[20px]">
+                                            <div className="absolute bottom-0 right-0 h-[20px] w-full overflow-hidden">
+                                                <div className="relative">
+                                                    <p>Uplaod Event Logo</p>
+                                                    <Input
+                                                        type="file"
+                                                        className="w-full h-full absolute cursor-pointer bottom-0 right-0 z-12 opacity-0"
+                                                        accept=".jpg, .jpeg, .png"
+                                                        onChange={handleLogoChange}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
 
 
-                        </>
-                    }
+                                    </>
+                                }
+                            </DropdownMenuLabel>
+                            <DropdownMenuGroup>
+                            </DropdownMenuGroup>
+                            <DropdownMenuItem className="md:hidden">
+                                Log out
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </> :
+                    <>
+                        <AvatarImage src={eventDetails.event_logo} alt="event logo" className="hidden md:block" />
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild className="md:hidden">
+                                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                                    <Avatar className="h-8 w-8">
+                                        <AvatarImage src={eventDetails.event_logo} alt="event logo" />
 
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
+                                    </Avatar>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56" align="end" forceMount>
+                                <DropdownMenuItem className="md:hidden">
+                                    Log out
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </>
+            }
+        </>
 
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Log out
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
     )
 }
 

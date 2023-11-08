@@ -14,10 +14,24 @@ import {
 import { EventCentreDetails } from "@/types/eventTypes"
 import { TimePicker } from 'antd';
 import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react"
 
 
 const EditProfile: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ eventCentreDetails }) => {
     console.log(eventCentreDetails)
+    const [editProfileDetails, setEditProfileDetails] = useState({
+        // id: eventDetails?.id,
+        amenities: [''],
+        address: '',
+        mainImage: '',
+        images: [''],
+        openingTime: '',
+        closingTime: '',
+        lga: '',
+        description: '',
+        openDays: '',
+        price: ''
+    })
     return (
         <>
             <Sheet>
@@ -36,22 +50,22 @@ const EditProfile: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ eve
                             <div className="grid gap-4">
                                 <div>
                                     <label htmlFor="amenities">Amenities</label>
-                                    <Input type="text" placeholder="Amenities (Comma Seperated)" className="outline-none mt-1 border h-12" />
+                                    <Input type="text" value={''} placeholder="Amenities (Comma Seperated)" className="outline-none mt-1 border h-12" />
                                 </div>
                                 <div className="">
                                     <label htmlFor="price">Price</label>
-                                    <Input type="text" placeholder="Price" className="outline-none mt-1 border h-12" />
+                                    <Input type="text" value={''} placeholder="Price" className="outline-none mt-1 border h-12" />
                                 </div>
                             </div>
 
                             <div className="grid gap-4">
                                 <div className="">
                                     <label htmlFor="address">Address</label>
-                                    <Input type="text" placeholder="Address" className="outline-none mt-1 border h-12" />
+                                    <Input type="text" value={''} placeholder="Address" className="outline-none mt-1 border h-12" />
                                 </div>
                                 <div className="">
                                     <label htmlFor="openingdays">Opening Days</label>
-                                    <Input type="text" placeholder="Opening Days" className="outline-none mt-1 border h-12" />
+                                    <Input type="text" value={''} placeholder="Opening Days" className="outline-none mt-1 border h-12" />
                                 </div>
                             </div>
                             <div className="grid gap-4">
@@ -66,14 +80,14 @@ const EditProfile: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ eve
                             </div>
                             <div className="grid gap-4">
                                 <div className="">
-                                    <label htmlFor="upload">{"Upload Image(s)"}</label>
+                                    <label htmlFor="upload">Change All Images</label>
                                     <Input type="file" accept=".jpg, .jpeg, .png" multiple className="outline-none mt-1 border h-12" />
                                 </div>
 
                             </div>
                             <div className="mt-4">
                                 <label htmlFor="description">Description</label>
-                                <Textarea placeholder="Description" className="outline-none border" />
+                                <Textarea value={''} placeholder="Description" className="outline-none border" />
                             </div>
 
                         </div>
