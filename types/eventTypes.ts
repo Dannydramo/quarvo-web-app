@@ -10,8 +10,6 @@ export interface eventRegDetails {
 
 export interface EventCentreDetails {
     id: string | undefined;
-    main_image: string;
-    images: string[];
     description: string;
     open_time: string;
     address: string;

@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!eventCentreWithEmail) {
-        return NextResponse.json({ message: 'Accont not found', status: 401 })
+        return NextResponse.json({ message: 'Account not found', status: 401 })
     }
     const passwordIsMatch = await compare(password, eventCentreWithEmail.password)
     if (!passwordIsMatch) {

@@ -8,12 +8,10 @@ const prisma = new PrismaClient()
 
 export async function POST(req: NextRequest) {
     try {
-        const { id, amenities, address, mainImage, images, openingTime, closingTime, lga, description, openDays, price } = await req.json()
+        const { id, amenities, address, openingTime, closingTime, lga, description, openDays, price } = await req.json()
 
         const eventCentreDetails = await prisma.eventCentreDetails.create({
             data: {
-                main_image: mainImage,
-                images: images,
                 description: description,
                 open_time: openingTime,
                 address: address,
@@ -29,9 +27,6 @@ export async function POST(req: NextRequest) {
                 },
             },
         });
-
-
-
         return NextResponse.json({ message: 'Event Centre Details created successfully', status: 200, eventCentreDetails });
     } catch (error) {
         return NextResponse.json({ message: "An error occurred while creating the event center details.", status: 500, });

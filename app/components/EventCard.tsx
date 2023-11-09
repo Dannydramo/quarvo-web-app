@@ -1,6 +1,7 @@
+
 import Link from "next/link";
 
-type EventCentreDetails = {
+type EventCentreImages = {
     main_image: string | null;
 };
 
@@ -15,14 +16,21 @@ type EventCentre = {
 
 type EventProps = {
     eventCentre: EventCentre;
-    eventCentreDetails: EventCentreDetails | null;
+    eventCentreImages: EventCentreImages | null;
 };
+import Image from 'next/image';
+const EventCard: React.FC<EventProps> = ({ eventCentre, eventCentreImages }) => {
+    const imageUrl = eventCentreImages?.main_image;
 
-const EventCard: React.FC<EventProps> = ({ eventCentre, eventCentreDetails }) => {
+    if (!imageUrl) {
+        // Return some default image or placeholder
+        return <p>No image available</p>;
+    }
 
     return (
         <>
             <Link href={`/event-centre/${eventCentre?.slug}`}>
+                <Image src={imageUrl} alt='image' width={100} height={200} />
                 <p>{eventCentre.event_centre_name}</p>
             </Link>
         </>

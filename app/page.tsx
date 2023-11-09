@@ -15,9 +15,9 @@ const fetchAllEvetCentre = async () => {
     },
   })
 
-  const eventCentreDetails = await Promise.all(
+  const eventCentreImages = await Promise.all(
     eventCentres.map(async (eventCentre) => {
-      return await prisma.eventCentreDetails.findUnique({
+      return await prisma.eventCentreImages.findUnique({
         where: {
           event_centre_id: eventCentre.id,
         },
@@ -28,13 +28,13 @@ const fetchAllEvetCentre = async () => {
     })
   )
 
-  return { eventCentres, eventCentreDetails }
+  return { eventCentres, eventCentreImages }
 }
 
 const Home = async () => {
-  const { eventCentres, eventCentreDetails } = await fetchAllEvetCentre()
+  const { eventCentres, eventCentreImages } = await fetchAllEvetCentre()
 
-  console.log(eventCentres, eventCentreDetails)
+  console.log(eventCentres, eventCentreImages)
 
   return (
     <>
@@ -42,7 +42,7 @@ const Home = async () => {
         <EventCard
           key={eventCentre.id}
           eventCentre={eventCentre}
-          eventCentreDetails={eventCentreDetails[index]}
+          eventCentreImages={eventCentreImages[index]}
         />
       ))}
     </>

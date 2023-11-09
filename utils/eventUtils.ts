@@ -29,7 +29,7 @@ export const loginEventCentre = async (payload: LoginDetails) => {
             method: 'post',
             body: payload
         })
-        status = 200
+        status = response.data.status
         message = response.data.message
         const authToken = response.data.token
         setCookie('jwtToken', authToken, { secure: true, maxAge: 60 * 6 * 24 })
@@ -68,6 +68,24 @@ export const postEventCentreDetails = async (payload: any) => {
         })
         status = 200
         data = response.data.eventCentreDetails
+        message = response.data.message
+    } catch (err: any) {
+        status = err.response.status;
+        message = err.response.data.message;
+    }
+    return { status, data, message }
+}
+
+export const postEditCentreDetails = async (payload: any) => {
+    try {
+        const response = await Axios({
+            url: '/api/edit-profile',
+            method: 'patch',
+            body: payload
+        })
+        status = 200
+        data = response.data.eventCentreDetails
+        message = response.data.message
     } catch (err: any) {
         status = err.response.status;
         message = err.response.data.message;

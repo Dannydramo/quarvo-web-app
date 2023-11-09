@@ -22,7 +22,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button";
-import { postEventCentreDetails } from "@/utils/eventUtils";
+import { fetchEventCentreDetails, postEventCentreDetails } from "@/utils/eventUtils";
 import { toast } from 'sonner'
 
 const Form = () => {
@@ -32,8 +32,6 @@ const Form = () => {
         id: eventDetails?.id,
         amenities: [''],
         address: '',
-        mainImage: '',
-        images: [''],
         openingTime: '',
         closingTime: '',
         lga: '',
@@ -45,7 +43,8 @@ const Form = () => {
     const state = eventDetails?.state
     const stateLga: string[] = state ? NaijaStates.lgas(state).lgas : [];
     const [value, setValue] = useState("")
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+
 
     const stateArr = stateLga?.map((state) => {
         return {
@@ -54,29 +53,7 @@ const Form = () => {
         }
     })
 
-    const [multipleFiles, setMultipleFiles] = useState<File[]>([]);
 
-
-    const handleMultipleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || []);
-        setMultipleFiles(files);
-        if (multipleFiles.length === 0) return;
-
-
-    };
-
-    const convertFileToBase64 = (file: any) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                resolve(e.target?.result);
-            };
-            reader.onerror = (error) => {
-                reject(error);
-            };
-            reader.readAsDataURL(file);
-        });
-    };
 
     const onOpenTime = (time: Dayjs | null, timeString: string) => {
         if (time) {
@@ -86,6 +63,7 @@ const Form = () => {
             })
         }
     };
+
     const onCloseTime = (time: Dayjs | null, timeString: string) => {
         if (time) {
             setEventCentreDetails({
@@ -100,15 +78,11 @@ const Form = () => {
     };
 
     const handleArrayInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        // Assuming that values are separated by a comma
         const newArray = stringToArray(e.target.value);
         setEventCentreDetails({
-
             ...eventCentreDetails,
             amenities: newArray
-        }
-        )
-
+        });
     };
 
     const handleInputChange = (
@@ -120,64 +94,25 @@ const Form = () => {
             ...prevState,
             [inputField]: value,
         }));
-
-    };
-
-    const handleImageUpload = async (files: File[]): Promise<string[]> => {
-        try {
-            setLoading(true)
-            console.log('Uploading images');
-            const base64Files = await Promise.all(files.map(convertFileToBase64));
-            const res = await fetch('/api/uploadFile', {
-                method: 'POST',
-                body: JSON.stringify(base64Files),
-            });
-            const data = await res.json();
-            const secureUrls = data.uploadedImages.map((image: { secure_url: string }) => image.secure_url);
-            return secureUrls;
-        } catch (error: any) {
-            console.error('Image upload error:', error.message);
-            setLoading(false)
-            throw error;
-        }
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         try {
-            setLoading(true)
-            const imageUrls = await handleImageUpload(multipleFiles);
-
-            setEventCentreDetails((prevDetails) => {
-                return {
-                    ...prevDetails,
-                    images: imageUrls,
-                    mainImage: imageUrls[0],
-                };
-            });
-            console.log(eventCentreDetails)
-            if (eventCentreDetails.images.length < 0 && eventCentreDetails.mainImage === '') {
-                setLoading(false)
-                console.log('Add Event Centre Images')
-                toast.error('Add event centre images')
-                return
-            } else {
-                const { message, data, status } = await postEventCentreDetails(eventCentreDetails)
-                if (status !== 200) {
-                    console.log(message);
-                }
-                console.log(message, data)
-                setLoading(false)
+            setLoading(true);
+            const { message, data, status } = await postEventCentreDetails(eventCentreDetails);
+            if (status !== 200) {
+                console.log(message);
             }
-
+            console.log(message, data);
+            setLoading(false);
+            fetchEventCentreDetails()
 
         } catch (error: any) {
-            setLoading(false)
+            setLoading(false);
             console.error('Form submission error:', error.message);
         }
     };
-
 
 
     return (
@@ -215,59 +150,55 @@ const Form = () => {
                             <TimePicker use12Hours format="h:mm a" placeholder="Select Closing Time" className='outline-none mt-1 border h-12 w-full' onChange={onCloseTime} />
                         </div>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-4 my-4">
-                        <div className="">
-                            <label htmlFor="upload">{"Upload Image(s)"}</label>
-                            <Input type="file" accept=".jpg, .jpeg, .png" multiple onChange={handleMultipleFileChange} className="outline-none mt-1 border h-12" />
-                        </div>
-                        <div className="">
-                            <label htmlFor="lga">L.G.A</label>
-                            <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        variant="outline"
-                                        role="combobox"
-                                        aria-expanded={open}
-                                        className={`w-full h-12 flex justify-between mt-1`}
-                                    >
-                                        {value
-                                            ? stateArr.find((state) => state.value === value)?.label
-                                            : "Select Local Government Area"}
-                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-full md:max-w-[100%] p-0 max-h-[15rem] overflow-y-scroll">
-                                    <Command>
-                                        <CommandInput placeholder="Search Local Government Area" />
-                                        <CommandEmpty>No Local Government Area found.</CommandEmpty>
-                                        <CommandGroup>
-                                            {stateArr.map((state) => (
-                                                <CommandItem
-                                                    key={state.value}
-                                                    onSelect={(currentValue) => {
-                                                        setValue(currentValue === value ? "" : currentValue)
-                                                        setEventCentreDetails({
-                                                            ...eventCentreDetails,
-                                                            lga: currentValue
-                                                        })
-                                                        setOpen(false)
-                                                    }}
-                                                >
-                                                    <Check
-                                                        className={cn(
-                                                            "mr-2 h-4 w-4",
-                                                            value === state.value ? "opacity-100" : "opacity-0"
-                                                        )}
-                                                    />
-                                                    {state.label}
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </Command>
-                                </PopoverContent>
-                            </Popover>
-                        </div>
+
+                    <div className="mt-4">
+                        <label htmlFor="lga">L.G.A</label>
+                        <Popover open={open} onOpenChange={setOpen}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    aria-expanded={open}
+                                    className={`w-full h-12 flex justify-between mt-1`}
+                                >
+                                    {value
+                                        ? stateArr.find((state) => state.value === value)?.label
+                                        : "Select Local Government Area"}
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-full md:max-w-[100%] p-0 max-h-[15rem] overflow-y-scroll">
+                                <Command>
+                                    <CommandInput placeholder="Search Local Government Area" />
+                                    <CommandEmpty>No Local Government Area found.</CommandEmpty>
+                                    <CommandGroup>
+                                        {stateArr.map((state) => (
+                                            <CommandItem
+                                                key={state.value}
+                                                onSelect={(currentValue) => {
+                                                    setValue(currentValue === value ? "" : currentValue)
+                                                    setEventCentreDetails({
+                                                        ...eventCentreDetails,
+                                                        lga: currentValue
+                                                    })
+                                                    setOpen(false)
+                                                }}
+                                            >
+                                                <Check
+                                                    className={cn(
+                                                        "mr-2 h-4 w-4",
+                                                        value === state.value ? "opacity-100" : "opacity-0"
+                                                    )}
+                                                />
+                                                {state.label}
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
                     </div>
+
                     <div className="mt-4">
                         <label htmlFor="description">Description</label>
                         <Textarea placeholder="Description" onChange={(e) => setEventCentreDetails({
@@ -277,7 +208,7 @@ const Form = () => {
                     </div>
 
                 </div>
-                <Button type="submit" disabled={loading} className="mt-4 outline-none">{loading ? "Submiting Details" : 'Submit Details'}</Button>
+                <Button type="submit" className="mt-4 outline-none">{loading ? "Submiting Details" : 'Submit Details'}</Button>
             </form>
 
         </>
