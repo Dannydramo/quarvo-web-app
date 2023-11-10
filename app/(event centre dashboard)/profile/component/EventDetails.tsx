@@ -7,6 +7,9 @@ import EventCentreImages from "./EventCentreImages";
 
 const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ eventCentreDetails }) => {
     const { eventDetails } = EventStore()
+    function capitalizeWords(inputString: string) {
+        return inputString.replace(/\b\w/g, (char: string) => char.toUpperCase());
+    }
     return (
         <>
 
@@ -30,7 +33,7 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ ev
                 </p>
                 <p>
                     <span className="font-bold">L.G.A: </span>
-                    <span>{eventCentreDetails.lga}</span>
+                    <span>{capitalizeWords(eventCentreDetails.lga)}</span>
                 </p>
                 <p>
                     <span className="font-bold">Address: </span>

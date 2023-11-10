@@ -12,8 +12,22 @@ const fetchAllEvetCentre = async () => {
       email: true,
       phone_number: true,
       slug: true,
+      event_logo: true
     },
   })
+
+  const eventCentreLga = await Promise.all(
+    eventCentres.map(async (eventCentre) => {
+      return await prisma.eventCentreDetails.findUnique({
+        where: {
+          event_centre_id: eventCentre.id,
+        },
+        select: {
+          lga: true
+        }
+      })
+    })
+  )
 
   const eventCentreImages = await Promise.all(
     eventCentres.map(async (eventCentre) => {
@@ -28,23 +42,26 @@ const fetchAllEvetCentre = async () => {
     })
   )
 
-  return { eventCentres, eventCentreImages }
+  return { eventCentres, eventCentreImages, eventCentreLga }
 }
 
 const Home = async () => {
-  const { eventCentres, eventCentreImages } = await fetchAllEvetCentre()
-
-  console.log(eventCentres, eventCentreImages)
+  const { eventCentres, eventCentreImages, eventCentreLga } = await fetchAllEvetCentre()
 
   return (
     <>
-      {eventCentres.map((eventCentre, index) => (
-        <EventCard
-          key={eventCentre.id}
-          eventCentre={eventCentre}
-          eventCentreImages={eventCentreImages[index]}
-        />
-      ))}
+      <section className='mx-auto overflow-x-hidden w-[90%]'>
+        <div className="display_event gap-4">
+          {eventCentres.map((eventCentre, index) => (
+            <EventCard
+              key={eventCentre.id}
+              eventCentre={eventCentre}
+              eventCentreImages={eventCentreImages[index]}
+              lga={eventCentreLga[index]!}
+            />
+          ))}
+        </div>
+      </section>
     </>
   )
 }
