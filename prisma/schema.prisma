@@ -21,6 +21,7 @@ model EventCentre {
   event_centre_details EventCentreDetails?
   event_logo           String?
   event_centre_images  EventCentreImages?
+  bookings             Booking[]
 }
 
 model EventCentreImages {
@@ -53,23 +54,32 @@ model Review {
   id                    String      @id @default(uuid())
   full_name             String
   review_comment        String
-  user_comment_id       String
   created_at            DateTime    @default(now())
   updatedAt             DateTime    @updatedAt
-  user_commented        User        @relation(fields: [user_comment_id], references: [id])
   event_centre_id       String
   event_centre_reviewed EventCentre @relation(fields: [event_centre_id], references: [id])
 }
 
 model User {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   first_name   String
   last_name    String
   full_name    String
-  email        String   @unique
+  email        String    @unique
   phone_number String
   password     String
-  reviews      Review[]
-  created_at   DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  created_at   DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  bookings     Booking[]
+}
+
+model Booking {
+  id              String      @id @default(uuid())
+  date            DateTime
+  user_id         String
+  event_centre_id String
+  created_at      DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  user            User        @relation(fields: [user_id], references: [id])
+  event_centre    EventCentre @relation(fields: [event_centre_id], references: [id])
 }

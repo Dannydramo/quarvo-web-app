@@ -1,15 +1,43 @@
+'use client'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import React from 'react'
+import { UserStore } from '@/store/userInfo'
+import React, { FormEvent, useState } from 'react'
 
-const CommentForm = () => {
+const CommentForm = ({ eventCentreId }: { eventCentreId: string }) => {
+    const { userDetails } = UserStore()
+    const [loading, setLoading] = useState(false)
+    const [comment, setComment] = useState('')
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            setLoading(true)
+            const res = await fetch('/api/post-review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    eventCentreId: eventCentreId,
+                    comment: comment,
+                    userFullName: userDetails?.full_name,
+                }),
+            });
+
+            const data = await res.json()
+            console.log(data);
+            setLoading(false)
+        } catch (error) {
+            console.error('Error:', error);
+            setLoading(false)
+            return
+        }
+    }
     return (
         <>
-            <form>
-
-                <Textarea placeholder="Comment your review" className="outline-none border h-[200px]" />
-
-                <Button type='submit'>Submit Review</Button>
+            <form onSubmit={handleSubmit}>
+                <Textarea placeholder="Comment your review" onChange={(e) => { setComment(e.target.value) }} className="outline-none mb-4 mt-4 border h-[200px]" />
+                <Button type='submit' disabled={loading}>{loading ? 'Submitting Review' : 'Submit Review'}</Button>
             </form>
         </>
     )

@@ -7,6 +7,7 @@ import Spinner from '@/svgs/Spinner'
 import { UserReg } from '@/types/onboarding'
 import { registerUser } from '@/utils/userUtils'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -30,6 +31,7 @@ const Form = () => {
     const [loading, setLoading] = useState(false)
     const [seePassword, setSeePassword] = useState<boolean>(false);
     const [seeConfirmPassword, setSeeConfirmPassword] = useState<boolean>(false);
+    const router = useRouter()
 
     const handleInputChange = (
         e: ChangeEvent<HTMLInputElement>,
@@ -77,6 +79,7 @@ const Form = () => {
             }
             toast.success(message)
             setLoading(false)
+            router.replace('/login')
 
         } catch (error) {
             toast.error('Unable to process form submission')

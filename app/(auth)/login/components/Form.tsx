@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation'
 import EyeOff from '@/svgs/EyeOff'
 import Eye from '@/svgs/Eye'
 import Spinner from '@/svgs/Spinner'
+import { loginUser } from '@/utils/userUtils'
+import { toast } from 'sonner'
 
 const Form = () => {
     const [loginDetails, setLoginDetails] = useState<LoginDetails>({
@@ -57,19 +59,21 @@ const Form = () => {
 
 
         try {
-            const res = await fetch('/api/user-login', {
-                method: "POST",
-                body: JSON.stringify(loginDetails)
-            })
-            if (res.status === 200) {
-                const data = await res.json()
-                console.log(data);
+            setLoading(true)
+            const { message, status } = await loginUser(loginDetails)
+            if (status !== 200) {
+                toast.error(message)
+                setLoading(false)
+                return
             }
-
+            toast.success(message)
+            setLoading(false)
+            router.replace('/')
 
         } catch (error) {
-            console.log(error);
-
+            toast.error('Unable to process form submission')
+            setLoading(false)
+            return
         }
 
     };

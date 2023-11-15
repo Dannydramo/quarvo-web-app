@@ -1,9 +1,10 @@
-import { EventCentreDetails, eventRegDetails } from '@/types/eventTypes'
+import { EventCentreDetails, eventRegDetails, reviewProps } from '@/types/eventTypes'
 import React from 'react'
 import EventCentreImages from './EventCentreImages';
 import Comments from './Comments';
+import Link from 'next/link';
 
-const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentre: eventRegDetails, eventCentreImage: { images: string[] } }> = ({ eventCentreDetails, eventCentre, eventCentreImage }) => {
+const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, reviews: reviewProps[], eventCentre: eventRegDetails, eventCentreImage: { images: string[] } }> = ({ eventCentreDetails, eventCentre, reviews, eventCentreImage }) => {
     function capitalizeWords(inputString: string) {
         return inputString.replace(/\b\w/g, (char: string) => char.toUpperCase());
     }
@@ -55,6 +56,7 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCent
                         <span className="font-bold">Opening Days: </span>
                         <span>{eventCentreDetails.open_days}</span>
                     </p>
+                    <Link href={`/event-centre/checkout/${eventCentre.slug}`}>Proced To Booking</Link>
                 </div>
 
                 <div className="">
@@ -74,7 +76,7 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCent
                     </div>
                 </div>
             </section>
-            <Comments />
+            <Comments eventCentreReview={reviews} eventCentreId={eventCentre.id} />
 
         </>
     )

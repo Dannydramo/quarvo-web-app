@@ -19,3 +19,12 @@ export interface EventCentreDetails {
     price: string;
     amenities: string[];
 }
+
+
+export interface reviewProps {
+    id: string;
+    full_name: string;
+    review_comment: string;
+    created_at: Date;
+    updatedAt: Date;
+}

@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
-import EventDetails from '../components/EventDetails'
+import EventCheckout from './components/EventCheckout'
 import Navigation from '@/app/components/Navigation'
+// import EventDetails from '../components/EventDetails'
 
 const prisma = new PrismaClient()
 const fetchEventCentreDetails = async (slug: string) => {
@@ -15,16 +16,7 @@ const fetchEventCentreDetails = async (slug: string) => {
             email: true,
             phone_number: true,
             slug: true,
-            event_logo: true,
-            reviews: {
-                select: {
-                    id: true,
-                    full_name: true,
-                    review_comment: true,
-                    created_at: true,
-                    updatedAt: true,
-                },
-            },
+            event_logo: true
         }
     })
     const eventCentreImage = await prisma.eventCentreImages.findUnique({
@@ -32,7 +24,7 @@ const fetchEventCentreDetails = async (slug: string) => {
             event_centre_id: eventCentre?.id
         },
         select: {
-            images: true
+            main_image: true
         }
     })
     const eventCentreDetails = await prisma.eventCentreDetails.findUnique({
@@ -40,19 +32,18 @@ const fetchEventCentreDetails = async (slug: string) => {
             event_centre_id: eventCentre?.id
         }
     })
-
-    const reviews = eventCentre?.reviews || [];
-
-    return { eventCentre, eventCentreDetails, eventCentreImage, reviews };
+    return { eventCentre, eventCentreDetails, eventCentreImage }
 }
 
 const EventCentreDetails = async ({ params }: { params: { slug: string } }) => {
-    const { eventCentre, eventCentreDetails, eventCentreImage, reviews } = await fetchEventCentreDetails(params.slug)
+    const { eventCentre, eventCentreDetails, eventCentreImage } = await fetchEventCentreDetails(params.slug)
 
     return (
         <>
-            <Navigation />
-            {eventCentreDetails && eventCentre && eventCentreImage && <EventDetails eventCentreImage={eventCentreImage} eventCentreDetails={eventCentreDetails} eventCentre={eventCentre} reviews={reviews} />}
+            <section className='mx-auto overflow-x-hidden w-[95%] sm:w-[90%]'>
+                <Navigation />
+                {eventCentreDetails && eventCentre && eventCentreImage && <EventCheckout eventCentreImage={eventCentreImage} eventCentreDetails={eventCentreDetails} eventCentre={eventCentre} />}
+            </section>
         </>
     )
 }

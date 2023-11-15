@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import EventCard from './components/EventCard'
+import Navigation from './components/Navigation'
 
 const prisma = new PrismaClient()
 
@@ -50,7 +51,8 @@ const Home = async () => {
 
   return (
     <>
-      <section className='mx-auto overflow-x-hidden w-[90%]'>
+      <section className='mx-auto overflow-x-hidden w-[95%] sm:w-[90%]'>
+        <Navigation />
         <div className="display_event gap-4">
           {eventCentres.map((eventCentre, index) => (
             <EventCard
