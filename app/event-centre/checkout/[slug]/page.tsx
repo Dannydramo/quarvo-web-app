@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import EventCheckout from './components/EventCheckout'
 import Navigation from '@/app/components/Navigation'
-// import EventDetails from '../components/EventDetails'
 
 const prisma = new PrismaClient()
 const fetchEventCentreDetails = async (slug: string) => {

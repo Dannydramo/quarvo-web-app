@@ -31,7 +31,7 @@ const Navigation = () => {
                     <p>Quarvo</p>
                 </div>
                 <div className="">
-                    <p>{`Hello, ${userDetails?.full_name}`}</p>
+                    <p>{`Hello, ${userDetails?.first_name}`}</p>
                 </div>
             </nav>
         </>

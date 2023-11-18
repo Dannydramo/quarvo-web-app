@@ -1,21 +1,45 @@
-import React from 'react';
+'use client'
+
+import React, { useState, useEffect } from 'react';
 import CommentForm from './CommentForm';
 import { reviewProps } from '@/types/eventTypes';
+import { fetchEventCentreReview } from '@/utils/reviewUtils';
 
-const Comments: React.FC<{ eventCentreReview: reviewProps[], eventCentreId: string }> = ({ eventCentreReview, eventCentreId }) => {
+const Comments: React.FC<{ eventCentreId: string }> = ({ eventCentreId }) => {
+
+    const [eventCentreReview, setEventCentreReview] = useState<reviewProps[]>([])
+
+    useEffect(() => {
+
+        const fetchReviews = async () => {
+            try {
+
+                const { data, message, status } = await fetchEventCentreReview(eventCentreId)
+                if (status !== 200) {
+                    console.log(message);
+                }
+                setEventCentreReview(data)
+            } catch (error) {
+                console.log('Unable to fetch event centre review');
+            }
+        }
+        fetchReviews()
+    }, [eventCentreReview])
+
     return (
         <>
-            <section className='mx-auto overflow-x-hidden w-[95%] sm:w-[90%]'>
-                <div className='mb-4 text-lg font-bold'>Comments</div>
-                {eventCentreReview.length > 0 ? (
+            <section>
+                <div className='mb-4 mt-4 text-lg font-bold'>Comments</div>
+                {eventCentreReview?.length > 0 ? (
                     <ul className='space-y-4'>
                         {eventCentreReview.map((review) => (
                             <li key={review.id} className='flex flex-col'>
                                 <div className='font-bold'>{review.full_name}</div>
-                                <div className='text-gray-600'>{review.review_comment}</div>
-                                <div className='text-xs text-gray-500'>
+                                <div className='text-gray-600 mt-1'>{review.review_comment}</div>
+                                <div className='text-xs text-gray-500 mt-1'>
                                     {new Date(review.created_at).toLocaleDateString()}
                                 </div>
+                                <hr />
                             </li>
                         ))}
                     </ul>

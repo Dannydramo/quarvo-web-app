@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
         });
 
         if (isDateBooked) {
-            return NextResponse.json({ error: 'This date has already been booked.', status: 400 });
+            return NextResponse.json({ message: 'This date has already been booked.', status: 400 });
         }
 
         const newBooking = await prisma.booking.create({

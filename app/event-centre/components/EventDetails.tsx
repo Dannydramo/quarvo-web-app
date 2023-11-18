@@ -4,7 +4,7 @@ import EventCentreImages from './EventCentreImages';
 import Comments from './Comments';
 import Link from 'next/link';
 
-const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, reviews: reviewProps[], eventCentre: eventRegDetails, eventCentreImage: { images: string[] } }> = ({ eventCentreDetails, eventCentre, reviews, eventCentreImage }) => {
+const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentre: eventRegDetails, eventCentreImage: { images: string[] } }> = ({ eventCentreDetails, eventCentre, eventCentreImage }) => {
     function capitalizeWords(inputString: string) {
         return inputString.replace(/\b\w/g, (char: string) => char.toUpperCase());
     }
@@ -12,7 +12,7 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, reviews: 
         <>
 
             <EventCentreImages eventImages={eventCentreImage.images} />
-            <section className='mx-auto overflow-x-hidden w-[95%] sm:w-[90%]'>
+            <section>
                 < div className="bg-[#F4F0EC] rounded-xl p-8 flex flex-col max-w-[700px] space-y-4 mt-4">
                     <p>
                         <span className="font-bold">Event Name: </span>
@@ -76,7 +76,7 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, reviews: 
                     </div>
                 </div>
             </section>
-            <Comments eventCentreReview={reviews} eventCentreId={eventCentre.id} />
+            <Comments eventCentreId={eventCentre.id} />
 
         </>
     )

@@ -16,15 +16,6 @@ const fetchEventCentreDetails = async (slug: string) => {
             phone_number: true,
             slug: true,
             event_logo: true,
-            reviews: {
-                select: {
-                    id: true,
-                    full_name: true,
-                    review_comment: true,
-                    created_at: true,
-                    updatedAt: true,
-                },
-            },
         }
     })
     const eventCentreImage = await prisma.eventCentreImages.findUnique({
@@ -41,18 +32,18 @@ const fetchEventCentreDetails = async (slug: string) => {
         }
     })
 
-    const reviews = eventCentre?.reviews || [];
-
-    return { eventCentre, eventCentreDetails, eventCentreImage, reviews };
+    return { eventCentre, eventCentreDetails, eventCentreImage };
 }
 
 const EventCentreDetails = async ({ params }: { params: { slug: string } }) => {
-    const { eventCentre, eventCentreDetails, eventCentreImage, reviews } = await fetchEventCentreDetails(params.slug)
+    const { eventCentre, eventCentreDetails, eventCentreImage } = await fetchEventCentreDetails(params.slug)
 
     return (
         <>
-            <Navigation />
-            {eventCentreDetails && eventCentre && eventCentreImage && <EventDetails eventCentreImage={eventCentreImage} eventCentreDetails={eventCentreDetails} eventCentre={eventCentre} reviews={reviews} />}
+            <section className='mx-auto overflow-x-hidden w-[95%] sm:w-[90%]'>
+                <Navigation />
+                {eventCentreDetails && eventCentre && eventCentreImage && <EventDetails eventCentreImage={eventCentreImage} eventCentreDetails={eventCentreDetails} eventCentre={eventCentre} />}
+            </section>
         </>
     )
 }

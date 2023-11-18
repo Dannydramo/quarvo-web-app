@@ -1,6 +1,5 @@
 import React from 'react'
 import Navigation from '../components/Navigation'
-import Form from './component/Form'
 import EventProfile from './component/EventProfile'
 
 

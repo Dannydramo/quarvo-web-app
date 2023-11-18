@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
             },
         });
 
-
         return NextResponse.json({ message: 'Review submitted successfully.', status: 200 });
     } catch (error) {
         console.error('Error:', error);

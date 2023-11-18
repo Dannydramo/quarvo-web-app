@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { UserStore } from '@/store/userInfo'
+import { fetchEventCentreReview } from '@/utils/reviewUtils'
 import React, { FormEvent, useState } from 'react'
 
 const CommentForm = ({ eventCentreId }: { eventCentreId: string }) => {
@@ -25,8 +26,9 @@ const CommentForm = ({ eventCentreId }: { eventCentreId: string }) => {
             });
 
             const data = await res.json()
-            console.log(data);
             setLoading(false)
+            setComment('')
+            fetchEventCentreReview(eventCentreId)
         } catch (error) {
             console.error('Error:', error);
             setLoading(false)

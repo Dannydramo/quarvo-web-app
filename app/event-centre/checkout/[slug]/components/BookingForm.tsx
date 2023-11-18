@@ -89,7 +89,7 @@ const BookingForm: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentr
                         />
                     </PopoverContent>
                 </Popover>
-                <Button onClick={handleAvailabiltyCheck} disabled={loading} className='w-full'>{loading ? 'Checking Availability...' : 'Check Availability'}</Button>
+                <Button onClick={handleAvailabiltyCheck} disabled={loading} className='w-full mb-8 md:mb-0'>{loading ? 'Checking Availability...' : 'Check Availability'}</Button>
             </section>
         </>
     )
