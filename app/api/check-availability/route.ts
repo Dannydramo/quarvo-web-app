@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
         const isDateBooked = await prisma.booking.findFirst({
             where: {
                 event_centre_id: eventCentreId,
-                date: new Date(date),
+                date: date,
             },
         });
 
