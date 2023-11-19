@@ -17,23 +17,23 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: 'This date has already been booked.', status: 400 });
         }
 
-        const newBooking = await prisma.booking.create({
-            data: {
-                date: date,
-                user: {
-                    connect: { id: userId },
-                },
-                event_centre: {
-                    connect: { id: eventCentreId },
-                },
-            },
-        });
+        // const newBooking = await prisma.booking.create({
+        //     data: {
+        //         date: date,
+        //         user: {
+        //             connect: { id: userId },
+        //         },
+        //         event_centre: {
+        //             connect: { id: eventCentreId },
+        //         },
+        //     },
+        // });
 
 
-        return NextResponse.json({ message: 'Booking created successfully.', status: 200 });
+        return NextResponse.json({ message: 'Date Available', status: 200 });
     } catch (error) {
         console.error('Error:', error);
-        return NextResponse.json({ error: 'Internal Server Error', status: 500 });
+        return NextResponse.json({ message: 'Internal Server Error', status: 500 });
     } finally {
         await prisma.$disconnect();
     }

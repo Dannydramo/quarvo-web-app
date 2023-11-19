@@ -6,8 +6,8 @@ const EventCheckout: React.FC<{ eventCentreDetails: EventCentreDetails, eventCen
     return (
         <>
             <section className='mx-auto md:w-[95%] lg:w-[90%]'>
-                <div className="flex flex-col space-y-4 md:space-y-0 md:space-x-6 justify-center md:flex-row items-center">
-                    <div className='md:w-[50%] lg:w-[45%]'>
+                <div className="flex flex-col justify-center items-center min-h-[85vh] space-y-4 md:space-y-0 md:space-x-6 md:flex-row xl:space-x-12">
+                    <div className='w-full md:w-[50%] lg:w-[45%]'>
                         <Image src={eventCentreImage.main_image} alt='Event main image' width={600} height={400} priority={true} quality={100} className='h-[300px] rounded-md lg:min-h-[60vh] mt-4 lg:max-h-[70vh] w-full' />
                     </div>
                     <div className="w-full md:w-[50%] lg:w-[45%]">

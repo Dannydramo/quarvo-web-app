@@ -1,16 +1,13 @@
 const Loading = () => {
     return (<>
-        <section>
-            <div className="w-full min-h-[50vh] mt-4 max-h-[60vh] animate-pulse bg-slate-200"></div>
-            <main className="w-[95%] overflow-x-hidden mx-auto mt-4 mb-20 md:mb-0">
-                <>
-
-                    <div className="w-full md:max-w-[700px] h-[300px] mt-4 bg-slate-200 animate-pulse" ></div>
-                    <div className="w-full h-20 mt-4 bg-slate-200 animate-pulse"></div>
-
-
-                </>
-            </main>
+        <section className="flex flex-col justify-center items-center min-h-[85vh] space-y-4 md:space-y-0 md:space-x-6 md:flex-row xl:space-x-12">
+            <div className="min-h-[50vh] mt-4 max-h-[60vh] animate-pulse bg-slate-200 w-full md:w-[50%] lg:w-[45%]"></div>
+            <div className="w-full md:w-[50%] lg:w-[45%]">
+                <p className="animate-pulse bg-slate-200 my-4 h-4"></p>
+                <p className="animate-pulse bg-slate-200 my-4 h-4"></p>
+                <p className="animate-pulse bg-slate-200 my-4 h-4"></p>
+                <p className="animate-pulse bg-slate-200 my-4 h-4"></p>
+            </div>
         </section>
     </>)
 }

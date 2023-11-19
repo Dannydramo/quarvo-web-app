@@ -12,12 +12,9 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCent
         <>
 
             <EventCentreImages eventImages={eventCentreImage.images} />
-            <section>
-                < div className="bg-[#F4F0EC] rounded-xl p-8 flex flex-col max-w-[700px] space-y-4 mt-4">
-                    <p>
-                        <span className="font-bold">Event Name: </span>
-                        <span>{eventCentre.event_centre_name}</span>
-                    </p>
+            <section className='mx-auto overflow-x-hidden w-[95%] sm:w-[90%]'>
+                < div className="text-white bg-[#856D47] rounded-xl p-4 sm:p-8 flex flex-col max-w-[700px] space-y-4 mt-12">
+                    <p className='font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl'>{eventCentre.event_centre_name}</p>
                     <p>
                         <span className="font-bold">Phone Number: </span>
                         <span>{eventCentre.phone_number}</span>
@@ -56,10 +53,10 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCent
                         <span className="font-bold">Opening Days: </span>
                         <span>{eventCentreDetails.open_days}</span>
                     </p>
-                    <Link href={`/event-centre/checkout/${eventCentre.slug}`}>Proced To Booking</Link>
+                    <Link href={`/event-centre/checkout/${eventCentre.slug}`} className='border w-[200px] rounded-md border-white py-3 px-4' >Proced To Booking</Link>
                 </div>
 
-                <div className="">
+                <div className="max-w-[700px]">
                     <p className="my-4">{eventCentreDetails.description || "No description available"}</p>
                     <div className="flex flex-wrap">
                         {eventCentreDetails.amenities &&
@@ -67,16 +64,16 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCent
                                 <ul key={index} className="flex flex-wrap">
                                     <li
                                         key={index}
-                                        className="mr-4 p-2 my-2 bg-[#fbfaf8]"
+                                        className="mr-4 py-2 px-3 my-2 rounded-sm text-white bg-[#856D47]"
                                     >
                                         {amenity || "N/A"}
                                     </li>
                                 </ul>
                             ))}
                     </div>
+                    <Comments eventCentreId={eventCentre.id} />
                 </div>
             </section>
-            <Comments eventCentreId={eventCentre.id} />
 
         </>
     )

@@ -40,8 +40,8 @@ const EventCentreDetails = async ({ params }: { params: { slug: string } }) => {
 
     return (
         <>
-            <section className='mx-auto overflow-x-hidden w-[95%] sm:w-[90%]'>
-                <Navigation />
+            <Navigation />
+            <section>
                 {eventCentreDetails && eventCentre && eventCentreImage && <EventDetails eventCentreImage={eventCentreImage} eventCentreDetails={eventCentreDetails} eventCentre={eventCentre} />}
             </section>
         </>

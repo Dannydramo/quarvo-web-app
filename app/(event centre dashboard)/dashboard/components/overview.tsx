@@ -71,7 +71,7 @@ const Overview = () => {
                     axisLine={false}
                     tickFormatter={(value) => `$${value}`}
                 />
-                <Bar dataKey="Totalclient" fill="#adfa1d" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Totalclient" fill="#856D47" radius={[4, 4, 0, 0]} />
             </BarChart>
         </ResponsiveContainer>
     )

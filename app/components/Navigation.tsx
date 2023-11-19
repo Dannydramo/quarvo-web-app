@@ -26,14 +26,16 @@ const Navigation = () => {
 
     return (
         <>
-            <nav className="flex my-6 justify-between items-center">
-                <div className="">
-                    <p>Quarvo</p>
-                </div>
-                <div className="">
-                    <p>{`Hello, ${userDetails?.first_name}`}</p>
-                </div>
-            </nav>
+            <section className='mx-auto overflow-x-hidden w-[95%] sm:w-[90%]'>
+                <nav className="flex my-6 justify-between items-center">
+                    <div className="">
+                        <p className="text-[#856D47] text-2xl font-bold">Quarvo</p>
+                    </div>
+                    <div className="">
+                        <p>{`Hello, ${userDetails?.first_name}`}</p>
+                    </div>
+                </nav>
+            </section>
         </>
     )
 }

@@ -1,7 +1,7 @@
 'use client'
+
 import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
-
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -9,7 +9,6 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-
 import { Button } from '@/components/ui/button';
 import { EventCentreDetails, eventRegDetails } from '@/types/eventTypes'
 import React, { useState } from 'react'
@@ -19,13 +18,13 @@ const BookingForm: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentr
     const { userDetails } = UserStore()
     const [date, setDate] = useState<Date>()
     const [loading, setLoading] = useState(false)
+
     function capitalizeWords(inputString: string) {
         return inputString.replace(/\b\w/g, (char: string) => char.toUpperCase());
     }
 
     const handleAvailabiltyCheck = async () => {
         try {
-
             if (!date) {
                 console.error('Please select an event date.');
                 return;
@@ -33,6 +32,7 @@ const BookingForm: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentr
 
             const formattedDate = date.toISOString().split('T')[0];
             setLoading(true)
+
             const res = await fetch('/api/check-availability', {
                 method: 'POST',
                 headers: {
@@ -41,10 +41,7 @@ const BookingForm: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentr
                 body: JSON.stringify({
                     eventCentreId: eventCentre.id,
                     date: formattedDate,
-
                     userId: userDetails?.id,
-
-
                 }),
             });
 
@@ -59,13 +56,12 @@ const BookingForm: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentr
         }
     };
 
-
     return (
-        <>
-            <section>
-                <h1 className='font-bold mb-2 text-3xl md:text-4xl md:mb-4 lg:text-[3rem]'>{eventCentre.event_centre_name}</h1>
+        <section className="">
+            <div className="">
+                <h1 className='font-bold mb-2 text-3xl md:text-4xl md:mb-4 lg:text-[3rem] text-[#856D47]'>{eventCentre.event_centre_name}</h1>
                 <p className='font-bold text-lg md:text-xl lg:text-2xl'>${eventCentreDetails.price}</p>
-                <p className="text-base">{capitalizeWords(eventCentre.state)}, {capitalizeWords(eventCentreDetails.lga)}</p>
+                <p className="text-base my-2">{capitalizeWords(eventCentre.state)}, {capitalizeWords(eventCentreDetails.lga)}</p>
                 <p>{eventCentreDetails.address}</p>
                 <Popover>
                     <PopoverTrigger asChild>
@@ -89,10 +85,10 @@ const BookingForm: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentr
                         />
                     </PopoverContent>
                 </Popover>
-                <Button onClick={handleAvailabiltyCheck} disabled={loading} className='w-full mb-8 md:mb-0'>{loading ? 'Checking Availability...' : 'Check Availability'}</Button>
-            </section>
-        </>
+                <Button onClick={handleAvailabiltyCheck} disabled={loading} className='w-full bg-[#856D47] text-white text-lg hover:bg-[#856D47] mb-8 md:mb-0'>{loading ? 'Checking Availability...' : 'Check Availability'}</Button>
+            </div>
+        </section>
     )
 }
 
-export default BookingForm
+export default BookingForm;
