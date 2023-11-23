@@ -10,18 +10,14 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from '@/components/ui/button';
-import { EventCentreDetails, eventRegDetails } from '@/types/eventTypes'
+import { eventRegDetails } from '@/types/eventTypes'
 import React, { useState } from 'react'
 import { UserStore } from "@/store/userInfo"
 
-const BookingForm: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentre: eventRegDetails }> = ({ eventCentreDetails, eventCentre, }) => {
+const BookingForm: React.FC<{ eventCentre: eventRegDetails }> = ({ eventCentre, }) => {
     const { userDetails } = UserStore()
     const [date, setDate] = useState<Date>()
     const [loading, setLoading] = useState(false)
-
-    function capitalizeWords(inputString: string) {
-        return inputString.replace(/\b\w/g, (char: string) => char.toUpperCase());
-    }
 
     const handleAvailabiltyCheck = async () => {
         try {
@@ -29,8 +25,8 @@ const BookingForm: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentr
                 console.error('Please select an event date.');
                 return;
             }
-
-            const formattedDate = date.toISOString().split('T')[0];
+            const formattedDate = date.toISOString();
+            console.log(formattedDate, eventCentre.id, userDetails?.id)
             setLoading(true)
 
             const res = await fetch('/api/check-availability', {
@@ -59,10 +55,6 @@ const BookingForm: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentr
     return (
         <section className="">
             <div className="">
-                <h1 className='font-bold mb-2 text-3xl md:text-4xl md:mb-4 lg:text-[3rem] text-[#856D47]'>{eventCentre.event_centre_name}</h1>
-                <p className='font-bold text-lg md:text-xl lg:text-2xl'>${eventCentreDetails.price}</p>
-                <p className="text-base my-2">{capitalizeWords(eventCentre.state)}, {capitalizeWords(eventCentreDetails.lga)}</p>
-                <p>{eventCentreDetails.address}</p>
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button

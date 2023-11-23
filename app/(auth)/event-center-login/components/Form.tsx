@@ -118,7 +118,7 @@ const Form = () => {
                         Forgot Password
                     </Link>
                 </div>
-                <Button type="submit" disabled={loading} className="mt-2 text-base py-6 lg:text-lg w-full">{loading ? <Spinner className="mx-auto h-7 w-7 animate-spin" /> : 'Login'}</Button>
+                <Button type="submit" disabled={loading} className="mt-2 bg-[#856D47] hover:bg-[#856D47] text-base py-6 lg:text-lg w-full">{loading ? <Spinner className="mx-auto h-7 w-7 animate-spin" /> : 'Login'}</Button>
             </form>
             <div className="flex justify-center my-4 space-x-1 text-sm">
                 <p>Don't have an account?</p>

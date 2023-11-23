@@ -1,8 +1,9 @@
-import { EventCentreDetails, eventRegDetails, reviewProps } from '@/types/eventTypes'
+import { EventCentreDetails, eventRegDetails } from '@/types/eventTypes'
 import React from 'react'
 import EventCentreImages from './EventCentreImages';
 import Comments from './Comments';
-import Link from 'next/link';
+import Image from 'next/image';
+import BookingForm from './BookingForm';
 
 const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentre: eventRegDetails, eventCentreImage: { images: string[] } }> = ({ eventCentreDetails, eventCentre, eventCentreImage }) => {
     function capitalizeWords(inputString: string) {
@@ -11,53 +12,65 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCent
     return (
         <>
 
-            <EventCentreImages eventImages={eventCentreImage.images} />
-            <section className='mx-auto overflow-x-hidden w-[95%] sm:w-[90%]'>
-                < div className="text-white bg-[#856D47] rounded-xl p-4 sm:p-8 flex flex-col max-w-[700px] space-y-4 mt-12">
-                    <p className='font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl'>{eventCentre.event_centre_name}</p>
-                    <p>
-                        <span className="font-bold">Phone Number: </span>
-                        <span>{eventCentre.phone_number}</span>
-                    </p>
-                    <p>
-                        <span className="font-bold">Email Address: </span>
-                        <span>{eventCentre.email}</span>
-                    </p>
-                    <p>
-                        <span className="font-bold">State: </span>
-                        <span>{eventCentre.state}</span>
-                    </p>
-                    <p>
-                        <span className="font-bold">L.G.A: </span>
-                        <span>{capitalizeWords(eventCentreDetails.lga)}</span>
-                    </p>
-                    <p>
-                        <span className="font-bold">Address: </span>
-                        <span className="">
-                            {eventCentreDetails.address}
-                        </span>
-                    </p>
-                    <p>
-                        <span className="font-bold">Opening Time: </span>
-                        <span>{eventCentreDetails.open_time}</span>
-                    </p>
-                    <p>
-                        <span className="font-bold">Closing Time: </span>
-                        <span>{eventCentreDetails.close_time}</span>
-                    </p>
-                    <p>
-                        <span className="font-bold">Price: </span>
-                        <span>{eventCentreDetails.price}</span>
-                    </p>
-                    <p>
-                        <span className="font-bold">Opening Days: </span>
-                        <span>{eventCentreDetails.open_days}</span>
-                    </p>
-                    <Link href={`/event-centre/checkout/${eventCentre.slug}`} className='border w-[200px] rounded-md border-white py-3 px-4' >Proced To Booking</Link>
+            <Image src={eventCentreImage.images[0]} alt='main_image' height={400} width={500} className='w-full h-[400px] lg:min-h-[60vh] xl:max-h-[70vh]' />
+            <section className='mx-auto overflow-x-hidden w-[95%] sm:w-[90%] md:w-[85%] lg:w-[80%]'>
+                < div className="max-w-[800px]">
+                    <p className='font-bold text-lg sm:text-xl md:text-2xl mt-8 lg:text-4xl'>{eventCentre.event_centre_name}</p>
+                    <p className="mt-6 text-base md:text-lg">{eventCentreDetails.description || "No description available"}</p>
+                    <hr className='border my-8 opacity-70 border-[#856D47]' />
+                    <div className="mt-4 text-base flex flex-col space-y-2 md:text-lg">
+                        <h1 className='font-bold text-lg sm:text-xl md:text-2xl mb-4 lg:text-4xl'>EventCentre Details</h1>
+                        <p>
+                            <span>Phone Number: </span>
+                            <span>{eventCentre.phone_number}</span>
+                        </p>
+                        <p>
+                            <span>Email Address: </span>
+                            <span>{eventCentre.email}</span>
+                        </p>
+                        <p>
+                            <span>State: </span>
+                            <span>{capitalizeWords(eventCentre.state)}</span>
+                        </p>
+                        <p>
+                            <span>L.G.A: </span>
+                            <span>{capitalizeWords(eventCentreDetails.lga)}</span>
+                        </p>
+                        <p>
+                            <span>Address: </span>
+                            <span>
+                                {eventCentreDetails.address}
+                            </span>
+                        </p>
+                        <p>
+                            <span>Opening Time: </span>
+                            <span>{eventCentreDetails.open_time}</span>
+                        </p>
+                        <p>
+                            <span>Closing Time: </span>
+                            <span>{eventCentreDetails.close_time}</span>
+                        </p>
+                        <p>
+                            <span>Price: </span>
+                            <span>{eventCentreDetails.price}</span>
+                        </p>
+                        <p>
+                            <span>Opening Days: </span>
+                            <span>{eventCentreDetails.open_days}</span>
+                        </p>
+                        <BookingForm eventCentre={eventCentre} />
+                    </div>
                 </div>
 
-                <div className="max-w-[700px]">
-                    <p className="my-4">{eventCentreDetails.description || "No description available"}</p>
+
+                <div className="max-w-[800px]">
+                    <hr className='border my-8 opacity-70 border-[#856D47]' />
+                    <h1 className='font-bold text-lg sm:text-xl md:text-2xl my-4 lg:text-4xl'>Photo Gallery</h1>
+                    <EventCentreImages eventImages={eventCentreImage.images} />
+                </div>
+
+                <div className="max-w-[800px]">
+                    <h1 className='font-bold text-lg sm:text-xl md:text-2xl mt-8 mb-4 lg:text-4xl'>Amenities</h1>
                     <div className="flex flex-wrap">
                         {eventCentreDetails.amenities &&
                             eventCentreDetails.amenities.map((amenity, index) => (
@@ -71,6 +84,7 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCent
                                 </ul>
                             ))}
                     </div>
+                    <hr className='border my-8 opacity-70 border-[#856D47]' />
                     <Comments eventCentreId={eventCentre.id} />
                 </div>
             </section>

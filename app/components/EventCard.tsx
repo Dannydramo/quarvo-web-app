@@ -49,7 +49,10 @@ const EventCard: React.FC<EventProps> = ({ eventCentre, eventCentreImages, event
                             <Calendar className="text-base text-[#856D47]" />
                             <p className="text-base md:text-lg">{eventCentreDetails?.open_days}</p>
                         </div>
-                        <p className="text-base md:text-lg">{capitalizeWords(eventCentre.state)}, {capitalizeWords(eventCentreDetails?.lga)}</p>
+                        <div className="flex space-x-3 my-2 items-center">
+                            <Location />
+                            <p className="text-base md:text-lg">{capitalizeWords(eventCentre.state)}, {capitalizeWords(eventCentreDetails.lga)}</p>
+                        </div>
                     </div>
 
                 </Card>

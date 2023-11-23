@@ -10,7 +10,6 @@ const Comments: React.FC<{ eventCentreId: string }> = ({ eventCentreId }) => {
     const [eventCentreReview, setEventCentreReview] = useState<reviewProps[]>([])
 
     useEffect(() => {
-
         const fetchReviews = async () => {
             try {
 
@@ -19,20 +18,22 @@ const Comments: React.FC<{ eventCentreId: string }> = ({ eventCentreId }) => {
                     console.log(message);
                 }
                 setEventCentreReview(data)
+                console.log(eventCentreReview);
+
             } catch (error) {
                 console.log('Unable to fetch event centre review');
             }
         }
         fetchReviews()
-    }, [eventCentreReview])
+    }, [])
 
     return (
         <>
             <section>
-                <div className='mb-4 mt-4 text-lg font-bold'>Comments</div>
-                {eventCentreReview?.length > 0 ? (
+                <h1 className='font-bold text-lg sm:text-xl md:text-2xl mt-8 mb-4 lg:text-4xl'>Comments</h1>
+                {eventCentreReview.length > 0 ? (
                     <ul className='space-y-4'>
-                        {eventCentreReview.map((review) => (
+                        {eventCentreReview?.map((review) => (
                             <li key={review.id} className='flex flex-col'>
                                 <div className='font-bold'>{review.full_name}</div>
                                 <div className='text-gray-600 mt-1'>{review.review_comment}</div>

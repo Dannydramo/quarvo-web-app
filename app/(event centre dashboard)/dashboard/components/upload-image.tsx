@@ -6,7 +6,6 @@ import { ChangeEvent, useState } from "react";
 
 const UploadImage = () => {
     const { eventDetails } = EventStore();
-    const [open, setOpen] = useState(false);
     const [multipleFiles, setMultipleFiles] = useState<File[]>([]);
     const [showModal, setShowModal] = useState(false);
 
@@ -57,7 +56,7 @@ const UploadImage = () => {
                     Upload Images
                 </p>
                 {showModal && (
-                    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
+                    <div onClick={toggleModal} className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
                         <div className="bg-white relative z-[10000] p-2 rounded-lg w-[90%] md:w-1/2">
                             <span onClick={toggleModal} className="absolute right-4 top-0 cursor-pointer text-xl">
                                 &times;
@@ -68,10 +67,10 @@ const UploadImage = () => {
                                 <Input type="file" accept=".jpg, .jpeg, .png" multiple onChange={handleMultipleFileChange} className="outline-none mt-3 border h-12 mr-2" />
                             </div>
                             <div className="mt-6 flex space-x-4 justify-end">
-                                <button onClick={toggleModal} className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                <button onClick={toggleModal} className="bg-red-500 text-white font-bold py-2 px-4 rounded">
                                     Close Modal
                                 </button>
-                                <Button onClick={() => handleImageUpload()}>Upload</Button>
+                                <Button className="bg-[#856D47] font-bold py-2 px-4 rounded hover:bg-[#856D47]" onClick={() => handleImageUpload()}>Upload</Button>
                             </div>
                         </div>
                     </div>

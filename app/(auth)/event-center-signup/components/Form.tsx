@@ -245,7 +245,7 @@ const Form = () => {
                     </div>
                 </div>
 
-                <Button type="submit" disabled={loading} className="mt-4 text-base w-full py-6 lg:text-lg">{loading ? <Spinner className="mx-auto h-7 w-7 animate-spin" /> : 'Register'}</Button>
+                <Button type="submit" disabled={loading} className="mt-4 bg-[#856D47] hover:bg-[#856D47] text-base w-full py-6 lg:text-lg">{loading ? <Spinner className="mx-auto h-7 w-7 animate-spin" /> : 'Register'}</Button>
             </form>
             <div className="flex justify-center my-4 space-x-1 text-sm">
                 <p>Already have an account?</p>
