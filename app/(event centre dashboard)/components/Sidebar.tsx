@@ -28,7 +28,7 @@ const Sidebar = () => {
                 }
                 setEventDetails(data)
             } catch (error) {
-                console.log('Unable to fetch user details');
+                console.log('Unable to fetch event details');
             }
         }
         fetchEventDetails()

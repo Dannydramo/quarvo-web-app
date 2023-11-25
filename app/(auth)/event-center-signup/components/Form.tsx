@@ -122,7 +122,7 @@ const Form = () => {
                 <div className="grid gap-4">
                     <div className="">
                         <label htmlFor="eventname">Event Centre Name</label>
-                        <Input type="text" className={`outline-none mt-1 border focus:border-none ${inputValidity.eventCentreName ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "eventCentreName")} />
+                        <Input type="text" className={`outline-none mt-1 border ${inputValidity.eventCentreName ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "eventCentreName")} />
                         {inputValidity.eventCentreName && (
                             <p className="text-red-500 text-sm mt-1">
                                 Event Centre Name is required.
@@ -131,7 +131,7 @@ const Form = () => {
                     </div>
                     <div className="">
                         <label htmlFor="phone">Phone Number</label>
-                        <Input type="tel" maxLength={11} minLength={11} className={`outline-none mt-1 border focus:border-none ${inputValidity.phoneNumber ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "phoneNumber")} />
+                        <Input type="tel" maxLength={11} minLength={11} className={`outline-none mt-1 border ${inputValidity.phoneNumber ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "phoneNumber")} />
                         {inputValidity.phoneNumber && (
                             <p className="text-red-500 text-sm mt-1">
                                 Phone Number is required.
@@ -140,7 +140,7 @@ const Form = () => {
                     </div>
                     <div className="">
                         <label htmlFor="email">Email</label>
-                        <Input type="email" className={`outline-none mt-1 border focus:border-none ${inputValidity.email ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "email")} />
+                        <Input type="email" className={`outline-none mt-1 border ${inputValidity.email ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "email")} />
                         {inputValidity.email && (
                             <p className="text-red-500 text-sm mt-1">
                                 Email Address is required.
@@ -205,9 +205,9 @@ const Form = () => {
                         )}
                     </div>
                     <div className="">
-                        <label htmlFor="password" className='text-sm text-white font-medium'>Password</label>
+                        <label htmlFor="password">Password</label>
                         <div className="flex">
-                            <Input type={seePassword ? "text" : "password"} className={`outline-none mt-1 border focus:border-none ${inputValidity.password ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "password")} />
+                            <Input type={seePassword ? "text" : "password"} className={`outline-none mt-1 border ${inputValidity.password ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "password")} />
 
                             <div className="flex justify-end">
                                 <span
@@ -225,9 +225,9 @@ const Form = () => {
                         )}
                     </div>
                     <div className="">
-                        <label htmlFor="confirmpassword" className='text-sm text-white font-medium'>Confirm Password</label>
+                        <label htmlFor="confirmpassword">Confirm Password</label>
                         <div className="flex">
-                            <Input type={seeConfirmPassword ? "text" : "password"} className={`outline-none mt-1 border focus:border-none ${inputValidity.confirmPassword ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "confirmPassword")} />
+                            <Input type={seeConfirmPassword ? "text" : "password"} className={`outline-none mt-1 border ${inputValidity.confirmPassword ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "confirmPassword")} />
                             <div className="flex justify-end">
                                 <span
                                     className="absolute mr-[1rem] mt-[.75rem] text-sm cursor-pointer"

@@ -8,7 +8,7 @@ const UploadImage = () => {
     const { eventDetails } = EventStore();
     const [multipleFiles, setMultipleFiles] = useState<File[]>([]);
     const [showModal, setShowModal] = useState(false);
-
+    const [loading, setLoading] = useState(false)
     const toggleModal = () => {
         setShowModal(!showModal);
     };
@@ -34,6 +34,7 @@ const UploadImage = () => {
 
     const handleImageUpload = async () => {
         try {
+            setLoading(true)
             const base64Files = await Promise.all(multipleFiles.map(convertFileToBase64));
             const res = await fetch('/api/uploadFile', {
                 method: 'POST',
@@ -44,7 +45,9 @@ const UploadImage = () => {
             });
             const data = await res.json();
             console.log(data);
+            setLoading(false)
         } catch (error: any) {
+            setLoading(false)
             console.log(error.message);
         }
     };
@@ -56,8 +59,8 @@ const UploadImage = () => {
                     Upload Images
                 </p>
                 {showModal && (
-                    <div onClick={toggleModal} className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
-                        <div className="bg-white relative z-[10000] p-2 rounded-lg w-[90%] md:w-1/2">
+                    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-[-10000] bg-gray-800 bg-opacity-50">
+                        <div className="bg-white relative z-[20000] p-2 rounded-lg w-[90%] md:w-1/2">
                             <span onClick={toggleModal} className="absolute right-4 top-0 cursor-pointer text-xl">
                                 &times;
                             </span>
@@ -70,7 +73,7 @@ const UploadImage = () => {
                                 <button onClick={toggleModal} className="bg-red-500 text-white font-bold py-2 px-4 rounded">
                                     Close Modal
                                 </button>
-                                <Button className="bg-[#856D47] font-bold py-2 px-4 rounded hover:bg-[#856D47]" onClick={() => handleImageUpload()}>Upload</Button>
+                                <Button className="bg-[#856D47] font-bold py-2 px-4 rounded hover:bg-[#856D47]" onClick={() => handleImageUpload()}>{loading ? 'Uploading Images' : "Upload Images"}</Button>
                             </div>
                         </div>
                     </div>

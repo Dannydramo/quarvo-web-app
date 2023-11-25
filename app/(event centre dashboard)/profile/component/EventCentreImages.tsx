@@ -27,7 +27,7 @@ const EventCentreImages = () => {
         <>
             <Carousel autoplay>
                 {eventImages.map((image, index) => (
-                    <Image width={300} height={100} src={image} priority={true} quality={100} className='h-[300px] lg:min-h-[60vh] mt-4 lg:max-h-[70vh] w-full' key={index} loading="lazy" alt={'Images'} />
+                    <Image width={300} height={100} src={image} priority={true} quality={100} className='h-[300px] lg:min-h-[60vh] mt-4 lg:max-h-[70vh] w-full' key={index} alt={'Images'} />
                 ))}
             </Carousel>
         </>

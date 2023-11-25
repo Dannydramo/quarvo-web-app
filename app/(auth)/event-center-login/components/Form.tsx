@@ -82,7 +82,7 @@ const Form = () => {
                 <div className="grid gap-4">
                     <div className="">
                         <label htmlFor="email">Email</label>
-                        <Input type="email" className={`outline-none mt-1 border focus:border-none ${inputValidity.email ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "email")} />
+                        <Input type="email" className={`outline-none mt-1 ${inputValidity.email ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "email")} />
                         {inputValidity.email && (
                             <p className="text-red-500 text-sm mt-1">
                                 Email Address is required.
@@ -90,9 +90,9 @@ const Form = () => {
                         )}
                     </div>
                     <div className="">
-                        <label htmlFor="password" className='text-sm text-white font-medium'>Password</label>
+                        <label htmlFor="password">Password</label>
                         <div className="flex">
-                            <Input type={seePassword ? "text" : "password"} className={`outline-none mt-1 border focus:border-none ${inputValidity.password ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "password")} />
+                            <Input type={seePassword ? "text" : "password"} className={`outline-none mt-1 border ${inputValidity.password ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "password")} />
 
                             <div className="flex justify-end">
                                 <span

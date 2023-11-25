@@ -112,3 +112,21 @@ export const fetchEventCentreDetails = async () => {
     return { status, data, message }
 }
 
+export const fetchEventBookings = async () => {
+    const token = getCookie('jwtToken')
+    try {
+        const response = await Axios({
+            url: '/api/fetch-bookings',
+            method: 'get',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        status = 200
+        data = response.data.eventCentreBooking
+    } catch (err: any) {
+        status = err.response.status;
+        message = err.response.data.message;
+    }
+    return { status, data, message }
+}

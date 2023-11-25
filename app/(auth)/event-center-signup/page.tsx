@@ -3,13 +3,24 @@ import Form from './components/Form'
 
 const EventSignUp = () => {
     return (
-        <section className="min-h-screen flex items-center md::justify-end bg-authBg bg-cover bg-center p-4 bg-no-repeat">
-            <div className="rounded-xl w-[90%] mx-auto md:w-[50%] lg:w-[45%] min-h-fit md:mr-10 p-4 bg-[#856D47]">
-                <div className="text-white mb-4">
-                    <h1>Quarvo</h1>
+        <section className="flex flex-col bg-white-1 lg:flex-row w-full text-lightGrey text-base relative min-h-[100vh]">
+
+            <div className="w-[90%] md:w-[80%] mx-auto lg:w-1/2  min-h-screen ">
+                <div className="flex justify-center md:mt-8 lg:mt-4 items-center ">
+                    <div className="w-[95%] lg:w-[85%] mx-auto py-4">
+                        <div className="text-center mb-6">
+                            <h1 className="text-2xl mb-4 font-semibold">
+                                Create an event centre account
+                            </h1>
+                            <p className="mb-4">
+                                Securely Login into your Quarvo account.
+                            </p>
+                        </div>
+                        <Form />
+                    </div>
                 </div>
-                <Form />
             </div>
+            <div className=" w-1/2 hidden min-h-screen lg:block pl-3rem bg-authBg bg-center bg-no-repeat bg-cover"></div>
         </section>
     )
 }
