@@ -28,3 +28,12 @@ export interface reviewProps {
     created_at: Date;
     updatedAt: Date;
 }
+
+export interface bookedProps {
+    created_at: string
+    date: string
+    event_centre_id: string
+    id: string
+    updatedAt: string
+    user_id: string
+}

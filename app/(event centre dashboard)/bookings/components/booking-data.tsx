@@ -1,8 +1,11 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { fetchEventBookings } from '@/utils/eventUtils'
+import { bookedProps } from '@/types/eventTypes'
+import BookedTable from './BookedTable'
 
 const BookingData = () => {
+    const [bookedData, setBokedData] = useState<bookedProps[]>()
     useEffect(() => {
         const fetchEventDetails = async () => {
             try {
@@ -11,9 +14,8 @@ const BookingData = () => {
                 if (status !== 200) {
                     console.log(message);
                 }
-                // setEventDetails(data)
                 console.log(data.bookings);
-
+                setBokedData(data.bookings)
             } catch (error) {
                 console.log('Unable to fetch event details');
             }
@@ -21,7 +23,9 @@ const BookingData = () => {
         fetchEventDetails()
     }, [])
     return (
-        <p>gfdgfdhfgd</p>
+        <>
+            <BookedTable bookedTable={bookedData!} />
+        </>
     )
 }
 

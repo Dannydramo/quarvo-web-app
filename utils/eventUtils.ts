@@ -172,3 +172,18 @@ export const bookEventCentre = async (eventCentreId: string, formattedDate: stri
     }
     return { status, message }
 }
+
+export const fetchUserBookingEventCentre = async (userId: string) => {
+    try {
+        const response = await Axios({
+            url: `/api/fetch-user-booking/${userId}`,
+            method: 'get',
+        })
+        status = 200
+        data = response.data.user
+    } catch (err: any) {
+        status = err.response.status;
+        message = err.response.data.message;
+    }
+    return { status, data, message }
+}
