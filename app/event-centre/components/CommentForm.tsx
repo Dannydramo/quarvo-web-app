@@ -26,8 +26,6 @@ const CommentForm = ({ eventCentreId }: { eventCentreId: string }) => {
             });
 
             const data = await res.json()
-            console.log(data);
-
             setLoading(false)
             setComment('')
             fetchEventCentreReview(eventCentreId)

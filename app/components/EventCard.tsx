@@ -34,7 +34,7 @@ const EventCard: React.FC<EventProps> = ({ eventCentre, eventCentreImages, event
         return
     }
 
-    if (!imageUrl || !logoUrl) {
+    if (!imageUrl) {
         return (
             <>
                 <Card className="rounded-xl overflow-x-hidden group cursor-pointer relative">
@@ -72,7 +72,7 @@ const EventCard: React.FC<EventProps> = ({ eventCentre, eventCentreImages, event
                         <div className="flex justify-between mb-2 space-x-4 items-center">
                             <p className='font-bold text-lg sm:text-xl hover:text-[#856D47]'>{eventCentre.event_centre_name}</p>
                             <Avatar className="h-8 w-8">
-                                <AvatarImage src={logoUrl} alt="event logo" />
+                                <AvatarImage src={logoUrl!} alt="event logo" />
                             </Avatar>
                         </div>
                         <p className='font-bold text-lg sm:text-xl my-2'>${eventCentreDetails.price}</p>

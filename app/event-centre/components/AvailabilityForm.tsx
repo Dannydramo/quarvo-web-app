@@ -13,11 +13,16 @@ import { Button } from '@/components/ui/button';
 import { eventRegDetails } from '@/types/eventTypes'
 import React, { useState } from 'react'
 import { UserStore } from "@/store/userInfo"
+import BookedModal from "./BookedModal"
+import AvailableModal from "./AvailableModal"
+import { checkEventAvailablity } from "@/utils/eventUtils"
 
-const BookingForm: React.FC<{ eventCentre: eventRegDetails }> = ({ eventCentre, }) => {
+const AvailabilityForm: React.FC<{ eventCentre: eventRegDetails, eventPrice: string }> = ({ eventCentre, eventPrice }) => {
     const { userDetails } = UserStore()
     const [date, setDate] = useState<Date>()
     const [loading, setLoading] = useState(false)
+    const [availabilityMessage, setAvailabilityMessage] = useState()
+    const [showModal, setShowModal] = useState(true);
 
     const handleAvailabiltyCheck = async () => {
         try {
@@ -26,23 +31,9 @@ const BookingForm: React.FC<{ eventCentre: eventRegDetails }> = ({ eventCentre, 
                 return;
             }
             const formattedDate = date.toISOString();
-            console.log(formattedDate, eventCentre.id, userDetails?.id)
             setLoading(true)
-
-            const res = await fetch('/api/check-availability', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    eventCentreId: eventCentre.id,
-                    date: formattedDate,
-                    userId: userDetails?.id,
-                }),
-            });
-
-            const data = await res.json()
-            console.log(data);
+            const { status, message } = await checkEventAvailablity(formattedDate, eventCentre.id, userDetails?.id)
+            setAvailabilityMessage(message!)
             setLoading(false)
 
         } catch (error) {
@@ -51,6 +42,19 @@ const BookingForm: React.FC<{ eventCentre: eventRegDetails }> = ({ eventCentre, 
             return
         }
     };
+
+    if (availabilityMessage === 'This date has already been booked.') {
+        return <>
+            {showModal && <BookedModal setShowModal={setShowModal} />}
+        </>
+    }
+
+    if (availabilityMessage === 'Date Available') {
+        return <>
+            {showModal && <AvailableModal eventCentre={eventCentre} eventPrice={eventPrice} setShowModal={setShowModal} date={date?.toISOString()} />}
+        </>
+
+    }
 
     return (
         <section className="">
@@ -83,4 +87,4 @@ const BookingForm: React.FC<{ eventCentre: eventRegDetails }> = ({ eventCentre, 
     )
 }
 
-export default BookingForm;
+export default AvailabilityForm;

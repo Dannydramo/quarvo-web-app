@@ -130,3 +130,45 @@ export const fetchEventBookings = async () => {
     }
     return { status, data, message }
 }
+
+export const checkEventAvailablity = async (eventCentreId: string, formattedDate: string, userId: string | undefined) => {
+    const payload = {
+        eventCentreId,
+        formattedDate,
+        userId
+    }
+    try {
+        const response = await Axios({
+            url: '/api/check-availability',
+            method: 'post',
+            body: payload
+        })
+        status = 200
+        message = response.data.message
+    } catch (err: any) {
+        status = err.response.status;
+        message = err.response.data.message;
+    }
+    return { status, message }
+}
+
+export const bookEventCentre = async (eventCentreId: string, formattedDate: string | undefined, userId: string | undefined) => {
+    const payload = {
+        eventCentreId,
+        formattedDate,
+        userId
+    }
+    try {
+        const response = await Axios({
+            url: '/api/book-event',
+            method: 'post',
+            body: payload
+        })
+        status = 200
+        message = response.data.message
+    } catch (err: any) {
+        status = err.response.status;
+        message = err.response.data.message;
+    }
+    return { status, message }
+}

@@ -6,7 +6,7 @@ const Loading = () => {
             </aside>
             <main className="w-[90%] mx-auto mb-20 md:mb-0 md:mr-5 md:ml-[200px] lg:ml-[220px]">
                 <>
-                    <div className="w-full h-5 mt-4 bg-slate-200 animate-ping"></div>
+                    <div className="w-full h-5 mt-4 bg-slate-200 animate-pulse"></div>
                     <div className="w-full min-h-[50vh] mt-4 max-h-[60vh] animate-pulse bg-slate-200"></div>
                     <div className="w-full md:max-w-[700px] h-[15rem] mt-4 bg-slate-200 animate-pulse" ></div>
                     <div className="w-full h-20 mt-4 bg-slate-200 animate-pulse"></div>

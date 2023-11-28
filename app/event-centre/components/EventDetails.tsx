@@ -3,7 +3,7 @@ import React from 'react'
 import EventCentreImages from './EventCentreImages';
 import Comments from './Comments';
 import Image from 'next/image';
-import BookingForm from './BookingForm';
+import AvailabiltyForm from './AvailabilityForm';
 
 const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentre: eventRegDetails, eventCentreImage: { images: string[] } }> = ({ eventCentreDetails, eventCentre, eventCentreImage }) => {
     function capitalizeWords(inputString: string) {
@@ -58,7 +58,7 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCent
                             <span>Opening Days: </span>
                             <span>{eventCentreDetails.open_days}</span>
                         </p>
-                        <BookingForm eventCentre={eventCentre} />
+                        <AvailabiltyForm eventCentre={eventCentre} eventPrice={eventCentreDetails.price} />
                     </div>
                 </div>
 
