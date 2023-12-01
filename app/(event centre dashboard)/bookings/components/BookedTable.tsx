@@ -5,7 +5,6 @@ import {
     TableBody,
     TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -22,6 +21,7 @@ const BookedTable: React.FC<{ bookedTable: bookedProps[] }> = ({ bookedTable }) 
                         <TableHead className="w-[100px]">S/N</TableHead>
                         <TableHead>User Booking</TableHead>
                         <TableHead>Date Booked</TableHead>
+                        <TableHead>Amount</TableHead>
                         <TableHead>Status</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -31,6 +31,7 @@ const BookedTable: React.FC<{ bookedTable: bookedProps[] }> = ({ bookedTable }) 
                             <TableCell className="font-medium">{index + 1}</TableCell>
                             <TableCell><UserBooking userId={booked.user_id} /></TableCell>
                             <TableCell>{new Date(booked.date).toISOString().split('T')[0]}</TableCell>
+                            <TableCell>{`${booked.amount}`}</TableCell>
                             <TableCell>Paid</TableCell>
                         </TableRow>
                     ))}

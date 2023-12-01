@@ -34,6 +34,7 @@ export interface bookedProps {
     date: string
     event_centre_id: string
     id: string
+    amount: string
     updatedAt: string
     user_id: string
 }

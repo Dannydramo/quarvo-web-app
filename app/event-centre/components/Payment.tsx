@@ -11,7 +11,7 @@ const Payment: React.FC<{ eventCentre: eventRegDetails, date: string | undefined
     const handleEventBooking = async () => {
         try {
             const formattedDate = date;
-            const { status, message } = await bookEventCentre(eventCentre.id, formattedDate, userDetails?.id)
+            const { status, message } = await bookEventCentre(eventCentre.id, formattedDate, userDetails?.id,eventPrice)
             toast.success(message)
         } catch (error) {
             console.error('Error:', error);
@@ -28,6 +28,7 @@ const Payment: React.FC<{ eventCentre: eventRegDetails, date: string | undefined
             firstname: `${userDetails?.first_name}`,
             lastname: `${userDetails?.last_name}`,
             onSuccess(transaction: any) {
+                console.log(transaction)
                 handleEventBooking()
             },
             onCancel() {

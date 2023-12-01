@@ -4,11 +4,13 @@ import EventCentreImages from './EventCentreImages';
 import Comments from './Comments';
 import Image from 'next/image';
 import AvailabiltyForm from './AvailabilityForm';
+import { UserTokenRegeneration } from '@/utils/userRegenerateTokenUtils';
 
 const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails, eventCentre: eventRegDetails, eventCentreImage: { images: string[] } }> = ({ eventCentreDetails, eventCentre, eventCentreImage }) => {
     function capitalizeWords(inputString: string) {
         return inputString.replace(/\b\w/g, (char: string) => char.toUpperCase());
     }
+    UserTokenRegeneration()
     return (
         <>
 

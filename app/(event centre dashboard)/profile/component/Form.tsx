@@ -208,7 +208,7 @@ const Form = () => {
                     </div>
 
                 </div>
-                <Button type="submit" className="mt-4 outline-none">{loading ? "Submiting Details" : 'Submit Details'}</Button>
+                <Button type="submit" disabled={loading} className='bg-[#856D47] hover:bg-[#856D47] mt-4 outline-none text-white'>{loading ? "Submiting Details" : 'Submit Details'}</Button>
             </form>
 
         </>

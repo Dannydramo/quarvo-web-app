@@ -1,59 +1,40 @@
 "use client"
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
-
-const data = [
-    {
-        name: "Jan",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-    {
-        name: "Feb",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-    {
-        name: "Mar",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-    {
-        name: "Apr",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-    {
-        name: "May",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-    {
-        name: "Jun",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-    {
-        name: "Jul",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-    {
-        name: "Aug",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-    {
-        name: "Sep",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-    {
-        name: "Oct",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-    {
-        name: "Nov",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-    {
-        name: "Dec",
-        Totalclient: Math.floor(Math.random() * 5000) + 1000,
-    },
-]
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { useEffect, useState } from "react";
+import { BookingStore } from "@/store/bookingInfo";
 
 const Overview = () => {
+    const { bookingDetails } = BookingStore();
+    const [monthlyData, setMonthlyData] = useState<number[]>([]);
+
+    useEffect(() => {
+
+        const initialMonthlyData = Array.from({ length: 12 }, () => 0);
+
+        bookingDetails.forEach((booking) => {
+            const monthIndex = new Date(booking.date).getMonth();
+            initialMonthlyData[monthIndex] += parseFloat(booking.amount);
+        });
+
+        setMonthlyData(initialMonthlyData);
+    }, [bookingDetails]);
+
+    const data = [
+        { name: "Jan", Totalclient: monthlyData[0] },
+        { name: "Feb", Totalclient: monthlyData[1] },
+        { name: "Mar", Totalclient: monthlyData[2] },
+        { name: "Apr", Totalclient: monthlyData[3] },
+        { name: "May", Totalclient: monthlyData[4] },
+        { name: "Jun", Totalclient: monthlyData[5] },
+        { name: "Jul", Totalclient: monthlyData[6] },
+        { name: "Aug", Totalclient: monthlyData[7] },
+        { name: "Sep", Totalclient: monthlyData[8] },
+        { name: "Oct", Totalclient: monthlyData[9] },
+        { name: "Nov", Totalclient: monthlyData[10] },
+        { name: "Dec", Totalclient: monthlyData[11] },
+    ];
+
     return (
         <ResponsiveContainer width="100%" height={350}>
             <BarChart data={data}>
@@ -74,7 +55,7 @@ const Overview = () => {
                 <Bar dataKey="Totalclient" fill="#856D47" radius={[4, 4, 0, 0]} />
             </BarChart>
         </ResponsiveContainer>
-    )
-}
+    );
+};
 
-export default Overview
+export default Overview;

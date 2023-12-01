@@ -3,7 +3,7 @@
 import { EventStore } from "@/store/eventInfo";
 import Booking from "@/svgs/Booking";
 import Profile from "@/svgs/Profile";
-import { fetchEventCentre } from "@/utils/eventUtils";
+import { fetchEventBookings, fetchEventCentre } from "@/utils/eventUtils";
 import { deleteCookie } from "cookies-next";
 import { LayoutDashboardIcon, LogOutIcon } from "lucide-react";
 import Link from "next/link";
@@ -11,12 +11,17 @@ import { useRouter } from "next/navigation";
 import React, { useLayoutEffect, } from "react";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
+import { EventTokenRegeneration } from "@/utils/eventRegenerateTokenUtils";
+import { BookingStore } from "@/store/bookingInfo";
 
 
 const Sidebar = () => {
     const router = useRouter()
     const { setEventDetails } = EventStore()
     const pathname = usePathname()
+    const { setBookingDetails } = BookingStore()
+
+    EventTokenRegeneration()
 
     useLayoutEffect(() => {
         const fetchEventDetails = async () => {
@@ -31,6 +36,23 @@ const Sidebar = () => {
                 console.log('Unable to fetch event details');
             }
         }
+
+        const fetchBookingDetails = async () => {
+            try {
+
+                const { message, data, status } = await fetchEventBookings()
+                if (status !== 200) {
+                    console.log(message);
+                }
+                console.log(data.bookings);
+                setBookingDetails(data?.bookings)
+
+            } catch (error) {
+                console.log('Unable to fetch event details');
+            }
+        }
+        fetchBookingDetails()
+
         fetchEventDetails()
     }, [])
 
@@ -46,7 +68,7 @@ const Sidebar = () => {
 
                 <nav
                 >
-                    <nav className="flex md:h-screen md:p-6 lg:w-[210px] md:w-[190px] md:mx-auto z-[10000] md:flex md:justify-center lg:relative fixed md:relative bottom-0 right-0 left-4 md:left-0  shadow-md bg-[#856D47] md:shadow-none justify-between py-4 z-100 active:z-100 m-6 px-6 md:m-0 md:px-0 rounded-lg md:rounded-none bg-white-1 ">
+                    <nav className="flex md:h-screen md:p-6 lg:w-[210px] md:w-[190px] md:mx-auto z-[10000] md:flex md:justify-center lg:relative fixed md:relative bottom-0 right-0 left-0 shadow-md bg-[#856D47] md:shadow-none justify-between py-4 z-100 active:z-100 m-6 px-6 md:m-0 md:px-0 rounded-lg md:rounded-none bg-white-1 ">
                         {/* Logos | Desktop | Mobile */}
                         {/* <BlackLogo className=" lg:border-b-2 pb-1 border-pink-barbie-1 hover:scale-110 duration-200 lg:block hidden cursor-pointer active:scale-100" /> */}
 

@@ -1,4 +1,4 @@
-
+'use client'
 import Link from "next/link";
 
 type EventCentreImages = {
@@ -26,9 +26,12 @@ import { Card } from "@/components/ui/card";
 import { EventCentreDetails } from "@/types/eventTypes";
 import { Calendar } from "lucide-react";
 import Location from "@/svgs/Location";
+import { UserTokenRegeneration } from "@/utils/userRegenerateTokenUtils";
 const EventCard: React.FC<EventProps> = ({ eventCentre, eventCentreImages, eventCentreDetails }) => {
     const imageUrl = eventCentreImages?.main_image;
     const logoUrl = eventCentre?.event_logo
+
+    UserTokenRegeneration()
 
     if (!eventCentreDetails?.price || !eventCentreDetails?.open_days) {
         return

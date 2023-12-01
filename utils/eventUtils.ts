@@ -139,7 +139,7 @@ export const checkEventAvailablity = async (eventCentreId: string, formattedDate
     }
     try {
         const response = await Axios({
-            url: '/api/check-availability',
+            url: '/api/check-event-availability',
             method: 'post',
             body: payload
         })
@@ -152,11 +152,12 @@ export const checkEventAvailablity = async (eventCentreId: string, formattedDate
     return { status, message }
 }
 
-export const bookEventCentre = async (eventCentreId: string, formattedDate: string | undefined, userId: string | undefined) => {
+export const bookEventCentre = async (eventCentreId: string, formattedDate: string | undefined, userId: string | undefined, eventPrice: string) => {
     const payload = {
         eventCentreId,
         formattedDate,
-        userId
+        userId,
+        eventPrice
     }
     try {
         const response = await Axios({
