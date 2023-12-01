@@ -131,11 +131,10 @@ export const fetchEventBookings = async () => {
     return { status, data, message }
 }
 
-export const checkEventAvailablity = async (eventCentreId: string, formattedDate: string, userId: string | undefined) => {
+export const checkEventAvailablity = async (formattedDate: string, eventCentreId: string) => {
     const payload = {
         eventCentreId,
         formattedDate,
-        userId
     }
     try {
         const response = await Axios({

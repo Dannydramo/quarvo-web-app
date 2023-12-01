@@ -14,8 +14,8 @@ const AvailableModal: React.FC<{ eventCentre: eventRegDetails, date: string | un
     };
     return (
         <>
-            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-[-10000] bg-gray-800 bg-opacity-50">
-                <div className="bg-white relative z-[20000] p-2 rounded-lg w-[90%] md:w-1/2">
+            <div className="fixed top-0 left-0 w-full h-full z-[10000] flex items-center justify-center bg-gray-800 bg-opacity-50">
+                <div className="bg-white relative z-[20000] p-4 rounded-lg w-[90%] md:w-1/2">
                     <span onClick={toggleModal} className="absolute right-4 top-0 cursor-pointer text-xl">
                         &times;
                     </span>

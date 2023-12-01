@@ -32,7 +32,7 @@ const AvailabilityForm: React.FC<{ eventCentre: eventRegDetails, eventPrice: str
             }
             const formattedDate = date.toISOString();
             setLoading(true)
-            const { status, message } = await checkEventAvailablity(formattedDate, eventCentre.id, userDetails?.id)
+            const { status, message } = await checkEventAvailablity(formattedDate, eventCentre.id)
             setAvailabilityMessage(message!)
             setLoading(false)
 
@@ -58,7 +58,7 @@ const AvailabilityForm: React.FC<{ eventCentre: eventRegDetails, eventPrice: str
 
     return (
         <section className="">
-            <div className="">
+            {!showModal && <div className="">
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button
@@ -82,7 +82,7 @@ const AvailabilityForm: React.FC<{ eventCentre: eventRegDetails, eventPrice: str
                     </PopoverContent>
                 </Popover>
                 <Button onClick={handleAvailabiltyCheck} disabled={loading} className='w-full bg-[#856D47] text-white text-lg hover:bg-[#856D47] mb-8 md:mb-0'>{loading ? 'Checking Availability...' : 'Check Availability'}</Button>
-            </div>
+            </div>}
         </section>
     )
 }

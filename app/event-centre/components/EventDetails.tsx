@@ -1,3 +1,4 @@
+'use client'
 import { EventCentreDetails, eventRegDetails } from '@/types/eventTypes'
 import React from 'react'
 import EventCentreImages from './EventCentreImages';

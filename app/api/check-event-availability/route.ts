@@ -3,13 +3,13 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
-    const { eventCentreId, date, userId } = await req.json();
+    const { eventCentreId, formattedDate } = await req.json();
 
     const isDateBooked = await prisma.booking.findFirst({
         where: {
             event_centre_id: eventCentreId,
             date: {
-                equals: new Date(date),
+                equals: new Date(formattedDate),
             },
         },
     });

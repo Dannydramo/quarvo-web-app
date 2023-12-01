@@ -6,12 +6,16 @@ import { eventRegDetails } from '@/types/eventTypes';
 import { bookEventCentre } from '@/utils/eventUtils';
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button';
+interface PaystackTransaction {
+    amount: number;
+    reference: string;
+}
 const Payment: React.FC<{ eventCentre: eventRegDetails, date: string | undefined, eventPrice: string }> = ({ eventCentre, date, eventPrice }) => {
     const { userDetails } = UserStore()
     const handleEventBooking = async () => {
         try {
             const formattedDate = date;
-            const { status, message } = await bookEventCentre(eventCentre.id, formattedDate, userDetails?.id,eventPrice)
+            const { status, message } = await bookEventCentre(eventCentre.id, formattedDate, userDetails?.id, eventPrice)
             toast.success(message)
         } catch (error) {
             console.error('Error:', error);
@@ -22,12 +26,12 @@ const Payment: React.FC<{ eventCentre: eventRegDetails, date: string | undefined
     const handlePayment = () => {
         const paystack = new PaystackPop();
         paystack.newTransaction({
-            key: process.env.PAYSTACK_TEST_PUBLIC_KEY,
+            key: process.env.PAYSTACK_TEST_SECRET_KEY,
             amount: +eventPrice,
             email: `${userDetails?.email}`,
             firstname: `${userDetails?.first_name}`,
             lastname: `${userDetails?.last_name}`,
-            onSuccess(transaction: any) {
+            onSuccess(transaction: PaystackTransaction) {
                 console.log(transaction)
                 handleEventBooking()
             },
@@ -38,7 +42,7 @@ const Payment: React.FC<{ eventCentre: eventRegDetails, date: string | undefined
     };
 
     return (
-        <Button className='bg-[#856D47] hover:bg-[#856D47] mb-8 text-white' onClick={handlePayment} >Continue with payment</Button>
+        <Button className='bg-[#856D47] mt-4 hover:bg-[#856D47] mb-8 text-white' onClick={handlePayment} >Continue with payment</Button>
     )
 }
 
