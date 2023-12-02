@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import PaystackPop from "@paystack/inline-js";
 import { UserStore } from '@/store/userInfo';
 import { eventRegDetails } from '@/types/eventTypes';
@@ -12,22 +12,25 @@ interface PaystackTransaction {
 }
 const Payment: React.FC<{ eventCentre: eventRegDetails, date: string | undefined, eventPrice: string }> = ({ eventCentre, date, eventPrice }) => {
     const { userDetails } = UserStore()
+    const [loading, setLoading] = useState(false)
     const handleEventBooking = async () => {
         try {
+            setLoading(true)
             const formattedDate = date;
             const { status, message } = await bookEventCentre(eventCentre.id, formattedDate, userDetails?.id, eventPrice)
             toast.success(message)
+            setLoading(false)
         } catch (error) {
             console.error('Error:', error);
-
+            setLoading(false)
             return
         }
     };
     const handlePayment = () => {
         const paystack = new PaystackPop();
         paystack.newTransaction({
-            key: process.env.PAYSTACK_TEST_SECRET_KEY,
-            amount: +eventPrice,
+            key: "pk_test_bf1ff6a77c98b24bbbe50b37642287233268af64",
+            amount: +eventPrice * 10,
             email: `${userDetails?.email}`,
             firstname: `${userDetails?.first_name}`,
             lastname: `${userDetails?.last_name}`,
@@ -42,7 +45,7 @@ const Payment: React.FC<{ eventCentre: eventRegDetails, date: string | undefined
     };
 
     return (
-        <Button className='bg-[#856D47] mt-4 hover:bg-[#856D47] mb-8 text-white' onClick={handlePayment} >Continue with payment</Button>
+        <Button className='bg-[#856D47] mt-4 hover:bg-[#856D47] mb-8 text-white' disabled={loading} onClick={handlePayment} >{loading ? 'Confirming Booking' : 'Continue with payment'}</Button>
     )
 }
 

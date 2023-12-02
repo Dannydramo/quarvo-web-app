@@ -3,11 +3,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
-    const { eventCentreId, date, userId, eventPrice } = await req.json();
+    const { eventCentreId, formattedDate, userId, eventPrice } = await req.json();
 
     const newBooking = await prisma.booking.create({
         data: {
-            date: date,
+            date: new Date(formattedDate),
             amount: eventPrice,
             user: {
                 connect: { id: userId },

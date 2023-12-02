@@ -23,7 +23,7 @@ const Dashboard = () => {
                 <section className="w-[95%] mx-auto">
                     <div className="flex-col flex">
                         <div className="flex-1 space-y-4 p-2 md:p-8 pt-6">
-                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                                 <HappyCustomers />
                                 <Revenue />
                                 <Card>

@@ -7,14 +7,27 @@ import {
 } from "@/components/ui/card"
 import { BookingStore } from "@/store/bookingInfo"
 import Customers from "@/svgs/Customers"
-import { fetchEventBookings } from "@/utils/eventUtils"
-import { useEffect, useState } from "react"
+
 const HappyCustomers = () => {
-    const [happyCustomers, setHappyCustomers] = useState(0)
-    const { bookingDetails } = BookingStore()
-    useEffect(() => {
-        setHappyCustomers(bookingDetails?.length)
-    }, [])
+    const { bookingDetails } = BookingStore();
+
+    const currentMonthHappyCustomers = bookingDetails?.length || 0;
+
+    // Assuming the date is stored in the bookingDetails
+    const lastMonthDate = new Date();
+    lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
+
+    // Filter bookings for the last month
+    const lastMonthBookings = bookingDetails.filter((booking) => {
+        const bookingDate = new Date(booking.created_at); // Adjust based on your actual date property
+        return bookingDate >= lastMonthDate;
+    });
+
+    const lastMonthHappyCustomers = lastMonthBookings.length;
+
+    const percentageChange = lastMonthHappyCustomers
+        ? ((currentMonthHappyCustomers - lastMonthHappyCustomers) / lastMonthHappyCustomers) * 100
+        : 0;
 
     return (
         <>
@@ -26,14 +39,14 @@ const HappyCustomers = () => {
                     <Customers />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">{`+${happyCustomers}`}</div>
+                    <div className="text-2xl font-bold">{`+${currentMonthHappyCustomers}`}</div>
                     <p className="text-xs text-muted-foreground mt-2">
-                        +180.1% from last month
+                        {percentageChange.toFixed(1)}% from last month
                     </p>
                 </CardContent>
             </Card>
         </>
-    )
-}
+    );
+};
 
 export default HappyCustomers;

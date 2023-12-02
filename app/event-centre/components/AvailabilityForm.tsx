@@ -43,22 +43,9 @@ const AvailabilityForm: React.FC<{ eventCentre: eventRegDetails, eventPrice: str
         }
     };
 
-    if (availabilityMessage === 'This date has already been booked.') {
-        return <>
-            {showModal && <BookedModal setShowModal={setShowModal} />}
-        </>
-    }
-
-    if (availabilityMessage === 'Date Available') {
-        return <>
-            {showModal && <AvailableModal eventCentre={eventCentre} eventPrice={eventPrice} setShowModal={setShowModal} date={date?.toISOString()} />}
-        </>
-
-    }
-
     return (
         <section className="">
-            {!showModal && <div className="">
+            <div className="">
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button
@@ -82,7 +69,10 @@ const AvailabilityForm: React.FC<{ eventCentre: eventRegDetails, eventPrice: str
                     </PopoverContent>
                 </Popover>
                 <Button onClick={handleAvailabiltyCheck} disabled={loading} className='w-full bg-[#856D47] text-white text-lg hover:bg-[#856D47] mb-8 md:mb-0'>{loading ? 'Checking Availability...' : 'Check Availability'}</Button>
-            </div>}
+            </div>
+
+            {showModal && availabilityMessage === 'This date has already been booked.' && <BookedModal setShowModal={setShowModal} />}
+            {showModal && availabilityMessage === 'Date Available' && <AvailableModal eventCentre={eventCentre} eventPrice={eventPrice} setShowModal={setShowModal} date={date?.toISOString()} />}
         </section>
     )
 }
