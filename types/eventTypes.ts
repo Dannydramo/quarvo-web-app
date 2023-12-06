@@ -38,3 +38,14 @@ export interface bookedProps {
     updatedAt: string
     user_id: string
 }
+
+export interface EventCentreImages {
+    main_image: string | null;
+};
+
+
+export interface EventProps {
+    eventCentre: eventRegDetails;
+    eventCentreImages: EventCentreImages | null;
+    eventCentreDetails: EventCentreDetails;
+};

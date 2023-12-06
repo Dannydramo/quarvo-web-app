@@ -18,7 +18,7 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
                             <div className="flex h-16 items-center px-4">
                                 Welcome {eventDetails?.event_centre_name}
                                 <div className="ml-auto flex items-center space-x-4">
-                                    <UploadImage />
+                                    <div className="hidden md:block"> <UploadImage /></div>
                                     <UserNav />
                                 </div>
                             </div>

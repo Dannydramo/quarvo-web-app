@@ -2,7 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EventStore } from "@/store/eventInfo";
+import Spinner from "@/svgs/Spinner";
 import { ChangeEvent, useState } from "react";
+import { toast } from "sonner";
 
 const UploadImage = () => {
     const { eventDetails } = EventStore();
@@ -45,9 +47,15 @@ const UploadImage = () => {
             });
             const data = await res.json();
             console.log(data);
+            if (data.status === 200) {
+                toast.success(data.message)
+            } else {
+                toast.error('Failed to upload logo')
+            }
             setLoading(false)
         } catch (error: any) {
             setLoading(false)
+            toast.error('Unable to upload images. Please try again later')
             console.log(error.message);
         }
     };
@@ -58,8 +66,16 @@ const UploadImage = () => {
                 <p onClick={toggleModal} className="cursor-pointer">
                     Upload Images
                 </p>
+                {loading &&
+                    <>
+                        <div className='absolute bg-white flex space-x-3 z-[20000] top-4 right-4 rounded-md'>
+                            <Spinner className="h-2 w-2 animate-spin" />
+                            <p>Uploading Images..</p>
+                        </div>
+                    </>
+                }
                 {showModal && (
-                    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-[-10000] bg-gray-800 bg-opacity-50">
+                    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-[10000] bg-gray-800 bg-opacity-50">
                         <div className="bg-white relative z-[20000] p-2 rounded-lg w-[90%] md:w-1/2">
                             <span onClick={toggleModal} className="absolute right-4 top-0 cursor-pointer text-xl">
                                 &times;
@@ -70,10 +86,10 @@ const UploadImage = () => {
                                 <Input type="file" accept=".jpg, .jpeg, .png" multiple onChange={handleMultipleFileChange} className="outline-none mt-3 border h-12 mr-2" />
                             </div>
                             <div className="mt-6 flex space-x-4 justify-end">
-                                <button onClick={toggleModal} className="bg-red-500 text-white font-bold py-2 px-4 rounded">
+                                <Button className="bg-[#856D47] font-bold text-sm py-2 px-4 rounded hover:bg-[#856D47]" onClick={() => handleImageUpload()}>{loading ? 'Uploading Images' : "Upload Images"}</Button>
+                                <Button onClick={toggleModal} className="bg-red-500 hover:bg-red-500 text-sm text-white font-bold py-2 px-4 rounded">
                                     Close Modal
-                                </button>
-                                <Button className="bg-[#856D47] font-bold py-2 px-4 rounded hover:bg-[#856D47]" onClick={() => handleImageUpload()}>{loading ? 'Uploading Images' : "Upload Images"}</Button>
+                                </Button>
                             </div>
                         </div>
                     </div>

@@ -26,7 +26,7 @@ const Revenue = () => {
         const totalAmountLastMonth = bookingDetails.reduce((accumulator, booking) => {
             const bookingDate = new Date(booking.created_at);
             if (bookingDate >= lastMonth && bookingDate < currentDate) {
-                return accumulator + parseFloat(booking.amount);
+                return accumulator + +booking.amount;
             }
             return accumulator;
         }, 0);

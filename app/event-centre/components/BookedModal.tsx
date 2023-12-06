@@ -1,9 +1,7 @@
 'use client'
-import { UserStore } from '@/store/userInfo'
 import React, { Dispatch, SetStateAction } from 'react'
 
 const BookedModal: React.FC<{ setShowModal: Dispatch<SetStateAction<boolean>> }> = ({ setShowModal }) => {
-    const { userDetails } = UserStore()
     const toggleModal = () => {
         setShowModal(false);
     };
@@ -16,7 +14,7 @@ const BookedModal: React.FC<{ setShowModal: Dispatch<SetStateAction<boolean>> }>
                         &times;
                     </span>
 
-                    <div className="mt-6">
+                    <div className="mt-6 text-base">
                         <p>The selected date is currently unavailable for booking. We apologize for any inconvenience. Please select an alternate date that meets your needs or yu checkout other event centres. Thank you for your understanding.</p>
                     </div>
 

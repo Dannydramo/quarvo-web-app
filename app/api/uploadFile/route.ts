@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
             }
         })
         return NextResponse.json({
-            message: 'Files uploaded successfully',
+            message: 'Images uploaded successfully',
             status: 200,
             uploadImageUrl
         });

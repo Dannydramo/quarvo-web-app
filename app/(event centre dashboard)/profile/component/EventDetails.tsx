@@ -14,7 +14,7 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ ev
         <>
 
             <EventCentreImages />
-            <div className="bg-[#F4F0EC] rounded-xl p-8 flex flex-col max-w-[700px] space-y-4 mt-4">
+            <div className="bg-[#856D47] text-white rounded-xl p-8 flex flex-col max-w-[700px] space-y-4 mt-4">
                 <p>
                     <span className="font-bold">Event Name: </span>
                     <span>{eventDetails?.event_centre_name}</span>
@@ -67,7 +67,7 @@ const EventDetails: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ ev
                             <ul key={index} className="flex flex-wrap">
                                 <li
                                     key={index}
-                                    className="mr-4 p-2 my-2 bg-[#fbfaf8]"
+                                    className="mr-4 p-2 my-2 text-white bg-[#856D47]"
                                 >
                                     {amenity || "N/A"}
                                 </li>

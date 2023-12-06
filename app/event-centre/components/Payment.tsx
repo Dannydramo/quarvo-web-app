@@ -30,12 +30,11 @@ const Payment: React.FC<{ eventCentre: eventRegDetails, date: string | undefined
         const paystack = new PaystackPop();
         paystack.newTransaction({
             key: "pk_test_bf1ff6a77c98b24bbbe50b37642287233268af64",
-            amount: +eventPrice * 10,
+            amount: +eventPrice * 100,
             email: `${userDetails?.email}`,
             firstname: `${userDetails?.first_name}`,
             lastname: `${userDetails?.last_name}`,
             onSuccess(transaction: PaystackTransaction) {
-                console.log(transaction)
                 handleEventBooking()
             },
             onCancel() {

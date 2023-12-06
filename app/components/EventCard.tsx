@@ -1,32 +1,16 @@
 'use client'
 import Link from "next/link";
 
-type EventCentreImages = {
-    main_image: string | null;
-};
 
-type EventCentre = {
-    id: string;
-    state: string;
-    event_centre_name: string;
-    email: string;
-    phone_number: string;
-    slug: string;
-    event_logo: string | null
-};
-
-type EventProps = {
-    eventCentre: EventCentre;
-    eventCentreImages: EventCentreImages | null;
-    eventCentreDetails: EventCentreDetails;
-};
 import Image from 'next/image';
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
-import { EventCentreDetails } from "@/types/eventTypes";
+import { EventProps } from "@/types/eventTypes";
 import { Calendar } from "lucide-react";
 import Location from "@/svgs/Location";
 import { UserTokenRegeneration } from "@/utils/userRegenerateTokenUtils";
+
+
 const EventCard: React.FC<EventProps> = ({ eventCentre, eventCentreImages, eventCentreDetails }) => {
     const imageUrl = eventCentreImages?.main_image;
     const logoUrl = eventCentre?.event_logo

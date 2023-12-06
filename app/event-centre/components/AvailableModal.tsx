@@ -5,10 +5,8 @@ import React, {
     SetStateAction,
 } from 'react'
 import Payment from './Payment'
-import { UserStore } from '@/store/userInfo'
 
 const AvailableModal: React.FC<{ eventCentre: eventRegDetails, date: string | undefined, eventPrice: string, setShowModal: Dispatch<SetStateAction<boolean>> }> = ({ eventCentre, date, setShowModal, eventPrice }) => {
-    const { userDetails } = UserStore()
     const toggleModal = () => {
         setShowModal(false);
     };
@@ -20,7 +18,7 @@ const AvailableModal: React.FC<{ eventCentre: eventRegDetails, date: string | un
                         &times;
                     </span>
 
-                    <div className="mt-6">
+                    <div className="mt-6 text-base">
                         <p>The selected date is available for booking. To proceed, please complete the payment process and confirm the reservation. This will ensure that the date is reserved for you and that the booking is finalized. Thank you for your interest.</p>
                     </div>
 

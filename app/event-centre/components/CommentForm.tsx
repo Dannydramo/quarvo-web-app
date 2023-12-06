@@ -38,7 +38,7 @@ const CommentForm = ({ eventCentreId }: { eventCentreId: string }) => {
     return (
         <>
             <form onSubmit={handleSubmit}>
-                <Textarea placeholder="Comment your review" onChange={(e) => { setComment(e.target.value) }} className="outline-none mb-4 mt-4 border h-[200px]" />
+                <Textarea placeholder="Comment your review" value={comment} onChange={(e) => { setComment(e.target.value) }} className="outline-none mb-4 mt-4 border h-[200px]" />
                 <Button type='submit' disabled={loading} className='bg-[#856D47] hover:bg-[#856D47] mb-8 text-white'>{loading ? 'Submitting Review' : 'Submit Review'}</Button>
             </form>
         </>
