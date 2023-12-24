@@ -31,7 +31,7 @@ const EventCard: React.FC<EventProps> = ({ eventCentre, eventCentreImages, event
                         <div className="flex justify-between items-center">
                             <p className='font-bold text-xl hover:text-[#856D47]'>{eventCentre.event_centre_name}</p>
                         </div>
-                        <p className='font-bold text-xl my-2'>${eventCentreDetails?.price}</p>
+                        <p className='font-bold text-xl my-2'>NGN{eventCentreDetails?.price}</p>
                         <div className="flex space-x-3 my-2 items-center">
                             <Calendar className="text-base text-[#856D47]" />
                             <p className="text-base md:text-lg">{eventCentreDetails?.open_days}</p>
@@ -62,7 +62,7 @@ const EventCard: React.FC<EventProps> = ({ eventCentre, eventCentreImages, event
                                 <AvatarImage src={logoUrl!} alt="event logo" />
                             </Avatar>
                         </div>
-                        <p className='font-bold text-lg sm:text-xl my-2'>${eventCentreDetails.price}</p>
+                        <p className='font-bold text-lg sm:text-xl my-2'>NGN{eventCentreDetails.price}</p>
                         <div className="flex space-x-3 my-2 items-center">
                             <Calendar className="text-base text-[#856D47]" />
                             <p className="text-base md:text-lg">{eventCentreDetails.open_days}</p>

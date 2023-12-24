@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     const alg = "HS256"
     const secret = new TextEncoder().encode(process.env.JWT_SECRET)
 
-    const token = await new jose.SignJWT({ email: eventCentre.email }).setProtectedHeader({ alg }).setExpirationTime("24h").sign(secret)
+    const token = await new jose.SignJWT({ email: eventCentre.email }).setProtectedHeader({ alg }).setExpirationTime("5m").sign(secret)
 
     return NextResponse.json({ message: 'Event Centre Account created successfully', status: 200, token });
 }

@@ -19,7 +19,6 @@ import { EventStore } from "@/store/eventInfo"
 import dayjs from 'dayjs'
 import { fetchEventCentreDetails, postEditCentreDetails } from "@/utils/eventUtils"
 
-
 const EditProfile: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ eventCentreDetails }) => {
     const { eventDetails } = EventStore()
     const [editProfileDetails, setEditProfileDetails] = useState({
@@ -32,30 +31,33 @@ const EditProfile: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ eve
         openDays: eventCentreDetails.open_days,
         price: eventCentreDetails.price
     })
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const stringToArray = (inputString: string, delimiter: string = ',') => {
         return inputString.split(delimiter).map(value => value.trim());
     };
 
+const onOpenTime = (time: Dayjs | null, timeString: string) => {
+    if (time) {
+        console.log("Selected Opening Time:", time.format("h:mm a"));
+        setEditProfileDetails((prevDetails) => ({
+            ...prevDetails,
+            openingTime: time.format("h:mm a"),
+        }));
+    }
+};
 
-    const onOpenTime = (time: Dayjs | null, timeString: string) => {
-        if (time) {
-            setEditProfileDetails({
-                ...editProfileDetails,
-                openingTime: timeString
-            })
-        }
-    };
+const onCloseTime = (time: Dayjs | null, timeString: string) => {
+        console.log('fsdfsdf')
+    // if (time) {
+    //     console.log("Selected Closing Time:", timeString);
+    //     setEditProfileDetails((prevDetails) => ({
+    //         ...prevDetails,
+    //         closingTime: time.format("h:mm a"),
+    //     }));
+    // }
+};
 
-    const onCloseTime = (time: Dayjs | null, timeString: string) => {
-        if (time) {
-            setEditProfileDetails({
-                ...editProfileDetails,
-                closingTime: timeString
-            })
-        }
-    };
 
     const handleArrayInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newArray = stringToArray(e.target.value);
@@ -86,14 +88,12 @@ const EditProfile: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ eve
             }
             console.log(message, data);
             setLoading(false);
-            fetchEventCentreDetails()
-
+            fetchEventCentreDetails();
         } catch (error: any) {
             setLoading(false);
             console.error('Form submission error:', error.message);
         }
     };
-
 
     return (
         <>
@@ -134,11 +134,17 @@ const EditProfile: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ eve
                             <div className="grid mt-4 gap-4">
                                 <div className="">
                                     <label htmlFor="openitime">Opening Time</label>
-                                    <TimePicker use12Hours value={dayjs(editProfileDetails.openingTime)} format="h:mm a" placeholder="Select Opening Time" className='outline-none mt-1 border h-12 w-full' onChange={onOpenTime} />
+                                    <TimePicker  value={editProfileDetails.openingTime ? dayjs(editProfileDetails.openingTime, "h:mm a") : null} format="h:mm a" placeholder="Select Opening Time" className='outline-none mt-1 border h-12 w-full' onChange={onOpenTime} />
                                 </div>
                                 <div className="">
                                     <label htmlFor="closetime">Closing Time</label>
-                                    <TimePicker value={dayjs(editProfileDetails.closingTime)} use12Hours format="h:mm a" onChange={onCloseTime} placeholder="Select Closing Time" className='outline-none mt-1 border h-12 w-full' />
+                                    <TimePicker
+                                        value={editProfileDetails.closingTime ? dayjs(editProfileDetails.closingTime, "h:mm a") : null}
+                                        format="h:mm a"
+                                        onChange={onCloseTime}
+                                        placeholder="Select Closing Time"
+                                        className='outline-none mt-1 border h-12 w-full'
+                                    />
                                 </div>
                             </div>
                             <div className="mt-4">
@@ -151,9 +157,7 @@ const EditProfile: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ eve
 
                         </div>
                         <SheetFooter>
-
                             <Button type="submit" disabled={loading} className="mb-24 md:mb-0 mt-4">{loading ? 'Saving Changes' : 'Save changes'}</Button>
-
                         </SheetFooter>
                     </form>
                 </SheetContent>
@@ -162,4 +166,4 @@ const EditProfile: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({ eve
     )
 }
 
-export default EditProfile
+export default EditProfile;
