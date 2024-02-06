@@ -1,32 +1,26 @@
-'use client'
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { BookingStore } from "@/store/bookingInfo"
-import Customers from "@/svgs/Customers"
+"use client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BookingStore } from "@/store/bookingInfo";
+import Customers from "@/svgs/Customers";
 
 const HappyCustomers = () => {
     const { bookingDetails } = BookingStore();
 
     const currentMonthHappyCustomers = bookingDetails?.length || 0;
 
-    // Assuming the date is stored in the bookingDetails
     const lastMonthDate = new Date();
     lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
 
-    // Filter bookings for the last month
     const lastMonthBookings = bookingDetails.filter((booking) => {
-        const bookingDate = new Date(booking.created_at); // Adjust based on your actual date property
+        const bookingDate = new Date(booking.created_at);
         return bookingDate >= lastMonthDate;
     });
-
     const lastMonthHappyCustomers = lastMonthBookings.length;
 
     const percentageChange = lastMonthHappyCustomers
-        ? ((currentMonthHappyCustomers - lastMonthHappyCustomers) / lastMonthHappyCustomers) * 100
+        ? ((currentMonthHappyCustomers - lastMonthHappyCustomers) /
+              lastMonthHappyCustomers) *
+          100
         : 0;
 
     return (

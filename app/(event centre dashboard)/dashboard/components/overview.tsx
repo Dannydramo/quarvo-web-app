@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { useEffect, useState } from "react";
@@ -9,7 +9,6 @@ const Overview = () => {
     const [monthlyData, setMonthlyData] = useState<number[]>([]);
 
     useEffect(() => {
-
         const initialMonthlyData = Array.from({ length: 12 }, () => 0);
 
         bookingDetails.forEach((booking) => {
@@ -52,7 +51,11 @@ const Overview = () => {
                     axisLine={false}
                     tickFormatter={(value) => `$${value}`}
                 />
-                <Bar dataKey="Totalclient" fill="#856D47" radius={[4, 4, 0, 0]} />
+                <Bar
+                    dataKey="Totalclient"
+                    fill="#856D47"
+                    radius={[4, 4, 0, 0]}
+                />
             </BarChart>
         </ResponsiveContainer>
     );

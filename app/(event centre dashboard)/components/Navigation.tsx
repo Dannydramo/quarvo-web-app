@@ -1,11 +1,11 @@
-'use client'
+"use client";
 import { EventStore } from "@/store/eventInfo";
 import UserNav from "../dashboard/components/user-nav";
 import Sidebar from "./Sidebar";
 import UploadImage from "../dashboard/components/upload-image";
 
 const Navigation = ({ children }: { children: React.ReactNode }) => {
-    const { eventDetails } = EventStore()
+    const { eventDetails } = EventStore();
     return (
         <>
             <section className="md:flex justify-between">
@@ -18,7 +18,10 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
                             <div className="flex h-16 items-center px-4">
                                 Welcome {eventDetails?.event_centre_name}
                                 <div className="ml-auto flex items-center space-x-4">
-                                    <div className="hidden md:block"> <UploadImage /></div>
+                                    <div className="hidden md:block">
+                                        {" "}
+                                        <UploadImage />
+                                    </div>
                                     <UserNav />
                                 </div>
                             </div>
@@ -29,6 +32,6 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
             </section>
         </>
     );
-}
+};
 
-export default Navigation
+export default Navigation;

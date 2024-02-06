@@ -1,18 +1,16 @@
 import { cloudinary } from "@/utils/upload";
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 
-
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
-
     const { id, logo } = await req.json();
 
     try {
         const uploadedLogo = await cloudinary.uploader.upload(logo, {
-            upload_preset: 'quarvo'
-        })
+            upload_preset: "quarvo",
+        });
         const eventCentre = await prisma.eventCentre.findUnique({
             where: {
                 id: id,
@@ -32,12 +30,15 @@ export async function POST(req: NextRequest) {
         }
 
         return NextResponse.json({
-            message: 'Event logo uploaded successfully',
+            message: "Event logo uploaded successfully",
             status: 200,
-            uploadedLogo
+            uploadedLogo,
         });
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ message: "Failed to upload files", status: 500 });
+        return NextResponse.json({
+            message: "Failed to upload files",
+            status: 500,
+        });
     }
 }

@@ -1,24 +1,13 @@
-import { PrismaClient } from '@prisma/client'
-import EventCard from './components/EventCard'
-import Navigation from './components/Navigation'
+import { PrismaClient } from "@prisma/client";
+import EventCard from "./components/EventCard";
+import Navigation from "./components/Navigation";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const fetchAllEventCentre = async () => {
-    const eventCentres = await prisma.eventCentre.findMany()
-    // select: {
-    //     id: true,
-    //     state: true,
-    //     event_centre_name: true,
-    //     email: true,
-    //     phone_number: true,
-    //     slug: true,
-    //     event_logo: true
-    // },
-    // )
+    const eventCentres = await prisma.eventCentre.findMany();
 
     console.log(eventCentres);
-
 
     const eventCentreDetails = await Promise.all(
         eventCentres.map(async (eventCentre) => {
@@ -26,9 +15,9 @@ const fetchAllEventCentre = async () => {
                 where: {
                     event_centre_id: eventCentre.id,
                 },
-            })
+            });
         })
-    )
+    );
 
     const eventCentreImages = await Promise.all(
         eventCentres.map(async (eventCentre) => {
@@ -37,25 +26,30 @@ const fetchAllEventCentre = async () => {
                     event_centre_id: eventCentre.id,
                 },
                 select: {
-                    main_image: true
-                }
-            })
+                    main_image: true,
+                },
+            });
         })
-    )
+    );
 
-    return { eventCentres, eventCentreImages, eventCentreDetails }
-}
+    return { eventCentres, eventCentreImages, eventCentreDetails };
+};
 
 const Home = async () => {
-    const { eventCentres, eventCentreImages, eventCentreDetails } = await fetchAllEventCentre()
+    const { eventCentres, eventCentreImages, eventCentreDetails } =
+        await fetchAllEventCentre();
 
     return (
         <>
             <Navigation />
-            <section className='mx-auto overflow-x-hidden w-[95%] sm:w-[90%]'>
+            <section className="mx-auto overflow-x-hidden w-[95%] sm:w-[90%]">
                 <div className="my-2 sm:my-4 text-center">
-                    <p className='font-bold text-[#856D47] text-lg sm:text-xl my-2 sm:my-4'>EVENTS</p>
-                    <h1 className='text-2xl sm:text-3xl md:text-4xl my-2 sm:my-4  font-bold'>Browse all the event centres</h1>
+                    <p className="font-bold text-[#856D47] text-lg sm:text-xl my-2 sm:my-4">
+                        EVENTS
+                    </p>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl my-2 sm:my-4  font-bold">
+                        Browse all the event centres
+                    </h1>
                 </div>
                 <div className="display_event mb-12 gap-4">
                     {eventCentres.map((eventCentre, index) => (
@@ -69,7 +63,7 @@ const Home = async () => {
                 </div>
             </section>
         </>
-    )
-}
+    );
+};
 
-export default Home
+export default Home;

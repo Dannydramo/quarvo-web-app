@@ -5,7 +5,6 @@ import { getCookie, setCookie, deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { Axios } from "@/helpers/axioselpers";
 
-
 export const UserTokenRegeneration = () => {
     const router = useRouter();
     const [token, setToken] = useState<string | null>(null);
@@ -13,20 +12,19 @@ export const UserTokenRegeneration = () => {
     useEffect(() => {
         const regenerateAuthToken = async () => {
             try {
-                const currentToken = getCookie('jwtToken');
+                const currentToken = getCookie("jwtToken");
                 const response = await Axios({
-                    url: '/api/regenerate-token',
+                    url: "/api/regenerate-token",
                     method: "get",
                     headers: {
-                        Authorization: `Bearer ${currentToken}`
-                    }
+                        Authorization: `Bearer ${currentToken}`,
+                    },
                 });
 
                 if (response.status === 200) {
-                    const newToken = response.data?.newToken
+                    const newToken = response.data?.newToken;
                     setCookie("jwtToken", newToken);
                     setToken(newToken);
-                    console.log("Token regenerated successfully.", newToken);
                 } else {
                     console.error("Token regeneration failed.");
                 }
@@ -77,9 +75,10 @@ export const UserTokenRegeneration = () => {
             document.removeEventListener("mousemove", handleUserActivity);
             document.removeEventListener("keydown", handleUserActivity);
             document.removeEventListener("touchstart", handleUserActivity);
-            document.removeEventListener("visibilitychange", handleVisibilityChange);
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
         };
-
     }, [token]);
 };
-
