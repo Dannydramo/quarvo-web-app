@@ -7,7 +7,6 @@ import { Card } from "@/components/ui/card";
 import { EventProps } from "@/types/eventTypes";
 import { Calendar } from "lucide-react";
 import Location from "@/svgs/Location";
-import { UserTokenRegeneration } from "@/utils/userRegenerateTokenUtils";
 
 const EventCard: React.FC<EventProps> = ({
     eventCentre,
@@ -16,8 +15,6 @@ const EventCard: React.FC<EventProps> = ({
 }) => {
     const imageUrl = eventCentreImages?.main_image;
     const logoUrl = eventCentre?.event_logo;
-
-    UserTokenRegeneration();
 
     if (!eventCentreDetails?.price || !eventCentreDetails?.open_days) {
         return;

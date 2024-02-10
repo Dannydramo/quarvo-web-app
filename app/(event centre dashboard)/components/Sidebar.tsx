@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import React, { useLayoutEffect } from "react";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
-import { EventTokenRegeneration } from "@/utils/eventRegenerateTokenUtils";
 import { BookingStore } from "@/store/bookingInfo";
 
 const Sidebar = () => {
@@ -19,8 +18,6 @@ const Sidebar = () => {
     const { setEventDetails } = EventStore();
     const pathname = usePathname();
     const { setBookingDetails } = BookingStore();
-
-    EventTokenRegeneration();
 
     useLayoutEffect(() => {
         const fetchEventDetails = async () => {
