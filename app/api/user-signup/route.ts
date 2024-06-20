@@ -1,22 +1,23 @@
-import { NextRequest, NextResponse } from "next/server";
-import { hash } from "bcryptjs";
-import { PrismaClient } from '@prisma/client'
-import { UserReg } from "@/types/onboarding";
-import * as jose from 'jose'
-
-const prisma = new PrismaClient()
-
+import { NextRequest, NextResponse } from 'next/server';
+import { hash } from 'bcryptjs';
+import { UserReg } from '@/types/onboarding';
+import * as jose from 'jose';
+import prisma from '@/prisma/prisma';
 
 export async function POST(req: NextRequest) {
-    const { firstName, lastName, email, phoneNumber, password } = await req.json() as UserReg
+    const { firstName, lastName, email, phoneNumber, password } =
+        (await req.json()) as UserReg;
 
     const userWithEmail = await prisma.user.findUnique({
         where: {
-            email
-        }
-    })
+            email,
+        },
+    });
     if (userWithEmail) {
-        return NextResponse.json({ message: 'Email is already associated with a user', status: 401 })
+        return NextResponse.json({
+            message: 'Email is already associated with a user',
+            status: 401,
+        });
     }
 
     const hashedPassword = await hash(password, 12);
@@ -24,18 +25,24 @@ export async function POST(req: NextRequest) {
         data: {
             first_name: firstName,
             last_name: lastName,
-            full_name: firstName + " " + lastName,
+            full_name: firstName + ' ' + lastName,
             email: email,
             phone_number: phoneNumber,
-            password: hashedPassword
+            password: hashedPassword,
         },
     });
 
-    const alg = "HS256"
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET)
+    const alg = 'HS256';
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
-    const token = await new jose.SignJWT({ email: user.email }).setProtectedHeader({ alg }).setExpirationTime("5m").sign(secret)
+    const token = await new jose.SignJWT({ email: user.email })
+        .setProtectedHeader({ alg })
+        .setExpirationTime('5m')
+        .sign(secret);
 
-    return NextResponse.json({ message: 'Account created successfully', status: 200, token });
-
+    return NextResponse.json({
+        message: 'Account created successfully',
+        status: 200,
+        token,
+    });
 }

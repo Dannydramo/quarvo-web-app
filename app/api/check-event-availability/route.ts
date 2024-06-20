@@ -1,6 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/prisma/prisma';
 
 export async function POST(req: NextRequest) {
     const { eventCentreId, formattedDate } = await req.json();
@@ -15,7 +14,10 @@ export async function POST(req: NextRequest) {
     });
 
     if (isDateBooked) {
-        return NextResponse.json({ message: 'This date has already been booked.', status: 200 });
+        return NextResponse.json({
+            message: 'This date has already been booked.',
+            status: 200,
+        });
     }
 
     return NextResponse.json({ message: 'Date Available', status: 200 });

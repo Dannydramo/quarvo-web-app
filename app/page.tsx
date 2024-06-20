@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
-import EventCard from "./components/EventCard";
-import Navigation from "./components/Navigation";
+import EventCard from './components/EventCard';
+import Navigation from './components/Navigation';
 
-const prisma = new PrismaClient();
+import prisma from '@/prisma/prisma';
 
 const fetchAllEventCentre = async () => {
     const eventCentres = await prisma.eventCentre.findMany();

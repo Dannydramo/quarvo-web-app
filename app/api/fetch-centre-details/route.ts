@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as jose from 'jose'
 import jwt from 'jsonwebtoken'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import prisma from '@/prisma/prisma';
 
 export async function GET(req: NextRequest) {
 

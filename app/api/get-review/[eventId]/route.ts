@@ -1,15 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
-
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
-
-export async function GET(req: NextRequest, { params }: { params: { eventId: string } }) {
-
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/prisma/prisma';
+export async function GET(
+    req: NextRequest,
+    { params }: { params: { eventId: string } }
+) {
     try {
         const eventCentreReviews = await prisma.eventCentre.findUnique({
             where: {
-                id: params.eventId
+                id: params.eventId,
             },
             select: {
                 reviews: {
@@ -21,14 +19,20 @@ export async function GET(req: NextRequest, { params }: { params: { eventId: str
                         updatedAt: true,
                     },
                 },
-            }
-        })
-        return NextResponse.json({ message: 'Reviews fetched successfully.', status: 200, eventCentreReviews });
+            },
+        });
+        return NextResponse.json({
+            message: 'Reviews fetched successfully.',
+            status: 200,
+            eventCentreReviews,
+        });
     } catch (error) {
         console.error('Error:', error);
-        return NextResponse.json({ error: 'Internal Server Error', status: 500 });
+        return NextResponse.json({
+            error: 'Internal Server Error',
+            status: 500,
+        });
     } finally {
         await prisma.$disconnect();
     }
-
 }

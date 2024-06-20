@@ -1,23 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
-import * as jose from "jose";
-import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { NextRequest, NextResponse } from 'next/server';
+import * as jose from 'jose';
+import jwt from 'jsonwebtoken';
+import prisma from '@/prisma/prisma';
 
 export async function GET(req: NextRequest) {
-    const bearerToken = req.headers.get("authorization");
+    const bearerToken = req.headers.get('authorization');
 
     if (!bearerToken) {
         return NextResponse.json({
-            message: "Unable to get user details",
+            message: 'Unable to get user details',
             status: 401,
         });
     }
-    const token = bearerToken.split(" ")[1];
+    const token = bearerToken.split(' ')[1];
     if (!token) {
         return NextResponse.json({
-            message: "Unable to get user details",
+            message: 'Unable to get user details',
             status: 401,
         });
     }
@@ -28,7 +26,7 @@ export async function GET(req: NextRequest) {
         await jose.jwtVerify(token, secret);
     } catch (error) {
         return NextResponse.json({
-            message: "Unable to get user details",
+            message: 'Unable to get user details',
             status: 401,
         });
     }
@@ -37,7 +35,7 @@ export async function GET(req: NextRequest) {
 
     if (!payload.email) {
         return NextResponse.json({
-            message: "Unable to get user details",
+            message: 'Unable to get user details',
             status: 401,
         });
     }
@@ -53,7 +51,7 @@ export async function GET(req: NextRequest) {
     });
 
     return NextResponse.json({
-        message: "Event Centre Details",
+        message: 'Event Centre Details',
         status: 200,
         eventCentreBooking,
     });

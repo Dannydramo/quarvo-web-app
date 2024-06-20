@@ -1,6 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/prisma/prisma';
 
 export async function POST(req: NextRequest) {
     try {
@@ -16,10 +15,16 @@ export async function POST(req: NextRequest) {
             },
         });
 
-        return NextResponse.json({ message: 'Review submitted successfully.', status: 200 });
+        return NextResponse.json({
+            message: 'Review submitted successfully.',
+            status: 200,
+        });
     } catch (error) {
         console.error('Error:', error);
-        return NextResponse.json({ error: 'Internal Server Error', status: 500 });
+        return NextResponse.json({
+            error: 'Internal Server Error',
+            status: 500,
+        });
     } finally {
         await prisma.$disconnect();
     }
