@@ -11,19 +11,21 @@ export async function PATCH(req: NextRequest) {
             description,
             openDays,
             price,
+            images,
         } = await req.json();
         const eventCentreDetails = await prisma.eventCentreDetails.update({
             where: {
                 event_centre_id: id,
             },
             data: {
-                description: description,
+                description,
                 open_time: openingTime,
-                address: address,
+                address,
                 close_time: closingTime,
                 open_days: openDays,
-                price: price,
-                amenities: amenities,
+                price,
+                amenities,
+                images,
             },
         });
         return NextResponse.json({

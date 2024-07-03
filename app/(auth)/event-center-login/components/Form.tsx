@@ -1,28 +1,28 @@
-'use client'
+'use client';
 
-import { ChangeEvent, FormEvent, useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import Link from 'next/link'
-import { LoginDetails } from '@/types/onboarding'
-import { loginEventCentre } from '@/utils/eventUtils'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import Spinner from '@/svgs/Spinner'
-import Eye from '@/svgs/Eye'
-import EyeOff from '@/svgs/EyeOff'
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import { LoginDetails } from '@/types/onboarding';
+import { loginEventCentre } from '@/utils/eventUtils';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import Spinner from '@/svgs/Spinner';
+import Eye from '@/svgs/Eye';
+import EyeOff from '@/svgs/EyeOff';
 
 const Form = () => {
     const [loginDetails, setLoginDetails] = useState<LoginDetails>({
         email: '',
-        password: ''
-    })
+        password: '',
+    });
     const [inputValidity, setInputValidity] = useState({
         password: false,
         email: false,
     });
-    const [loading, setLoading] = useState(false)
-    const router = useRouter()
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
     const [seePassword, setSeePassword] = useState<boolean>(false);
 
     const handleInputChange = (
@@ -56,25 +56,22 @@ const Form = () => {
             }
         }
 
-
         try {
-            setLoading(true)
-            const { message, status } = await loginEventCentre(loginDetails)
+            setLoading(true);
+            const { message, status } = await loginEventCentre(loginDetails);
             if (status !== 200) {
-                toast.error(message)
-                setLoading(false)
-                return
+                toast.error(message);
+                setLoading(false);
+                return;
             }
-            toast.success(message)
-            setLoading(false)
-            router.replace('/dashboard')
-
+            toast.success(message);
+            setLoading(false);
+            router.replace('/dashboard');
         } catch (error) {
-            toast.error('Unable to process form submission')
-            setLoading(false)
-            return
+            toast.error('Unable to process form submission');
+            setLoading(false);
+            return;
         }
-
     };
     return (
         <>
@@ -82,7 +79,13 @@ const Form = () => {
                 <div className="grid gap-4">
                     <div className="">
                         <label htmlFor="email">Email</label>
-                        <Input type="email" className={`outline-none mt-1 ${inputValidity.email ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "email")} />
+                        <Input
+                            type="email"
+                            className={`outline-none mt-1 ${
+                                inputValidity.email ? 'border-red-500' : ''
+                            }`}
+                            onChange={(e) => handleInputChange(e, 'email')}
+                        />
                         {inputValidity.email && (
                             <p className="text-red-500 text-sm mt-1">
                                 Email Address is required.
@@ -92,7 +95,17 @@ const Form = () => {
                     <div className="">
                         <label htmlFor="password">Password</label>
                         <div className="flex">
-                            <Input type={seePassword ? "text" : "password"} className={`outline-none mt-1 border ${inputValidity.password ? "border-red-500" : ""}`} onChange={(e) => handleInputChange(e, "password")} />
+                            <Input
+                                type={seePassword ? 'text' : 'password'}
+                                className={`outline-none mt-1 border ${
+                                    inputValidity.password
+                                        ? 'border-red-500'
+                                        : ''
+                                }`}
+                                onChange={(e) =>
+                                    handleInputChange(e, 'password')
+                                }
+                            />
 
                             <div className="flex justify-end">
                                 <span
@@ -118,14 +131,26 @@ const Form = () => {
                         Forgot Password
                     </Link>
                 </div>
-                <Button type="submit" disabled={loading} className="mt-2 bg-[#856D47] hover:bg-[#856D47] text-base py-6 lg:text-lg w-full">{loading ? <Spinner className="mx-auto h-7 w-7 animate-spin" /> : 'Login'}</Button>
+                <Button
+                    type="submit"
+                    disabled={loading}
+                    className="mt-2 bg-[#095A66] hover:bg-[#095A66] text-base py-6 lg:text-lg w-full"
+                >
+                    {loading ? (
+                        <Spinner className="mx-auto h-7 w-7 animate-spin" />
+                    ) : (
+                        'Login'
+                    )}
+                </Button>
             </form>
             <div className="flex justify-center my-4 space-x-1 text-sm">
                 <p>Don't have an account?</p>
-                <Link href={'/event-center-signup'} className='underline'>Signup </Link>
+                <Link href={'/event-center-signup'} className="underline">
+                    Signup{' '}
+                </Link>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default Form
+export default Form;

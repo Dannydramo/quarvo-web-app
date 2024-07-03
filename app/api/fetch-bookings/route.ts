@@ -1,58 +1,81 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as jose from 'jose';
-import jwt from 'jsonwebtoken';
 import prisma from '@/prisma/prisma';
+import { verifyToken } from '@/utils/verifyToken';
+import * as jose from 'jose';
+
+const getEventCentreBooking = async (email: string) => {
+    return prisma.eventCentre.findUnique({
+        where: { email },
+        select: {
+            id: true,
+            bookings: {
+                select: {
+                    id: true,
+                    date: true,
+                    amount: true,
+                    user: {
+                        select: {
+                            id: true,
+                            first_name: true,
+                            last_name: true,
+                            email: true,
+                            phone_number: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+};
 
 export async function GET(req: NextRequest) {
-    const bearerToken = req.headers.get('authorization');
+    const token = req.cookies.get('token')?.value;
 
-    if (!bearerToken) {
-        return NextResponse.json({
-            message: 'Unable to get user details',
-            status: 401,
-        });
-    }
-    const token = bearerToken.split(' ')[1];
     if (!token) {
         return NextResponse.json({
-            message: 'Unable to get user details',
+            message: 'Authorization header missing or token missing',
             status: 401,
         });
     }
 
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
-    try {
-        await jose.jwtVerify(token, secret);
-    } catch (error) {
+    if (!(await verifyToken(token, secret))) {
         return NextResponse.json({
-            message: 'Unable to get user details',
+            message: 'Token verification failed',
             status: 401,
         });
     }
 
-    const payload = jwt.decode(token) as { email: string };
+    const payload = jose.decodeJwt(token) as { email?: string };
 
     if (!payload.email) {
         return NextResponse.json({
-            message: 'Unable to get user details',
+            message: 'Invalid token payload',
             status: 401,
         });
     }
 
-    const eventCentreBooking = await prisma.eventCentre.findUnique({
-        where: {
-            email: payload.email,
-        },
-        select: {
-            id: true,
-            bookings: true,
-        },
-    });
+    try {
+        const eventCentreBooking = await getEventCentreBooking(payload.email);
 
-    return NextResponse.json({
-        message: 'Event Centre Details',
-        status: 200,
-        eventCentreBooking,
-    });
+        if (!eventCentreBooking) {
+            return NextResponse.json({
+                message: 'Event centre not found',
+                status: 404,
+            });
+        }
+
+        return NextResponse.json({
+            message: 'Event Centre Details',
+            status: 200,
+            eventCentreBooking,
+        });
+    } catch (error) {
+        console.error('Database query error:', error);
+        return NextResponse.json({
+            message: 'Internal server error',
+            status: 500,
+        });
+    }
 }

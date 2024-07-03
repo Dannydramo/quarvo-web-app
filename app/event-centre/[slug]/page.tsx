@@ -16,34 +16,27 @@ const fetchEventCentreDetails = async (slug: string) => {
             event_logo: true,
         },
     });
-    const eventCentreImage = await prisma.eventCentreImages.findUnique({
-        where: {
-            event_centre_id: eventCentre?.id,
-        },
-        select: {
-            images: true,
-        },
-    });
+
     const eventCentreDetails = await prisma.eventCentreDetails.findUnique({
         where: {
             event_centre_id: eventCentre?.id,
         },
     });
 
-    return { eventCentre, eventCentreDetails, eventCentreImage };
+    return { eventCentre, eventCentreDetails };
 };
 
 const EventCentreDetails = async ({ params }: { params: { slug: string } }) => {
-    const { eventCentre, eventCentreDetails, eventCentreImage } =
-        await fetchEventCentreDetails(params.slug);
+    const { eventCentre, eventCentreDetails } = await fetchEventCentreDetails(
+        params.slug
+    );
 
     return (
         <>
             <Navigation />
             <section>
-                {eventCentreDetails && eventCentre && eventCentreImage && (
+                {eventCentreDetails && eventCentre && (
                     <EventDetails
-                        eventCentreImage={eventCentreImage}
                         eventCentreDetails={eventCentreDetails}
                         eventCentre={eventCentre}
                     />

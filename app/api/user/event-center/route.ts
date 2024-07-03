@@ -4,22 +4,14 @@ import jwt from 'jsonwebtoken';
 import prisma from '@/prisma/prisma';
 
 export async function GET(req: NextRequest) {
-    const bearerToken = req.headers.get('authorization');
+    const token = req.cookies.get('token')?.value;
 
-    if (!bearerToken) {
-        return NextResponse.json({
-            message: 'Unable to get user details',
-            status: 401,
-        });
-    }
-    const token = bearerToken.split(' ')[1];
     if (!token) {
         return NextResponse.json({
-            message: 'Unable to get user details',
+            message: 'Unable to get event centre details',
             status: 401,
         });
     }
-
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
     try {

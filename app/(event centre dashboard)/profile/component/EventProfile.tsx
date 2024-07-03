@@ -1,19 +1,19 @@
-'use client'
-import { EventCentreDetails } from "@/types/eventTypes";
-import { fetchEventCentreDetails } from "@/utils/eventUtils"
-import { useEffect, useState } from "react"
-import Form from "./Form";
-import EventDetails from "./EventDetails";
-
+'use client';
+import { EventCentreDetails } from '@/types/eventTypes';
+import { fetchEventCentreDetails } from '@/utils/eventUtils';
+import { useEffect, useState } from 'react';
+import Form from './Form';
+import EventDetails from './EventDetails';
+import ProfileForm from './ProfileForm';
 
 const EventProfile = () => {
-    const [eventDetails, setEventDetails] = useState<EventCentreDetails>();
+    const [eventDetails, setEventDetails] = useState<any>();
 
     useEffect(() => {
         const fetchEventDetails = async () => {
             try {
-
-                const { message, data, status } = await fetchEventCentreDetails();
+                const { message, data, status } =
+                    await fetchEventCentreDetails();
                 if (status !== 200) {
                     console.log(message);
                 } else {
@@ -22,11 +22,9 @@ const EventProfile = () => {
             } catch (error) {
                 console.log('Unable to fetch event center details');
             }
-        }
-        fetchEventDetails()
-    }, [])
-
-
+        };
+        fetchEventDetails();
+    }, []);
 
     return (
         <>
@@ -34,11 +32,12 @@ const EventProfile = () => {
                 {eventDetails ? (
                     <EventDetails eventCentreDetails={eventDetails} />
                 ) : (
+                    // <ProfileForm isEditing={false} />
                     <Form />
                 )}
             </div>
         </>
-    )
-}
+    );
+};
 
-export default EventProfile
+export default EventProfile;

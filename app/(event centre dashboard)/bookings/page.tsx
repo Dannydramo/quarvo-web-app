@@ -1,17 +1,18 @@
-import React from 'react'
-import Navigation from '../components/Navigation'
-import BookingData from './components/booking-data'
+import React from 'react';
+import Navigation from '../components/Navigation';
+import BookingData from './components/booking-data';
+import DashboardLayout from '../components/DashboardLayout';
 
 const Bookings = () => {
     return (
         <>
-            <Navigation>
+            <DashboardLayout>
                 <section className="w-[95%] mx-auto">
                     <BookingData />
                 </section>
-            </Navigation>
+            </DashboardLayout>
         </>
-    )
-}
+    );
+};
 
-export default Bookings
+export default Bookings;

@@ -120,7 +120,7 @@ const Form = () => {
                         Forgot Password
                     </Link>
                 </div>
-                <Button type="submit" disabled={loading} className="mt-2 text-base bg-[#856D47] hover:bg-[#856D47] py-6 lg:text-lg w-full">{loading ? <Spinner className="mx-auto h-7 w-7 animate-spin" /> : 'Login'}</Button>
+                <Button type="submit" disabled={loading} className="mt-2 text-base bg-[#095A66] hover:bg-[#095A66] py-6 lg:text-lg w-full">{loading ? <Spinner className="mx-auto h-7 w-7 animate-spin" /> : 'Login'}</Button>
             </form>
             <div className="lg:flex justify-between">
                 <div className="flex justify-center my-4 space-x-1 text-sm">

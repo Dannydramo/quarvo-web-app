@@ -1,5 +1,5 @@
-import { bookedProps } from '@/types/eventTypes'
-import React from 'react'
+import { bookedProps } from '@/types/eventTypes';
+import React from 'react';
 import {
     Table,
     TableBody,
@@ -8,10 +8,11 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
-import UserBooking from './UserBooking'
+} from '@/components/ui/table';
 
-const BookedTable: React.FC<{ bookedTable: bookedProps[] }> = ({ bookedTable }) => {
+const BookedTable: React.FC<{ bookedTable: bookedProps[] }> = ({
+    bookedTable,
+}) => {
     return (
         <>
             <Table>
@@ -28,19 +29,33 @@ const BookedTable: React.FC<{ bookedTable: bookedProps[] }> = ({ bookedTable }) 
                 <TableBody>
                     {bookedTable?.map((booked, index) => (
                         <TableRow key={booked.id}>
-                            <TableCell className="font-medium">{index + 1}</TableCell>
-                            <TableCell><UserBooking userId={booked.user_id} /></TableCell>
-                            <TableCell>{new Date(booked.date).toISOString().split('T')[0]}</TableCell>
+                            <TableCell className="font-medium">
+                                {index + 1}
+                            </TableCell>
+                            <TableCell>
+                                {booked.user.first_name +
+                                    ' ' +
+                                    booked.user.last_name}
+                            </TableCell>
+                            <TableCell>
+                                {
+                                    new Date(booked.date)
+                                        .toISOString()
+                                        .split('T')[0]
+                                }
+                            </TableCell>
                             <TableCell>{`${booked.amount}`}</TableCell>
-                            <TableCell>Paid</TableCell>
+                            <TableCell>
+                                <span className="bg-[#095A66] text-[#B5CDD1] py-2 px-6 text-center rounded-full">
+                                    Paid
+                                </span>
+                            </TableCell>
                         </TableRow>
                     ))}
-
                 </TableBody>
             </Table>
-
         </>
-    )
-}
+    );
+};
 
-export default BookedTable
+export default BookedTable;

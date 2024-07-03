@@ -1,18 +1,18 @@
-import React from 'react'
-import Navigation from '../components/Navigation'
-import EventProfile from './component/EventProfile'
-
+import React from 'react';
+import Navigation from '../components/Navigation';
+import EventProfile from './component/EventProfile';
+import DashboardLayout from '../components/DashboardLayout';
 
 const Profile = () => {
     return (
         <>
-            <Navigation>
+            <DashboardLayout>
                 <section className="w-[95%] mx-auto">
                     <EventProfile />
                 </section>
-            </Navigation>
+            </DashboardLayout>
         </>
-    )
-}
+    );
+};
 
-export default Profile
+export default Profile;

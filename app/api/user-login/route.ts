@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { compare } from 'bcryptjs';
 import * as jose from 'jose';
 import prisma from '@/prisma/prisma';
+import { setCookie } from '@/utils/setCookie';
 
 export async function POST(req: NextRequest) {
     const { email, password } = await req.json();
@@ -15,6 +16,7 @@ export async function POST(req: NextRequest) {
     if (!userWithEmail) {
         return NextResponse.json({ message: 'Account not found', status: 401 });
     }
+
     const passwordIsMatch = await compare(password, userWithEmail.password);
     if (!passwordIsMatch) {
         return NextResponse.json({
@@ -31,9 +33,13 @@ export async function POST(req: NextRequest) {
         .setExpirationTime('5m')
         .sign(secret);
 
-    return NextResponse.json({
+    const response = NextResponse.json({
         message: 'Login successfully',
         status: 200,
         token,
     });
+
+    setCookie(response, 'token', token);
+
+    return response;
 }

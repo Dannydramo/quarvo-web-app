@@ -1,11 +1,11 @@
 export interface eventRegDetails {
-    id: string
-    state: string
-    event_centre_name: string
-    email: string
-    phone_number: string
-    slug: string
-    event_logo: string | null
+    id: string;
+    state: string;
+    event_centre_name: string;
+    email: string;
+    phone_number: string;
+    slug: string;
+    event_logo: string | null;
 }
 
 export interface EventCentreDetails {
@@ -18,8 +18,8 @@ export interface EventCentreDetails {
     lga: string;
     price: string;
     amenities: string[];
+    images: string[];
 }
-
 
 export interface reviewProps {
     id: string;
@@ -30,22 +30,17 @@ export interface reviewProps {
 }
 
 export interface bookedProps {
-    created_at: string
-    date: string
-    event_centre_id: string
-    id: string
-    amount: string
-    updatedAt: string
-    user_id: string
+    user: any;
+    created_at: string;
+    date: string;
+    event_centre_id: string;
+    id: string;
+    amount: string;
+    updatedAt: string;
+    user_id: string;
 }
-
-export interface EventCentreImages {
-    main_image: string | null;
-};
-
 
 export interface EventProps {
     eventCentre: eventRegDetails;
-    eventCentreImages: EventCentreImages | null;
     eventCentreDetails: EventCentreDetails;
-};
+}

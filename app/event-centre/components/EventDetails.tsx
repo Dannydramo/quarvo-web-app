@@ -9,8 +9,8 @@ import AvailabiltyForm from "./AvailabilityForm";
 const EventDetails: React.FC<{
     eventCentreDetails: EventCentreDetails;
     eventCentre: eventRegDetails;
-    eventCentreImage: { images: string[] };
-}> = ({ eventCentreDetails, eventCentre, eventCentreImage }) => {
+
+}> = ({ eventCentreDetails, eventCentre, }) => {
     function capitalizeWords(inputString: string) {
         return inputString.replace(/\b\w/g, (char: string) =>
             char.toUpperCase()
@@ -20,7 +20,7 @@ const EventDetails: React.FC<{
     return (
         <>
             <Image
-                src={eventCentreImage.images[0]}
+                src={eventCentreDetails.images[0]}
                 alt="main_image"
                 height={400}
                 width={500}
@@ -90,7 +90,7 @@ const EventDetails: React.FC<{
                     <h1 className="font-bold text-lg sm:text-xl md:text-2xl my-4 lg:text-4xl">
                         Photo Gallery
                     </h1>
-                    <EventCentreImages eventImages={eventCentreImage.images} />
+                    <EventCentreImages eventImages={eventCentreDetails.images} />
                 </div>
 
                 <div className="max-w-[800px]">

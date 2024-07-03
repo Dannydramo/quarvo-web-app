@@ -1,8 +1,18 @@
 'use client';
-
+import {
+    ChangeEvent,
+    ChangeEventHandler,
+    FormEvent,
+    useCallback,
+    useState,
+} from 'react';
+import { useDropzone } from 'react-dropzone';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { ChangeEvent, FormEvent, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import type { Dayjs } from 'dayjs';
 import { TimePicker } from 'antd';
 import { EventStore } from '@/store/eventInfo';
@@ -21,58 +31,44 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
-import { useDropzone } from 'react-dropzone';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
 import {
     fetchEventCentreDetails,
+    postEditCentreDetails,
     postEventCentreDetails,
 } from '@/utils/eventUtils';
-import { toast } from 'sonner';
+import { uploadImagesToCloudinary } from '@/services/upload';
 
-const Form = () => {
+const ProfileForm = ({
+    initialValues,
+    isEditing,
+}: {
+    initialValues?: any;
+    isEditing: boolean;
+}) => {
+    console.log(initialValues);
+
+    const [files, setFiles] = useState<any>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { eventDetails } = EventStore();
 
     const [eventCentreDetails, setEventCentreDetails] = useState({
         id: eventDetails?.id,
-        amenities: [''],
-        address: '',
-        openingTime: '',
-        closingTime: '',
-        lga: '',
-        description: '',
-        openDays: '',
-        price: '',
-        images:['']
+        openingTime: initialValues?.eventDetails.openingTime || '',
+        closingTime: initialValues?.eventDetails.closingTime || '',
+        lga: initialValues?.eventDetails.lga || '',
+        images: initialValues?.eventCentreImages.images || [],
+        amenities: initialValues?.eventDetails.amenities || [''],
+        address: initialValues?.eventDetails.address || '',
+        description: initialValues?.eventDetails.description || '',
+        openDays: initialValues?.eventDetails.open_days || '',
+        price: initialValues?.eventDetails.price || '',
     });
     const [open, setOpen] = useState(false);
     const state = eventDetails?.state;
     const stateLga: string[] = state ? NaijaStates.lgas(state).lgas : [];
     const [value, setValue] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [files, setFiles] = useState<any>([]);
-    const onDrop = useCallback((acceptedFiles: (Blob | MediaSource)[]) => {
-        if (acceptedFiles?.length) {
-            setFiles((files: any[]) => [
-                ...files,
-                ...acceptedFiles.map((file: Blob | MediaSource) =>
-                    Object.assign(file, { preview: URL.createObjectURL(file) })
-                ),
-            ]);
-        }
-    }, []);
-    const removeFile = (name: string) => {
-        setFiles((files: File[]) =>
-            files.filter((file: { name: string }) => file.name !== name)
-        );
-    };
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-        maxFiles: 10,
-        accept: {
-            'image/*': [],
-        },
-    });
+    const router = useRouter();
+
     const stateArr = stateLga?.map((state) => {
         return {
             value: state.toLowerCase(),
@@ -123,25 +119,64 @@ const Form = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        await submitEventCentre();
+    };
+    const onDrop = useCallback((acceptedFiles: (Blob | MediaSource)[]) => {
+        if (acceptedFiles?.length) {
+            setFiles((files: any[]) => [
+                ...files,
+                ...acceptedFiles.map((file: Blob | MediaSource) =>
+                    Object.assign(file, { preview: URL.createObjectURL(file) })
+                ),
+            ]);
+        }
+    }, []);
+    const removeFile = (name: string) => {
+        setFiles((files: File[]) =>
+            files.filter((file: { name: string }) => file.name !== name)
+        );
+    };
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+        maxFiles: 10,
+        accept: {
+            'image/*': [],
+        },
+    });
+    const submitEventCentre = async () => {
         try {
-            setLoading(true);
-            const { message, data, status } = await postEventCentreDetails(
-                eventCentreDetails
-            );
+            setIsLoading(true);
+
+            const updatedImages =
+                files.length === 0
+                    ? initialValues?.eventCentreImages || []
+                    : await uploadImagesToCloudinary(files);
+
+            const eventCentreToSubmit: any = {
+                ...eventCentreDetails,
+                images: updatedImages,
+            };
+
+            const { status, message } = isEditing
+                ? await postEditCentreDetails(eventCentreToSubmit)
+                : await postEventCentreDetails(eventCentreToSubmit);
             if (status !== 200) {
-                console.log(message);
+                toast.error(message);
+                setIsLoading(false);
+                return;
             }
-            console.log(message, data);
-            setLoading(false);
-            fetchEventCentreDetails();
-        } catch (error: any) {
-            setLoading(false);
-            console.error('Form submission error:', error.message);
+
+            setIsLoading(false);
+            router.push('/profile');
+        } catch (error) {
+            toast.error('Unable to process form submission');
+            setIsLoading(false);
+            return;
         }
     };
 
     return (
-        <>
+        <div>
             <form onSubmit={handleSubmit}>
                 <div>
                     <div className="grid md:grid-cols-2 gap-4 my-4">
@@ -152,6 +187,7 @@ const Form = () => {
                                 placeholder="Amenities (Comma Seperated)"
                                 className="outline-none mt-1 border h-12"
                                 onChange={handleArrayInputChange}
+                                value={eventCentreDetails?.amenities.join()}
                             />
                         </div>
                         <div className="">
@@ -161,6 +197,7 @@ const Form = () => {
                                 placeholder="Price"
                                 onChange={(e) => handleInputChange(e, 'price')}
                                 className="outline-none mt-1 border h-12"
+                                value={eventCentreDetails.price}
                             />
                         </div>
                     </div>
@@ -175,6 +212,7 @@ const Form = () => {
                                 onChange={(e) =>
                                     handleInputChange(e, 'address')
                                 }
+                                value={eventCentreDetails.address}
                             />
                         </div>
                         <div className="">
@@ -185,6 +223,7 @@ const Form = () => {
                                 onChange={(e) =>
                                     handleInputChange(e, 'openDays')
                                 }
+                                value={eventCentreDetails.openDays}
                                 className="outline-none mt-1 border h-12"
                             />
                         </div>
@@ -198,6 +237,7 @@ const Form = () => {
                                 placeholder="Select Opening Time"
                                 className="outline-none mt-1 border h-12 w-full"
                                 onChange={onOpenTime}
+                                value={eventCentreDetails.openingTime}
                             />
                         </div>
                         <div className="">
@@ -208,6 +248,7 @@ const Form = () => {
                                 placeholder="Select Closing Time"
                                 className="outline-none mt-1 border h-12 w-full"
                                 onChange={onCloseTime}
+                                value={eventCentreDetails.closingTime}
                             />
                         </div>
                     </div>
@@ -281,6 +322,7 @@ const Form = () => {
                                 })
                             }
                             className="outline-none border"
+                            value={eventCentreDetails.description}
                         />
                     </div>
                 </div>
@@ -341,12 +383,13 @@ const Form = () => {
                         </li>
                     ))}
                 </ul>
+
                 <Button
                     type="submit"
-                    disabled={loading}
+                    disabled={isLoading}
                     className="my-4 w-full py-3 bg-[#095A66] hover:bg-[#095A66] text-white hover:text-white"
                 >
-                    {loading ? (
+                    {isLoading ? (
                         <svg
                             className="w-5 h-5 text-white animate-spin"
                             xmlns="http://www.w3.org/2000/svg"
@@ -372,8 +415,8 @@ const Form = () => {
                     )}
                 </Button>
             </form>
-        </>
+        </div>
     );
 };
 
-export default Form;
+export default ProfileForm;

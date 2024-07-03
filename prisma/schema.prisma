@@ -20,35 +20,28 @@ model EventCentre {
   reviews              Review[]
   event_centre_details EventCentreDetails?
   event_logo           String?
-  event_centre_images  EventCentreImages?
   bookings             Booking[]
 }
 
-model EventCentreImages {
-  id              String      @id @default(uuid())
-  main_image      String
-  images          String[]
-  event_centre_id String      @unique
-  event_centre    EventCentre @relation(fields: [event_centre_id], references: [id])
-  created_at      DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-}
+
 
 model EventCentreDetails {
-  id              String      @id @default(uuid())
-  description     String
-  open_time       String
-  address         String
-  close_time      String
-  open_days       String
-  lga             String
-  price           String
-  amenities       String[]
-  created_at      DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  event_centre_id String      @unique
-  event_centre    EventCentre @relation(fields: [event_centre_id], references: [id])
+    id               String   @id @default(cuid())
+    description      String
+    open_time        String
+    address          String
+    close_time       String
+    open_days        String
+    lga              String
+    price            String
+    amenities        String[]
+    images           String[] 
+    created_at       DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+    event_centre_id  String @unique
+    eventCentre      EventCentre @relation(fields: [event_centre_id], references: [id])
 }
+
 
 model Review {
   id                    String      @id @default(uuid())

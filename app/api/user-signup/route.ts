@@ -3,6 +3,7 @@ import { hash } from 'bcryptjs';
 import { UserReg } from '@/types/onboarding';
 import * as jose from 'jose';
 import prisma from '@/prisma/prisma';
+import { setCookie } from '@/utils/setCookie';
 
 export async function POST(req: NextRequest) {
     const { firstName, lastName, email, phoneNumber, password } =
@@ -37,12 +38,16 @@ export async function POST(req: NextRequest) {
 
     const token = await new jose.SignJWT({ email: user.email })
         .setProtectedHeader({ alg })
-        .setExpirationTime('5m')
+        .setExpirationTime('7d')
         .sign(secret);
 
-    return NextResponse.json({
-        message: 'Account created successfully',
+    const response = NextResponse.json({
+        message: 'Login successfully',
         status: 200,
         token,
     });
+
+    setCookie(response, 'token', token);
+
+    return response;
 }
