@@ -122,12 +122,12 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                         <Link
                             href={'/book-event'}
                             className={`flex items-center font-medium text-xs sm:text-sm md:text-base hover:bg-[#095A66] hover:text-[#B5CDD1] space-x-2 px-6 py-3 rounded-md transition-all duration-700 ${
-                                pathname === '/bookings' &&
+                                pathname === '/book-event' &&
                                 'bg-[#095A66] text-[#B5CDD1]'
                             }`}
                         >
                             <Booking />
-                            <span className="">Add Event</span>
+                            <span className="">Book Event</span>
                         </Link>
                     </nav>
                 </div>

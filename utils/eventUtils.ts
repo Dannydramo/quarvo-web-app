@@ -54,7 +54,7 @@ export const fetchEventCentre = async () => {
 
 export const postEventCentreDetails = async (payload: any) => {
     console.log(payload);
-    
+
     try {
         const response = await Axios({
             url: '/api/post-event-details',
@@ -125,8 +125,8 @@ export const checkEventAvailablity = async (
     eventCentreId: string
 ) => {
     const payload = {
-        eventCentreId,
-        formattedDate,
+        event_centre_id: eventCentreId,
+        date: formattedDate,
     };
     try {
         const response = await Axios({
@@ -143,18 +143,7 @@ export const checkEventAvailablity = async (
     return { status, message };
 };
 
-export const bookEventCentre = async (
-    eventCentreId: string,
-    formattedDate: string | undefined,
-    userId: string | undefined,
-    eventPrice: string
-) => {
-    const payload = {
-        eventCentreId,
-        formattedDate,
-        userId,
-        eventPrice,
-    };
+export const bookEventCentre = async (payload: any) => {
     try {
         const response = await Axios({
             url: '/api/book-event',

@@ -11,16 +11,15 @@ import Eye from '@/svgs/Eye';
 import Spinner from '@/svgs/Spinner';
 import { loginUser } from '@/utils/userUtils';
 import { toast } from 'sonner';
+import * as Yup from 'yup';
+import { loginValidationSchema } from '@/validators/onboarding';
 
 const Form = () => {
     const [loginDetails, setLoginDetails] = useState<LoginDetails>({
         email: '',
         password: '',
     });
-    const [inputValidity, setInputValidity] = useState({
-        password: false,
-        email: false,
-    });
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const [seePassword, setSeePassword] = useState<boolean>(false);
@@ -35,28 +34,23 @@ const Form = () => {
             [inputField]: value,
         }));
 
-        // Reset inputValidity to false when input value changes
-        setInputValidity((prevState) => ({
+        // Reset error when input value changes
+        setErrors((prevState) => ({
             ...prevState,
-            [inputField]: false,
+            [inputField]: '',
         }));
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Check if all fields are filled
-        for (const key in loginDetails) {
-            if (!loginDetails[key as keyof LoginDetails]) {
-                // If the field is empty, set its validity to true
-                setInputValidity((prevState) => ({
-                    ...prevState,
-                    [key]: true,
-                }));
-            }
-        }
-
         try {
+            await loginValidationSchema.validate(loginDetails, {
+                abortEarly: false,
+            });
+
+            setErrors({});
+
             setLoading(true);
             const { message, status } = await loginUser(loginDetails);
             if (status !== 200) {
@@ -67,28 +61,37 @@ const Form = () => {
             toast.success(message);
             setLoading(false);
             router.replace('/event-centres');
-        } catch (error) {
-            toast.error('Unable to process form submission');
-            setLoading(false);
-            return;
+
+        } catch (validationErrors) {
+            const errorsObj: { [key: string]: string } = {};
+            if (validationErrors instanceof Yup.ValidationError) {
+                validationErrors.inner.forEach((error) => {
+                    errorsObj[error.path!] = error.message;
+                });
+                setErrors(errorsObj);
+            } else {
+                toast.error('Unable to process form submission');
+                setLoading(false);
+            }
         }
     };
+
     return (
         <>
-            <form action="" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div className="grid gap-4">
                     <div className="">
                         <label htmlFor="email">Email</label>
                         <Input
                             type="email"
                             className={`outline-none mt-1 border ${
-                                inputValidity.email ? 'border-red-500' : ''
+                                errors.email ? 'border-red-500' : ''
                             }`}
                             onChange={(e) => handleInputChange(e, 'email')}
                         />
-                        {inputValidity.email && (
+                        {errors.email && (
                             <p className="text-red-500 text-sm mt-1">
-                                Email Address is required.
+                                {errors.email}
                             </p>
                         )}
                     </div>
@@ -98,7 +101,7 @@ const Form = () => {
                             <Input
                                 type={seePassword ? 'text' : 'password'}
                                 className={`outline-none mt-1 border ${
-                                    inputValidity.password
+                                    errors.password
                                         ? 'border-red-500'
                                         : ''
                                 }`}
@@ -116,9 +119,9 @@ const Form = () => {
                                 </span>
                             </div>
                         </div>
-                        {inputValidity.password && (
+                        {errors.password && (
                             <p className="text-red-500 text-sm mt-1">
-                                Password is required.
+                                {errors.password}
                             </p>
                         )}
                     </div>
@@ -148,7 +151,7 @@ const Form = () => {
                 <div className="flex justify-center mb-4 lg:my-4 space-x-1 text-sm">
                     <p>Don't have an account?</p>
                     <Link href={'/signup'} className="underline">
-                        Signup{' '}
+                        Signup
                     </Link>
                 </div>
             </div>

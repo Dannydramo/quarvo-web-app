@@ -11,16 +11,15 @@ import { useRouter } from 'next/navigation';
 import Spinner from '@/svgs/Spinner';
 import Eye from '@/svgs/Eye';
 import EyeOff from '@/svgs/EyeOff';
+import * as Yup from 'yup';
+import { loginValidationSchema } from '@/validators/onboarding';
 
 const Form = () => {
     const [loginDetails, setLoginDetails] = useState<LoginDetails>({
         email: '',
         password: '',
     });
-    const [inputValidity, setInputValidity] = useState({
-        password: false,
-        email: false,
-    });
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const [seePassword, setSeePassword] = useState<boolean>(false);
@@ -35,28 +34,23 @@ const Form = () => {
             [inputField]: value,
         }));
 
-        // Reset inputValidity to false when input value changes
-        setInputValidity((prevState) => ({
+        // Reset error when input value changes
+        setErrors((prevState) => ({
             ...prevState,
-            [inputField]: false,
+            [inputField]: '',
         }));
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Check if all fields are filled
-        for (const key in loginDetails) {
-            if (!loginDetails[key as keyof LoginDetails]) {
-                // If the field is empty, set its validity to true
-                setInputValidity((prevState) => ({
-                    ...prevState,
-                    [key]: true,
-                }));
-            }
-        }
-
         try {
+            await loginValidationSchema.validate(loginDetails, {
+                abortEarly: false,
+            });
+
+            setErrors({});
+
             setLoading(true);
             const { message, status } = await loginEventCentre(loginDetails);
             if (status !== 200) {
@@ -67,12 +61,20 @@ const Form = () => {
             router.replace('/dashboard');
             toast.success(message);
             setLoading(false);
-        } catch (error) {
-            toast.error('Unable to process form submission');
-            setLoading(false);
-            return;
+        } catch (validationErrors) {
+            const errorsObj: { [key: string]: string } = {};
+            if (validationErrors instanceof Yup.ValidationError) {
+                validationErrors.inner.forEach((error: any) => {
+                    errorsObj[error.path] = error.message;
+                });
+                setErrors(errorsObj);
+            } else {
+                toast.error('Unable to process form submission');
+                setLoading(false);
+            }
         }
     };
+
     return (
         <>
             <form action="" onSubmit={handleSubmit}>
@@ -82,13 +84,13 @@ const Form = () => {
                         <Input
                             type="email"
                             className={`outline-none mt-1 ${
-                                inputValidity.email ? 'border-red-500' : ''
+                                errors.email ? 'border-red-500' : ''
                             }`}
                             onChange={(e) => handleInputChange(e, 'email')}
                         />
-                        {inputValidity.email && (
+                        {errors.email && (
                             <p className="text-red-500 text-sm mt-1">
-                                Email Address is required.
+                                {errors.email}
                             </p>
                         )}
                     </div>
@@ -97,16 +99,13 @@ const Form = () => {
                         <div className="flex">
                             <Input
                                 type={seePassword ? 'text' : 'password'}
-                                className={`outline-none mt-1 border ${
-                                    inputValidity.password
-                                        ? 'border-red-500'
-                                        : ''
+                                className={`outline-none mt-1 ${
+                                    errors.password ? 'border-red-500' : ''
                                 }`}
                                 onChange={(e) =>
                                     handleInputChange(e, 'password')
                                 }
                             />
-
                             <div className="flex justify-end">
                                 <span
                                     className="absolute mr-[1rem] mt-[.75rem] text-sm cursor-pointer"
@@ -116,9 +115,9 @@ const Form = () => {
                                 </span>
                             </div>
                         </div>
-                        {inputValidity.password && (
+                        {errors.password && (
                             <p className="text-red-500 text-sm mt-1">
-                                Password is required.
+                                {errors.password}
                             </p>
                         )}
                     </div>

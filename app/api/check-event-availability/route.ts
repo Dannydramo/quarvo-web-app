@@ -2,23 +2,30 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/prisma';
 
 export async function POST(req: NextRequest) {
-    const { eventCentreId, formattedDate } = await req.json();
+    try {
+        const { event_centre_id, date } = await req.json();
 
-    const isDateBooked = await prisma.booking.findFirst({
-        where: {
-            event_centre_id: eventCentreId,
-            date: {
-                equals: new Date(formattedDate),
+        const isDateBooked = await prisma.booking.findFirst({
+            where: {
+                event_centre_id,
+                date: {
+                    equals: new Date(date),
+                },
             },
-        },
-    });
+        });
 
-    if (isDateBooked) {
+        if (isDateBooked) {
+            return NextResponse.json({
+                message: 'This date has already been booked.',
+                status: 200,
+            });
+        }
+
+        return NextResponse.json({ message: 'Date Available', status: 200 });
+    } catch (error) {
         return NextResponse.json({
-            message: 'This date has already been booked.',
-            status: 200,
+            message: 'Internal server error',
+            status: 500,
         });
     }
-
-    return NextResponse.json({ message: 'Date Available', status: 200 });
 }

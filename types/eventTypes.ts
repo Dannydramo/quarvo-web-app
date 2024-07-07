@@ -37,7 +37,10 @@ export interface bookedProps {
     id: string;
     amount: string;
     updatedAt: string;
-    user_id: string;
+    user_id?: string;
+    physical_user_name?: string;
+    physical_user_email?: string;
+    physical_user_phone?: string;
 }
 
 export interface EventProps {

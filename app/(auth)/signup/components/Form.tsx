@@ -1,4 +1,5 @@
 'use client';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Eye from '@/svgs/Eye';
@@ -10,6 +11,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'sonner';
+import * as Yup from 'yup';
+import { userRegistrationValidationSchema } from '@/validators/onboarding';
 
 const Form = () => {
     const [userRegDetails, setUserRegDetails] = useState<UserReg>({
@@ -54,26 +57,11 @@ const Form = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Check if all fields are filled
-        for (const key in userRegDetails) {
-            if (!userRegDetails[key as keyof UserReg]) {
-                // If the field is empty, set its validity to true
-                setInputValidity((prevState) => ({
-                    ...prevState,
-                    [key]: true,
-                }));
-            }
-        }
-
-        if (
-            userRegDetails.password.trim() !==
-            userRegDetails.confirmPassword.trim()
-        ) {
-            toast.error('Password and confirm password must be the same');
-            return;
-        }
-
         try {
+            await userRegistrationValidationSchema.validate(userRegDetails, {
+                abortEarly: false,
+            });
+
             setLoading(true);
             const { message, status } = await registerUser(userRegDetails);
             if (status !== 200) {
@@ -84,10 +72,17 @@ const Form = () => {
             toast.success(message);
             setLoading(false);
             router.replace('/login');
-        } catch (error) {
-            toast.error('Unable to process form submission');
-            setLoading(false);
-            return;
+        } catch (validationErrors) {
+            const errorsObj: { [key: string]: string } = {};
+            if (validationErrors instanceof Yup.ValidationError) {
+                validationErrors.inner.forEach((error) => {
+                    errorsObj[error.path!] = error.message;
+                });
+                // setInputValidity(errorsObj);
+            } else {
+                toast.error('Unable to process form submission');
+                setLoading(false);
+            }
         }
     };
 
@@ -106,7 +101,7 @@ const Form = () => {
                         />
                         {inputValidity.firstName && (
                             <p className="text-red-500 text-sm mt-1">
-                                First Name is required.
+                                {inputValidity.firstName}
                             </p>
                         )}
                     </div>
@@ -121,7 +116,7 @@ const Form = () => {
                         />
                         {inputValidity.lastName && (
                             <p className="text-red-500 text-sm mt-1">
-                                Last Name is required.
+                                {inputValidity.lastName}
                             </p>
                         )}
                     </div>
@@ -137,7 +132,7 @@ const Form = () => {
                         />
                         {inputValidity.email && (
                             <p className="text-red-500 text-sm mt-1">
-                                Email Address is required.
+                                {inputValidity.email}
                             </p>
                         )}
                     </div>
@@ -158,7 +153,7 @@ const Form = () => {
                         />
                         {inputValidity.phoneNumber && (
                             <p className="text-red-500 text-sm mt-1">
-                                Phone Number is required.
+                                {inputValidity.phoneNumber}
                             </p>
                         )}
                     </div>
@@ -188,7 +183,7 @@ const Form = () => {
                         </div>
                         {inputValidity.password && (
                             <p className="text-red-500 text-sm mt-1">
-                                Password is required.
+                                {inputValidity.password}
                             </p>
                         )}
                     </div>
@@ -223,7 +218,7 @@ const Form = () => {
                         </div>
                         {inputValidity.confirmPassword && (
                             <p className="text-red-500 text-sm mt-1">
-                                Confirm Password is required.
+                                {inputValidity.confirmPassword}
                             </p>
                         )}
                     </div>

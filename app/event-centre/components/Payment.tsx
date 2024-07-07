@@ -1,11 +1,11 @@
-"use client";
-import React, { useState } from "react";
-import PaystackPop from "@paystack/inline-js";
-import { UserStore } from "@/store/userInfo";
-import { eventRegDetails } from "@/types/eventTypes";
-import { bookEventCentre } from "@/utils/eventUtils";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+'use client';
+import React, { useState } from 'react';
+import PaystackPop from '@paystack/inline-js';
+import { UserStore } from '@/store/userInfo';
+import { eventRegDetails } from '@/types/eventTypes';
+import { bookEventCentre } from '@/utils/eventUtils';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 interface PaystackTransaction {
     amount: number;
     reference: string;
@@ -21,17 +21,20 @@ const Payment: React.FC<{
     const handleEventBooking = async () => {
         try {
             setLoading(true);
-            const formattedDate = date;
-            const { status, message } = await bookEventCentre(
-                eventCentre.id,
-                formattedDate,
-                userDetails?.id,
-                eventPrice
-            );
+            const { status, message } = await bookEventCentre({
+                event_centre_id: eventCentre.id,
+                date,
+                userId: userDetails?.id,
+                amount: eventPrice,
+            });
+            if (status!==200) {
+                toast.error('Unable to book event centre')
+                return
+            }
             toast.success(message);
             setLoading(false);
         } catch (error) {
-            console.error("Error:", error);
+            console.error('Error:', error);
             setLoading(false);
             return;
         }
@@ -49,7 +52,7 @@ const Payment: React.FC<{
             },
             onCancel() {
                 toast.error(
-                    "Payment was not Successful. Please Try Again Later"
+                    'Payment was not Successful. Please Try Again Later'
                 );
             },
         });
@@ -61,7 +64,7 @@ const Payment: React.FC<{
             disabled={loading}
             onClick={handlePayment}
         >
-            {loading ? "Confirming Booking" : "Continue with payment"}
+            {loading ? 'Confirming Booking' : 'Continue with payment'}
         </Button>
     );
 };
