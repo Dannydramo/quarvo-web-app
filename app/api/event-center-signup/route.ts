@@ -50,6 +50,7 @@ export async function POST(req: NextRequest) {
             status: 200,
         });
         setCookie(response, 'token', token);
+        return response;
     } catch (error) {
         return NextResponse.json({
             message: 'Internal server error',

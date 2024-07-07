@@ -29,9 +29,11 @@ import {
     postEventCentreDetails,
 } from '@/utils/eventUtils';
 import { toast } from 'sonner';
+import { uploadImagesToCloudinary } from '@/services/upload';
 
 const Form = () => {
     const { eventDetails } = EventStore();
+    console.log(eventDetails?.id);
 
     const [eventCentreDetails, setEventCentreDetails] = useState({
         id: eventDetails?.id,
@@ -43,7 +45,7 @@ const Form = () => {
         description: '',
         openDays: '',
         price: '',
-        images:['']
+        images: [''],
     });
     const [open, setOpen] = useState(false);
     const state = eventDetails?.state;
@@ -125,13 +127,19 @@ const Form = () => {
         e.preventDefault();
         try {
             setLoading(true);
+            const uploadedImages = await uploadImagesToCloudinary(files);
+            const detailsToSubmit = {
+                ...eventCentreDetails,
+                images: uploadedImages,
+            };
             const { message, data, status } = await postEventCentreDetails(
-                eventCentreDetails
+                detailsToSubmit
             );
             if (status !== 200) {
+                toast.error(message);
                 console.log(message);
             }
-            console.log(message, data);
+
             setLoading(false);
             fetchEventCentreDetails();
         } catch (error: any) {
@@ -240,7 +248,9 @@ const Form = () => {
                                         {stateArr.map((state) => (
                                             <CommandItem
                                                 key={state.value}
-                                                onSelect={(currentValue) => {
+                                                onSelect={(
+                                                    currentValue: any
+                                                ) => {
                                                     setValue(
                                                         currentValue === value
                                                             ? ''

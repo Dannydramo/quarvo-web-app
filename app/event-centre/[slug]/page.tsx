@@ -16,6 +16,7 @@ const fetchEventCentreDetails = async (slug: string) => {
             event_logo: true,
         },
     });
+    console.log(eventCentre);
 
     const eventCentreDetails = await prisma.eventCentreDetails.findUnique({
         where: {

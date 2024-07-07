@@ -7,6 +7,9 @@ const nextConfig = {
     env: {
         PAYSTACK_KEY: process.env.PAYSTACK_TEST_PUBLIC_KEY,
     },
+    experimental: {
+        serverActions: true,
+      },
 };
 
 module.exports = nextConfig;

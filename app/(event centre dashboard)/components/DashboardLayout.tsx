@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { deleteCookie } from 'cookies-next';
 import { LayoutDashboardIcon } from 'lucide-react';
 import Profile from '@/svgs/Profile';
 import Booking from '@/svgs/Booking';
@@ -26,6 +25,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 if (status !== 200) {
                     console.log(message);
                 }
+
                 setEventDetails(data);
             } catch (error) {
                 console.log('Unable to fetch event details');

@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model EventCentre {
-  id                   String              @id @default(uuid())
+  id                   String          @id @default(auto()) @map("_id") @db.ObjectId
   email                String              @unique
   password             String
   event_centre_name    String              @unique
@@ -23,10 +23,8 @@ model EventCentre {
   bookings             Booking[]
 }
 
-
-
 model EventCentreDetails {
-    id               String   @id @default(cuid())
+    id               String   @id @default(auto()) @map("_id") @db.ObjectId
     description      String
     open_time        String
     address          String
@@ -42,9 +40,8 @@ model EventCentreDetails {
     eventCentre      EventCentre @relation(fields: [event_centre_id], references: [id])
 }
 
-
 model Review {
-  id                    String      @id @default(uuid())
+  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
   full_name             String
   review_comment        String
   created_at            DateTime    @default(now())
@@ -54,7 +51,7 @@ model Review {
 }
 
 model User {
-  id           String    @id @default(uuid())
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
   first_name   String
   last_name    String
   full_name    String
@@ -67,7 +64,7 @@ model User {
 }
 
 model Booking {
-  id              String      @id @default(uuid())
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
   date            DateTime
   user_id         String
   event_centre_id String

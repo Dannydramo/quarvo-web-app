@@ -15,7 +15,6 @@ import { ChangeEvent, useState } from "react";
 import UploadImage from "./upload-image";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { deleteCookie } from "cookies-next";
 import Spinner from "@/svgs/Spinner";
 
 const UserNav = () => {
@@ -60,11 +59,7 @@ const UserNav = () => {
         }
     };
 
-    const logOutUser = () => {
-        deleteCookie("jwtToken");
-        toast.success("Logout Succesful");
-        router.replace("/event-center-login");
-    };
+  
 
     return (
         <>
@@ -118,12 +113,7 @@ const UserNav = () => {
                         )}
                     </DropdownMenuLabel>
                     <DropdownMenuGroup></DropdownMenuGroup>
-                    <DropdownMenuItem
-                        onClick={logOutUser}
-                        className="md:hidden"
-                    >
-                        Log out
-                    </DropdownMenuItem>
+                   
                 </DropdownMenuContent>
             </DropdownMenu>
         </>

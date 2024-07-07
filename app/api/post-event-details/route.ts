@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/prisma';
-export async function PATCH(req: NextRequest) {
+
+export async function POST(req: NextRequest) {
     try {
         const {
             id,
@@ -8,35 +9,40 @@ export async function PATCH(req: NextRequest) {
             address,
             openingTime,
             closingTime,
+            lga,
             description,
             openDays,
             price,
             images,
         } = await req.json();
-        const eventCentreDetails = await prisma.eventCentreDetails.update({
-            where: {
-                event_centre_id: id,
-            },
+
+        const eventCentreDetails = await prisma.eventCentreDetails.create({
             data: {
-                description,
                 open_time: openingTime,
-                address,
                 close_time: closingTime,
                 open_days: openDays,
+                description,
+                address,
+                lga,
                 price,
                 amenities,
                 images,
+                eventCentre: {
+                    connect: {
+                        id: id,
+                    },
+                },
             },
         });
         return NextResponse.json({
-            message: 'Event Centre Details updated successfully',
+            message: 'Event Centre Details created successfully',
             status: 200,
             eventCentreDetails,
         });
     } catch (error) {
         return NextResponse.json({
             message:
-                'An error occurred while updating the event center details.',
+                'An error occurred while creating the event center details.',
             status: 500,
         });
     }

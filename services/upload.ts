@@ -29,7 +29,7 @@ export const uploadImagesToCloudinary = async (
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    withCredentials: false, // Ensure this is false to prevent credential issues
+                    withCredentials: false,
                 }
             );
             uploadedImageUrls.push(response.data.secure_url);

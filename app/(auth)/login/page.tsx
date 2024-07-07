@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Form from './components/Form';
 
 const Login = () => {
@@ -14,6 +15,20 @@ const Login = () => {
                         </p>
                     </div>
                     <Form />
+                    <div className="flex items-center text-xs my-4 w-full">
+                        <hr className="flex-grow border-gray-300" />
+                        <span className="px-3 text-gray-500">OR</span>
+                        <hr className="flex-grow border-gray-300" />
+                    </div>
+
+                    <div className="w-full text-xs">
+                        <Link
+                            href="/event-center-login"
+                            className="block w-full mt-2 rounded-sm py-3 text-center bg-gray-300"
+                        >
+                            Login as an Event Center
+                        </Link>
+                    </div>
                 </div>
             </div>
             <div className=" w-1/2 hidden min-h-screen lg:block pl-3rem bg-authBg bg-center bg-no-repeat bg-cover"></div>

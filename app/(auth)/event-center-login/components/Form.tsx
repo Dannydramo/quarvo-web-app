@@ -64,9 +64,9 @@ const Form = () => {
                 setLoading(false);
                 return;
             }
+            router.replace('/dashboard');
             toast.success(message);
             setLoading(false);
-            router.replace('/dashboard');
         } catch (error) {
             toast.error('Unable to process form submission');
             setLoading(false);

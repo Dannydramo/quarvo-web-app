@@ -90,7 +90,7 @@ const EditProfile: React.FC<{ eventCentreDetails: EventCentreDetails }> = ({
             setLoading(true);
             const updatedImages =
                 files.length === 0
-                    ? eventCentreDetails?.images || []
+                    ? eventCentreDetails?.images 
                     : await uploadImagesToCloudinary(files);
             const detailsToSubmit = {
                 ...editProfileDetails,

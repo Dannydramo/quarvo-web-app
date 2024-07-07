@@ -1,6 +1,5 @@
 import { Axios } from '@/helpers/axioselpers';
 import { EventCentreReg, LoginDetails } from '@/types/onboarding';
-import { getCookie, setCookie } from 'cookies-next';
 
 let status: number;
 let message: null;
@@ -29,10 +28,8 @@ export const loginEventCentre = async (payload: LoginDetails) => {
             method: 'post',
             body: payload,
         });
-        status = response.data.status;
+        status = 200;
         message = response.data.message;
-        const authToken = response.data.token;
-        setCookie('jwtToken', authToken, { secure: true, maxAge: 60 * 6 * 24 });
     } catch (err: any) {
         status = err.response.status;
         message = err.response.data.message;
@@ -56,9 +53,11 @@ export const fetchEventCentre = async () => {
 };
 
 export const postEventCentreDetails = async (payload: any) => {
+    console.log(payload);
+    
     try {
         const response = await Axios({
-            url: '/api/event-centre-details',
+            url: '/api/post-event-details',
             method: 'post',
             body: payload,
         });
@@ -75,7 +74,7 @@ export const postEventCentreDetails = async (payload: any) => {
 export const postEditCentreDetails = async (payload: any) => {
     try {
         const response = await Axios({
-            url: '/api/edit-profile',
+            url: '/api/edit-event-details',
             method: 'patch',
             body: payload,
         });
@@ -92,7 +91,7 @@ export const postEditCentreDetails = async (payload: any) => {
 export const fetchEventCentreDetails = async () => {
     try {
         const response = await Axios({
-            url: '/api/fetch-centre-details',
+            url: '/api/event-centre-details',
             method: 'get',
         });
 
