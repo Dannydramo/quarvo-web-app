@@ -39,7 +39,7 @@ const EventDetails: React.FC<{
                 )}
             </Carousel>
 
-            <section className="mx-auto overflow-x-hidden bg-[#095A66] rounded-xl md:w-[95%] lg:w-[90%]">
+            <section className="mx-auto overflow-x-hidden md:w-[95%] lg:w-[90%]">
                 <div className="max-w-[800px]">
                     <p className="font-bold text-lg sm:text-xl md:text-2xl mt-8 lg:text-4xl">
                         {eventCentre.event_centre_name}
@@ -48,24 +48,24 @@ const EventDetails: React.FC<{
                         {eventCentre?.event_centre_details?.description}
                     </p>
                     <hr className="border my-8 opacity-70 border-[#095A66]" />
-                    <div className="mt-4 text-base flex flex-col space-y-2 md:text-lg">
-                        <h1 className="font-bold text-lg sm:text-xl md:text-2xl mb-4 lg:text-4xl">
+                    <div className="mt-4 text-base bg-[#095A66] text-[#B5CDD1] rounded-xl p-4 flex flex-col space-y-2 ">
+                        <h1 className="font-extrabold text-lg sm:text-xl md:text-2xl mb-4 lg:text-4xl">
                             EventCentre Details
                         </h1>
                         <p>
-                            <span>Phone Number: </span>
+                            <span className="font-bold">Phone Number: </span>
                             <span>{eventCentre.phone_number}</span>
                         </p>
                         <p>
-                            <span>Email Address: </span>
+                            <span className="font-bold">Email Address: </span>
                             <span>{eventCentre.email}</span>
                         </p>
                         <p>
-                            <span>State: </span>
+                            <span className="font-bold">State: </span>
                             <span>{capitalizeWords(eventCentre.state)}</span>
                         </p>
                         <p>
-                            <span>L.G.A: </span>
+                            <span className="font-bold">L.G.A: </span>
                             <span>
                                 {capitalizeWords(
                                     eventCentre?.event_centre_details?.lga!
@@ -73,42 +73,40 @@ const EventDetails: React.FC<{
                             </span>
                         </p>
                         <p>
-                            <span>Address: </span>
+                            <span className="font-bold">Address: </span>
                             <span>
                                 {eventCentre?.event_centre_details?.address}
                             </span>
                         </p>
                         <p>
-                            <span>Opening Time: </span>
+                            <span className="font-bold">Opening Time: </span>
                             <span>
                                 {eventCentre?.event_centre_details?.open_time}
                             </span>
                         </p>
                         <p>
-                            <span>Closing Time: </span>
+                            <span className="font-bold">Closing Time: </span>
                             <span>
                                 {eventCentre?.event_centre_details?.close_time}
                             </span>
                         </p>
                         <p>
-                            <span>Price: </span>
+                            <span className="font-bold">Price: </span>
                             <span>
                                 {eventCentre?.event_centre_details?.price}
                             </span>
                         </p>
                         <p>
-                            <span>Opening Days: </span>
+                            <span className="font-bold">Opening Days: </span>
                             <span>
                                 {eventCentre?.event_centre_details?.open_days}
                             </span>
                         </p>
-                        <AvailabiltyForm
-                            eventCentre={eventCentre}
-                            eventPrice={
-                                eventCentre?.event_centre_details?.price!
-                            }
-                        />
                     </div>
+                    <AvailabiltyForm
+                        eventCentre={eventCentre}
+                        eventPrice={eventCentre?.event_centre_details?.price!}
+                    />
                 </div>
 
                 <div className="max-w-[800px]">
