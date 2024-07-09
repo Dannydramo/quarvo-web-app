@@ -27,7 +27,9 @@ export async function POST(req: NextRequest) {
           })
         : await prisma.booking.create({
               data: {
-                  event_centre_id,
+                  event_centre: {
+                      connect: { id: event_centre_id },
+                  },
                   date: new Date(date),
                   amount,
                   physical_user_name,

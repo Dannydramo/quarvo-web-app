@@ -40,7 +40,7 @@ const EventDetails: React.FC<{
             </Carousel>
 
             <section className="mx-auto overflow-x-hidden md:w-[95%] lg:w-[90%]">
-                <div className="max-w-[800px]">
+                <div className="max-w-[700px]">
                     <p className="font-bold text-lg sm:text-xl md:text-2xl mt-8 lg:text-4xl">
                         {eventCentre.event_centre_name}
                     </p>
@@ -48,7 +48,7 @@ const EventDetails: React.FC<{
                         {eventCentre?.event_centre_details?.description}
                     </p>
                     <hr className="border my-8 opacity-70 border-[#095A66]" />
-                    <div className="mt-4 text-base bg-[#095A66] text-[#B5CDD1] rounded-xl p-4 flex flex-col space-y-2 ">
+                    <div className="mt-4 bg-[#095A66] text-sm sm:text-base text-[#B5CDD1] rounded-xl p-4 flex flex-col space-y-2 ">
                         <h1 className="font-extrabold text-lg sm:text-xl md:text-2xl mb-4 lg:text-4xl">
                             EventCentre Details
                         </h1>
