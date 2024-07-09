@@ -82,23 +82,24 @@ const Form = () => {
         };
     });
 
-    const onOpenTime = (time: Dayjs | null, timeString: string) => {
+    const onOpenTime = (time: Dayjs, timeString: string | string[]) => {
         if (time) {
             setEventCentreDetails({
                 ...eventCentreDetails,
-                openingTime: timeString,
+                openingTime: Array.isArray(timeString) ? timeString[0] : timeString,
             });
         }
     };
-
-    const onCloseTime = (time: Dayjs | null, timeString: string) => {
+    
+    const onCloseTime = (time: Dayjs, timeString: string | string[]) => {
         if (time) {
             setEventCentreDetails({
                 ...eventCentreDetails,
-                closingTime: timeString,
+                closingTime: Array.isArray(timeString) ? timeString[0] : timeString,
             });
         }
     };
+    
 
     const stringToArray = (inputString: string, delimiter: string = ',') => {
         return inputString.split(delimiter).map((value) => value.trim());

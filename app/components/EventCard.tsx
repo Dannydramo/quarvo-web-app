@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-
 import Image from 'next/image';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
@@ -8,58 +7,9 @@ import { EventProps } from '@/types/eventTypes';
 import { Calendar } from 'lucide-react';
 import Location from '@/svgs/Location';
 
-const EventCard: React.FC<EventProps> = ({
-    eventCentre,
-    eventCentreDetails,
-}) => {
+const EventCard: React.FC<EventProps> = ({ eventCentre }) => {
     const logoUrl = eventCentre?.event_logo;
 
-    if (!eventCentreDetails?.price || !eventCentreDetails?.open_days) {
-        return;
-    }
-
-    // if (!imageUrl) {
-    //     return (
-    //         <>
-    //             <Card className="rounded-xl overflow-x-hidden group cursor-pointer relative">
-    //                 <p className="absolute top-3 left-3 z-50 text-white bg-[#856D47] py-2 px-6 rounded-[2rem]">
-    //                     Not Available
-    //                 </p>
-    //                 <Image
-    //                     src={"/auth_bg.jpg"}
-    //                     alt="image"
-    //                     priority={true}
-    //                     width={400}
-    //                     height={200}
-    //                     className="w-full transform duration-300 transition group-hover:scale-105 rounded-t-xl group-hover:opacity-70 h-[250px]"
-    //                 />
-    //                 <div className="p-4">
-    //                     <div className="flex justify-between items-center">
-    //                         <p className="font-bold text-xl hover:text-[#856D47]">
-    //                             {eventCentre.event_centre_name}
-    //                         </p>
-    //                     </div>
-    //                     <p className="font-bold text-xl my-2">
-    //                         NGN{eventCentreDetails?.price}
-    //                     </p>
-    //                     <div className="flex space-x-3 my-2 items-center">
-    //                         <Calendar className="text-base text-[#856D47]" />
-    //                         <p className="text-base md:text-lg">
-    //                             {eventCentreDetails?.open_days}
-    //                         </p>
-    //                     </div>
-    //                     <div className="flex space-x-3 my-2 items-center">
-    //                         <Location />
-    //                         <p className="text-base md:text-lg">
-    //                             {capitalizeWords(eventCentre.state)},{" "}
-    //                             {capitalizeWords(eventCentreDetails.lga)}
-    //                         </p>
-    //                     </div>
-    //                 </div>
-    //             </Card>
-    //         </>
-    //     );
-    // }
     function capitalizeWords(inputString: string) {
         return inputString?.replace(/\b\w/g, (char: string) =>
             char.toUpperCase()
@@ -67,42 +17,55 @@ const EventCard: React.FC<EventProps> = ({
     }
     return (
         <>
-            <Card className="rounded-xl group overflow-x-hidden relative">
-                <p className="absolute top-3 left-3 text-white bg-[#856D47] py-2 z-50 px-6 rounded-[2rem]">
-                    Available
-                </p>
+            <Card className="rounded-lg group overflow-x-hidden p-2 bg-gray-200 relative">
                 <Link href={`/event-centre/${eventCentre?.slug}`}>
-                    {/* <Image
-                        src={imageUrl}
+                    <Image
+                        src={eventCentre.event_centre_details?.images[0]!}
                         alt="image"
                         priority={true}
                         width={400}
                         height={200}
-                        className="w-full transform duration-300 transition group-hover:scale-105 rounded-t-xl group-hover:opacity-70 h-[250px]"
-                    /> */}
-                    <div className="p-4 px-6">
-                        <div className="flex justify-between mb-2 space-x-4 items-center">
-                            <p className="font-bold text-lg sm:text-xl hover:text-[#856D47]">
+                        className="w-full rounded-md h-[250px]"
+                    />
+                    <div className="bg-white px-2 py-4 mt-2  rounded-md">
+                        <div className="flex gap-2 items-center">
+                            {logoUrl ? (
+                                <Avatar className="h-8 w-8">
+                                    <AvatarImage
+                                        src={logoUrl}
+                                        alt="event logo"
+                                    />
+                                </Avatar>
+                            ) : (
+                                <Avatar className="h-8 w-8">
+                                    <AvatarImage
+                                        src={'/default_logo.jpg'}
+                                        alt="event logo"
+                                    />
+                                </Avatar>
+                            )}
+                            <p className="font-semibold text-[#095A66] text-sm sm:text-base">
                                 {eventCentre.event_centre_name}
                             </p>
-                            <Avatar className="h-8 w-8">
-                                <AvatarImage src={logoUrl!} alt="event logo" />
-                            </Avatar>
                         </div>
-                        <p className="font-bold text-lg sm:text-xl my-2">
-                            NGN{eventCentreDetails.price}
-                        </p>
-                        <div className="flex space-x-3 my-2 items-center">
-                            <Calendar className="text-base text-[#856D47]" />
-                            <p className="text-base md:text-lg">
-                                {eventCentreDetails.open_days}
+                        <div className=" my-2">
+                            <p className="font-bold">
+                                ₦{eventCentre.event_centre_details?.price}
                             </p>
                         </div>
-                        <div className="flex space-x-3 my-2 items-center">
-                            <Location />
-                            <p className="text-base md:text-lg">
+                        <div className="flex items-center mt-2 text-sm">
+                            <Calendar className="h-4 text-[#095A66]" />
+                            <p className="">
+                                {eventCentre.event_centre_details?.open_days}
+                            </p>
+                        </div>
+                        <div className="flex items-center text-sm mt-2">
+                            <Location className="h-4" />
+                            <p>
                                 {capitalizeWords(eventCentre.state)},{' '}
-                                {capitalizeWords(eventCentreDetails.lga)}
+                                {capitalizeWords(
+                                    eventCentre.event_centre_details?.lga!
+                                )}
                             </p>
                         </div>
                     </div>

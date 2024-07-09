@@ -1,5 +1,5 @@
 import EventDetails from '../components/EventDetails';
-import Navigation from '@/app/components/Navigation';
+import UserDashboardLayout from '@/app/components/UserDashboardLayout';
 import prisma from '@/prisma/prisma';
 const fetchEventCentreDetails = async (slug: string) => {
     const eventCentre = await prisma.eventCentre.findUnique({
@@ -14,36 +14,22 @@ const fetchEventCentreDetails = async (slug: string) => {
             phone_number: true,
             slug: true,
             event_logo: true,
-        },
-    });
-    console.log(eventCentre);
-
-    const eventCentreDetails = await prisma.eventCentreDetails.findUnique({
-        where: {
-            event_centre_id: eventCentre?.id,
+            event_centre_details: true,
         },
     });
 
-    return { eventCentre, eventCentreDetails };
+    return { eventCentre };
 };
 
 const EventCentreDetails = async ({ params }: { params: { slug: string } }) => {
-    const { eventCentre, eventCentreDetails } = await fetchEventCentreDetails(
-        params.slug
-    );
+    const { eventCentre } = await fetchEventCentreDetails(params.slug);
 
     return (
-        <>
-            <Navigation />
-            <section>
-                {eventCentreDetails && eventCentre && (
-                    <EventDetails
-                        eventCentreDetails={eventCentreDetails}
-                        eventCentre={eventCentre}
-                    />
-                )}
+        <UserDashboardLayout>
+            <section className="mx-auto overflow-x-hidden w-[95%] sm:w-[90%]">
+                {eventCentre && <EventDetails eventCentre={eventCentre} />}
             </section>
-        </>
+        </UserDashboardLayout>
     );
 };
 

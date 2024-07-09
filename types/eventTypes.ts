@@ -6,6 +6,7 @@ export interface eventRegDetails {
     phone_number: string;
     slug: string;
     event_logo: string | null;
+    event_centre_details?: EventCentreDetails | null;
 }
 
 export interface EventCentreDetails {
@@ -45,5 +46,4 @@ export interface bookedProps {
 
 export interface EventProps {
     eventCentre: eventRegDetails;
-    eventCentreDetails: EventCentreDetails;
 }

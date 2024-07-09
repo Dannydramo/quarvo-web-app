@@ -7,6 +7,7 @@ export const middleware = (request: NextRequest) => {
         if (
             request.nextUrl.pathname === '/dashboard' ||
             request.nextUrl.pathname === '/bookings' ||
+            request.nextUrl.pathname === '/book-event' ||
             request.nextUrl.pathname.includes('/profile')
         ) {
             return NextResponse.redirect(
@@ -26,5 +27,6 @@ export const config = {
         '/profile/:path*',
         '/event-centre/:path*',
         '/bookings/:path*',
+        '/book-event/:path*',
     ],
 };

@@ -12,7 +12,7 @@ export const registerEventCentres = async (payload: EventCentreReg) => {
             method: 'post',
             body: payload,
         });
-        status = 200;
+        status = response.data.status;
         message = response.data.message;
     } catch (err: any) {
         status = err.response.status;
@@ -28,7 +28,8 @@ export const loginEventCentre = async (payload: LoginDetails) => {
             method: 'post',
             body: payload,
         });
-        status = 200;
+
+        status = response.data.status;
         message = response.data.message;
     } catch (err: any) {
         status = err.response.status;

@@ -1,16 +1,16 @@
-"use client";
-import { EventCentreDetails, eventRegDetails } from "@/types/eventTypes";
-import React from "react";
-import EventCentreImages from "./EventCentreImages";
-import Comments from "./Comments";
-import Image from "next/image";
-import AvailabiltyForm from "./AvailabilityForm";
-
+'use client';
+import { eventRegDetails } from '@/types/eventTypes';
+import React from 'react';
+import EventCentreImages from './EventCentreImages';
+import Comments from './Comments';
+import Image from 'next/image';
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import { Key } from 'react';
+import AvailabiltyForm from './AvailabilityForm';
+import { Carousel } from 'antd';
 const EventDetails: React.FC<{
-    eventCentreDetails: EventCentreDetails;
     eventCentre: eventRegDetails;
-
-}> = ({ eventCentreDetails, eventCentre, }) => {
+}> = ({ eventCentre }) => {
     function capitalizeWords(inputString: string) {
         return inputString.replace(/\b\w/g, (char: string) =>
             char.toUpperCase()
@@ -19,23 +19,35 @@ const EventDetails: React.FC<{
 
     return (
         <>
-            <Image
-                src={eventCentreDetails.images[0]}
-                alt="main_image"
-                height={400}
-                width={500}
-                className="w-full h-[400px] lg:min-h-[60vh] xl:max-h-[70vh]"
-            />
-            <section className="mx-auto overflow-x-hidden w-[95%] sm:w-[90%] md:w-[85%] lg:w-[80%]">
+            <Carousel autoplay>
+                {eventCentre?.event_centre_details?.images?.map(
+                    (
+                        image: string | StaticImport,
+                        index: Key | null | undefined
+                    ) => (
+                        <Image
+                            width={300}
+                            height={100}
+                            src={image}
+                            priority={true}
+                            quality={100}
+                            className="h-[300px] lg:min-h-[60vh] mt-4 lg:max-h-[70vh] w-full rounded-lg"
+                            key={index}
+                            alt={'Images'}
+                        />
+                    )
+                )}
+            </Carousel>
+
+            <section className="mx-auto overflow-x-hidden bg-[#095A66] rounded-xl md:w-[95%] lg:w-[90%]">
                 <div className="max-w-[800px]">
                     <p className="font-bold text-lg sm:text-xl md:text-2xl mt-8 lg:text-4xl">
                         {eventCentre.event_centre_name}
                     </p>
                     <p className="mt-6 text-base md:text-lg">
-                        {eventCentreDetails.description ||
-                            "No description available"}
+                        {eventCentre?.event_centre_details?.description}
                     </p>
-                    <hr className="border my-8 opacity-70 border-[#856D47]" />
+                    <hr className="border my-8 opacity-70 border-[#095A66]" />
                     <div className="mt-4 text-base flex flex-col space-y-2 md:text-lg">
                         <h1 className="font-bold text-lg sm:text-xl md:text-2xl mb-4 lg:text-4xl">
                             EventCentre Details
@@ -55,32 +67,46 @@ const EventDetails: React.FC<{
                         <p>
                             <span>L.G.A: </span>
                             <span>
-                                {capitalizeWords(eventCentreDetails.lga)}
+                                {capitalizeWords(
+                                    eventCentre?.event_centre_details?.lga!
+                                )}
                             </span>
                         </p>
                         <p>
                             <span>Address: </span>
-                            <span>{eventCentreDetails.address}</span>
+                            <span>
+                                {eventCentre?.event_centre_details?.address}
+                            </span>
                         </p>
                         <p>
                             <span>Opening Time: </span>
-                            <span>{eventCentreDetails.open_time}</span>
+                            <span>
+                                {eventCentre?.event_centre_details?.open_time}
+                            </span>
                         </p>
                         <p>
                             <span>Closing Time: </span>
-                            <span>{eventCentreDetails.close_time}</span>
+                            <span>
+                                {eventCentre?.event_centre_details?.close_time}
+                            </span>
                         </p>
                         <p>
                             <span>Price: </span>
-                            <span>{eventCentreDetails.price}</span>
+                            <span>
+                                {eventCentre?.event_centre_details?.price}
+                            </span>
                         </p>
                         <p>
                             <span>Opening Days: </span>
-                            <span>{eventCentreDetails.open_days}</span>
+                            <span>
+                                {eventCentre?.event_centre_details?.open_days}
+                            </span>
                         </p>
                         <AvailabiltyForm
                             eventCentre={eventCentre}
-                            eventPrice={eventCentreDetails.price}
+                            eventPrice={
+                                eventCentre?.event_centre_details?.price!
+                            }
                         />
                     </div>
                 </div>
@@ -90,7 +116,9 @@ const EventDetails: React.FC<{
                     <h1 className="font-bold text-lg sm:text-xl md:text-2xl my-4 lg:text-4xl">
                         Photo Gallery
                     </h1>
-                    <EventCentreImages eventImages={eventCentreDetails.images} />
+                    <EventCentreImages
+                        eventImages={eventCentre?.event_centre_details?.images!}
+                    />
                 </div>
 
                 <div className="max-w-[800px]">
@@ -98,15 +126,15 @@ const EventDetails: React.FC<{
                         Amenities
                     </h1>
                     <div className="flex flex-wrap">
-                        {eventCentreDetails.amenities &&
-                            eventCentreDetails.amenities.map(
+                        {eventCentre?.event_centre_details?.amenities &&
+                            eventCentre?.event_centre_details?.amenities.map(
                                 (amenity, index) => (
                                     <ul key={index} className="flex flex-wrap">
                                         <li
                                             key={index}
                                             className="mr-4 py-2 px-3 my-2 rounded-sm text-white bg-[#856D47]"
                                         >
-                                            {amenity || "N/A"}
+                                            {amenity || 'N/A'}
                                         </li>
                                     </ul>
                                 )
