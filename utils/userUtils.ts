@@ -43,7 +43,6 @@ export const fetchUser = async () => {
             url: '/api/user/user-details',
             method: 'get',
         });
-        console.log(response);
 
         status = 200;
         data = response.data.user;

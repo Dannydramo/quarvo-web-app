@@ -110,8 +110,8 @@ const EventDetails: React.FC<{
                 </div>
 
                 <div className="max-w-[800px]">
-                    <hr className="border my-8 opacity-70 border-[#856D47]" />
-                    <h1 className="font-bold text-lg sm:text-xl md:text-2xl my-4 lg:text-4xl">
+                    <hr className="border my-8 opacity-70 border-[#095A66]" />
+                    <h1 className="font-extrabold text-lg sm:text-xl md:text-2xl mb-4 lg:text-4xl">
                         Photo Gallery
                     </h1>
                     <EventCentreImages
@@ -119,26 +119,27 @@ const EventDetails: React.FC<{
                     />
                 </div>
 
-                <div className="max-w-[800px]">
-                    <h1 className="font-bold text-lg sm:text-xl md:text-2xl mt-8 mb-4 lg:text-4xl">
+                <div className="max-w-[800px] mt-8">
+                    <hr className="border my-8 opacity-70 border-[#095A66]" />
+                    <h1 className="font-extrabold text-lg sm:text-xl md:text-2xl mb-4 lg:text-4xl">
                         Amenities
                     </h1>
-                    <div className="flex flex-wrap">
+                    <div className="">
                         {eventCentre?.event_centre_details?.amenities &&
                             eventCentre?.event_centre_details?.amenities.map(
                                 (amenity, index) => (
-                                    <ul key={index} className="flex flex-wrap">
-                                        <li
-                                            key={index}
-                                            className="mr-4 py-2 px-3 my-2 rounded-sm text-white bg-[#856D47]"
-                                        >
-                                            {amenity || 'N/A'}
+                                    <ul
+                                        key={index}
+                                        className="list-disc grid grid-cols-2 list-outside ml-6 marker:text-[#095A66] text-[#095A66]"
+                                    >
+                                        <li key={index} className="">
+                                            {amenity}
                                         </li>
                                     </ul>
                                 )
                             )}
                     </div>
-                    <hr className="border my-8 opacity-70 border-[#856D47]" />
+                    <hr className="border my-8 opacity-70 border-[#095A66]" />
                     <Comments eventCentreId={eventCentre.id} />
                 </div>
             </section>

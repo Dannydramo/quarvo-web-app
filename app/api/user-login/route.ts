@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 
     const token = await new jose.SignJWT({ email: userWithEmail.email })
         .setProtectedHeader({ alg })
-        .setExpirationTime('5m')
+        .setExpirationTime('7d')
         .sign(secret);
 
     const response = NextResponse.json({

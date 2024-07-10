@@ -16,13 +16,24 @@ import { UserStore } from "@/store/userInfo"
 import BookedModal from "./BookedModal"
 import AvailableModal from "./AvailableModal"
 import { checkEventAvailablity } from "@/utils/eventUtils"
-
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog"
+  
 const AvailabilityForm: React.FC<{ eventCentre: eventRegDetails, eventPrice: string }> = ({ eventCentre, eventPrice }) => {
     const { userDetails } = UserStore()
     const [date, setDate] = useState<Date>()
     const [loading, setLoading] = useState(false)
     const [availabilityMessage, setAvailabilityMessage] = useState()
-    const [showModal, setShowModal] = useState(true);
+    const [showModal, setShowModal] = useState(false);
 
     const handleAvailabiltyCheck = async () => {
         try {
@@ -34,6 +45,7 @@ const AvailabilityForm: React.FC<{ eventCentre: eventRegDetails, eventPrice: str
             setLoading(true)
             const { status, message } = await checkEventAvailablity(formattedDate, eventCentre.id)
             setAvailabilityMessage(message!)
+            setShowModal(true)
             setLoading(false)
 
         } catch (error) {
@@ -68,7 +80,7 @@ const AvailabilityForm: React.FC<{ eventCentre: eventRegDetails, eventPrice: str
                         />
                     </PopoverContent>
                 </Popover>
-                <Button onClick={handleAvailabiltyCheck} disabled={loading} className='w-full bg-[#856D47] text-white text-lg hover:bg-[#856D47] mb-8 md:mb-0'>{loading ? 'Checking Availability...' : 'Check Availability'}</Button>
+                <Button onClick={handleAvailabiltyCheck} disabled={loading} className='w-full bg-[#095A66] text-white hover:bg-[#095A66] mb-8 md:mb-0'>{loading ? 'Checking Availability...' : 'Check Availability'}</Button>
             </div>
 
             {showModal && availabilityMessage === 'This date has already been booked.' && <BookedModal setShowModal={setShowModal} />}

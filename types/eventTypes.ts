@@ -28,6 +28,7 @@ export interface reviewProps {
     review_comment: string;
     created_at: Date;
     updatedAt: Date;
+    rating: number;
 }
 
 export interface bookedProps {

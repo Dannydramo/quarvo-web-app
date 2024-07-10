@@ -20,7 +20,6 @@ const UserDashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 if (status !== 200) {
                     console.log(message);
                 }
-                console.log(data);
 
                 setUserDetails(data);
             } catch (error) {
@@ -69,6 +68,26 @@ const UserDashboardLayout = ({ children }: { children: React.ReactNode }) => {
                         >
                             <LayoutDashboardIcon className="" />
                             <span className="">Event Centres</span>
+                        </Link>
+                        <Link
+                            href={'/event-centres'}
+                            className={`flex items-center font-medium text-xs sm:text-base space-x-2 px-6 py-3 rounded-md transition-all duration-700 hover:bg-[#095A66] hover:text-[#B5CDD1]  ${
+                                pathname === '/event-centres' &&
+                                'bg-[#095A66] text-[#B5CDD1]'
+                            }`}
+                        >
+                            <LayoutDashboardIcon className="" />
+                            <span className="">Favourite Centres</span>
+                        </Link>
+                        <Link
+                            href={'/event-centres'}
+                            className={`flex items-center font-medium text-xs sm:text-base space-x-2 px-6 py-3 rounded-md transition-all duration-700 hover:bg-[#095A66] hover:text-[#B5CDD1]  ${
+                                pathname === '/event-centres' &&
+                                'bg-[#095A66] text-[#B5CDD1]'
+                            }`}
+                        >
+                            <LayoutDashboardIcon className="" />
+                            <span className="">Account</span>
                         </Link>
                     </nav>
                 </div>

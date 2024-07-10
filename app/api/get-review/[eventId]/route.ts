@@ -16,6 +16,7 @@ export async function GET(
                         full_name: true,
                         review_comment: true,
                         created_at: true,
+                        rating: true,
                         updatedAt: true,
                     },
                 },

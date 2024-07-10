@@ -3,12 +3,15 @@ import prisma from '@/prisma/prisma';
 
 export async function POST(req: NextRequest) {
     try {
-        const { eventCentreId, comment, userFullName } = await req.json();
+        const { eventCentreId, comment, userFullName, rating } =
+            await req.json();
+        console.log(eventCentreId, comment, userFullName, rating);
 
-        const newBooking = await prisma.review.create({
+        const newReview = await prisma.review.create({
             data: {
                 review_comment: comment,
                 full_name: userFullName,
+                rating,
                 event_centre_reviewed: {
                     connect: { id: eventCentreId },
                 },

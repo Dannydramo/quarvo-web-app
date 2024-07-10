@@ -27,9 +27,9 @@ const Payment: React.FC<{
                 userId: userDetails?.id,
                 amount: eventPrice,
             });
-            if (status!==200) {
-                toast.error('Unable to book event centre')
-                return
+            if (status !== 200) {
+                toast.error('Unable to book event centre');
+                return;
             }
             toast.success(message);
             setLoading(false);
@@ -60,7 +60,7 @@ const Payment: React.FC<{
 
     return (
         <Button
-            className="bg-[#856D47] mt-4 hover:bg-[#856D47] mb-8 text-white"
+            className="bg-[#095A66] hover:bg-[#095A66]"
             disabled={loading}
             onClick={handlePayment}
         >
