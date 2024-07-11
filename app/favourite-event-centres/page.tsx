@@ -156,7 +156,7 @@ const page = () => {
                         <div className="text-center mx-auto mt-12">
                             <div className="mb-8">
                                 <p>
-                                    Your wishlist history is waiting to be
+                                    Your favourite history is waiting to be
                                     filled.
                                 </p>
                             </div>
