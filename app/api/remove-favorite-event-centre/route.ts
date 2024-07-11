@@ -11,8 +11,8 @@ export async function DELETE(req: NextRequest) {
         const favorite = await prisma.favorite.findUnique({
             where: {
                 user_id_event_centre_id: {
-                    user_id: userId as String,
-                    event_centre_id: eventCentreId as String,
+                    user_id: userId as string,
+                    event_centre_id: eventCentreId as string,
                 },
             },
         });
