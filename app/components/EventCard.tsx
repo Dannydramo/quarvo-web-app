@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { EventProps } from '@/types/eventTypes';
 import { Calendar } from 'lucide-react';
 import Location from '@/svgs/Location';
+import Favourites from './Favourites';
 
 const EventCard: React.FC<EventProps> = ({ eventCentre }) => {
     const logoUrl = eventCentre?.event_logo;
@@ -18,7 +19,11 @@ const EventCard: React.FC<EventProps> = ({ eventCentre }) => {
     return (
         <>
             <Card className="rounded-lg group overflow-x-hidden p-2 bg-gray-200 relative">
-                <Link href={`/event-centre/${eventCentre?.slug}`}>
+                <div className="group cursor-pointer relative">
+                    <div className="absolute top-4 right-4 hidden z-50 group-hover:block transition duration-150">
+                        <Favourites eventCentreId={eventCentre.id} />
+                    </div>
+
                     <Image
                         src={eventCentre.event_centre_details?.images[0]!}
                         alt="image"
@@ -27,6 +32,8 @@ const EventCard: React.FC<EventProps> = ({ eventCentre }) => {
                         height={200}
                         className="w-full rounded-md h-[250px]"
                     />
+                </div>
+                <Link href={`/event-centre/${eventCentre?.slug}`}>
                     <div className="bg-white px-2 py-4 mt-2  rounded-md">
                         <div className="flex gap-2 items-center">
                             {logoUrl ? (

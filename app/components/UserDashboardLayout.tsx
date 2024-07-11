@@ -70,9 +70,9 @@ const UserDashboardLayout = ({ children }: { children: React.ReactNode }) => {
                             <span className="">Event Centres</span>
                         </Link>
                         <Link
-                            href={'/event-centres'}
+                            href={'/favourite-event-centres'}
                             className={`flex items-center font-medium text-xs sm:text-base space-x-2 px-6 py-3 rounded-md transition-all duration-700 hover:bg-[#095A66] hover:text-[#B5CDD1]  ${
-                                pathname === '/event-centres' &&
+                                pathname === '/favourite-event-centres' &&
                                 'bg-[#095A66] text-[#B5CDD1]'
                             }`}
                         >
