@@ -5,7 +5,12 @@ export async function GET(req: NextRequest) {
     try {
         const url = new URL(req.url);
         const userId = new URLSearchParams(url.searchParams).get('userId');
-
+        if (!userId) {
+            return NextResponse.json({
+                message: 'User ID  are required',
+                status: 400,
+            });
+        }
         const favorites = await prisma.favorite.findMany({
             where: {
                 user_id: userId as string,

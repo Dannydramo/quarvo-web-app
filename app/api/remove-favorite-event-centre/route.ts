@@ -8,6 +8,12 @@ export async function DELETE(req: NextRequest) {
         const eventCentreId = new URLSearchParams(url.searchParams).get(
             'eventCentreId'
         );
+        if (!userId || !eventCentreId) {
+            return NextResponse.json({
+                message: 'User ID and Event Centre ID are required',
+                status: 400,
+            });
+        }
         const favorite = await prisma.favorite.findUnique({
             where: {
                 user_id_event_centre_id: {

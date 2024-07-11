@@ -8,7 +8,12 @@ export async function GET(req: NextRequest) {
         const eventCentreId = new URLSearchParams(url.searchParams).get(
             'eventCentreId'
         );
-   
+        if (!userId || !eventCentreId) {
+            return NextResponse.json({
+                message: 'User ID and Event Centre ID are required',
+                status: 400,
+            });
+        }
         const favorite = await prisma.favorite.findUnique({
             where: {
                 user_id_event_centre_id: {
@@ -21,9 +26,11 @@ export async function GET(req: NextRequest) {
             status: 200,
             isFavourite: favorite !== null,
         });
-    } catch (error) { console.error('Error:', error);
-    return NextResponse.json({
-        error: 'Internal Server Error',
-        status: 500,
-    });}
+    } catch (error) {
+        console.error('Error:', error);
+        return NextResponse.json({
+            error: 'Internal Server Error',
+            status: 500,
+        });
+    }
 }
