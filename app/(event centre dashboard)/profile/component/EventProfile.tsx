@@ -4,7 +4,6 @@ import { fetchEventCentreDetails } from '@/utils/eventUtils';
 import { useEffect, useState } from 'react';
 import Form from './Form';
 import EventDetails from './EventDetails';
-import ProfileForm from './ProfileForm';
 
 const EventProfile = () => {
     const [eventDetails, setEventDetails] = useState<any>();
@@ -32,7 +31,6 @@ const EventProfile = () => {
                 {eventDetails ? (
                     <EventDetails eventCentreDetails={eventDetails} />
                 ) : (
-                    // <ProfileForm isEditing={false} />
                     <Form />
                 )}
             </div>
