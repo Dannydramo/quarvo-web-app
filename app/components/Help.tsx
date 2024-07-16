@@ -56,7 +56,7 @@ const Help = () => {
             };
         }
         window.driftt.SNIPPET_VERSION = '0.3.1';
-        window.driftt.load('zfyu46y8tt87');
+        window.driftt.load('wevcgpv7vcxu');
     }, []);
 
     return null;
