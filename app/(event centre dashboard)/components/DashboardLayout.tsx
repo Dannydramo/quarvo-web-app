@@ -10,6 +10,8 @@ import Booking from '@/svgs/Booking';
 import { EventStore } from '@/store/eventInfo';
 import { fetchEventBookings, fetchEventCentre } from '@/utils/eventUtils';
 import { BookingStore } from '@/store/bookingInfo';
+import { logOut } from '@/utils/userUtils';
+import { toast } from 'sonner';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const [mobileToggle, setMobileToggle] = useState(false);
@@ -47,15 +49,18 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         fetchEventDetails();
     }, []);
 
-    // const handleLogout = async () => {
-    //     const { status, message } = await logoutVendor();
-    //     if (status !== 200) {
-    //         return;
-    //     }
-    //     toast.success(message);
-    //     deleteCookie('isLoggedIn');
-    //     router.replace('/login');
-    // };
+    const handleLogout = async () => {
+        try {
+            const { status, message } = await logOut();
+            if (status !== 200) {
+                return;
+            }
+            toast.success(message);
+            router.replace('/event-center-login');
+        } catch (error) {
+            console.log('Unable to log out event centre');
+        }
+    };
 
     return (
         <section className="flex w-full min-h-screen bg-[#F6F8FF]">
@@ -134,7 +139,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 <div className="absolute bottom-0">
                     <Button
                         className="bg-transparent text-black hover:bg-transparent flex gap-3 w-full"
-                        // onClick={handleLogout}
+                        onClick={handleLogout}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

@@ -28,5 +28,7 @@ export const config = {
         '/event-centre/:path*',
         '/bookings/:path*',
         '/book-event/:path*',
+        '/booked-event/:path*',
+        '/account/:path*',
     ],
 };

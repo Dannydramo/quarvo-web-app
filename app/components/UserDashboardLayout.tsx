@@ -2,11 +2,12 @@
 
 import { Button } from '@/components/ui/button';
 import { UserStore } from '@/store/userInfo';
-import { fetchUser } from '@/utils/userUtils';
+import { fetchUser, logOut } from '@/utils/userUtils';
 import { LayoutDashboardIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 const UserDashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const [mobileToggle, setMobileToggle] = useState(false);
@@ -28,6 +29,20 @@ const UserDashboardLayout = ({ children }: { children: React.ReactNode }) => {
         };
         fetchUserDetails();
     }, []);
+
+    const handleLogout = async () => {
+        try {
+            const { status, message } = await logOut();
+            if (status !== 200) {
+                return;
+            }
+            toast.success(message);
+            router.replace('/login');
+        } catch (error) {
+            console.log('Unable to log out user');
+        }
+    };
+
     return (
         <section className="flex w-full min-h-screen bg-[#F6F8FF]">
             <aside
@@ -90,13 +105,27 @@ const UserDashboardLayout = ({ children }: { children: React.ReactNode }) => {
                             <span className="">Booked Event</span>
                         </Link>
                         <Link
-                            href={'/event-centres'}
+                            href={'/account'}
                             className={`flex items-center font-medium text-xs sm:text-base space-x-2 px-6 py-3 rounded-md transition-all duration-700 hover:bg-[#095A66] hover:text-[#B5CDD1]  ${
-                                pathname === '/event-centres' &&
+                                pathname === '/account' &&
                                 'bg-[#095A66] text-[#B5CDD1]'
                             }`}
                         >
-                            <LayoutDashboardIcon className="" />
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="size-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                                />
+                            </svg>
+
                             <span className="">Account</span>
                         </Link>
                     </nav>
@@ -104,7 +133,7 @@ const UserDashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 <div className="absolute bottom-0">
                     <Button
                         className="bg-transparent text-black hover:bg-transparent flex gap-3 w-full"
-                        // onClick={handleLogout}
+                        onClick={handleLogout}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

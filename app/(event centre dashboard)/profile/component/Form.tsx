@@ -33,7 +33,6 @@ import { uploadImagesToCloudinary } from '@/services/upload';
 
 const Form = () => {
     const { eventDetails } = EventStore();
-    console.log(eventDetails?.id);
 
     const [eventCentreDetails, setEventCentreDetails] = useState({
         id: eventDetails?.id,
@@ -86,20 +85,23 @@ const Form = () => {
         if (time) {
             setEventCentreDetails({
                 ...eventCentreDetails,
-                openingTime: Array.isArray(timeString) ? timeString[0] : timeString,
+                openingTime: Array.isArray(timeString)
+                    ? timeString[0]
+                    : timeString,
             });
         }
     };
-    
+
     const onCloseTime = (time: Dayjs, timeString: string | string[]) => {
         if (time) {
             setEventCentreDetails({
                 ...eventCentreDetails,
-                closingTime: Array.isArray(timeString) ? timeString[0] : timeString,
+                closingTime: Array.isArray(timeString)
+                    ? timeString[0]
+                    : timeString,
             });
         }
     };
-    
 
     const stringToArray = (inputString: string, delimiter: string = ',') => {
         return inputString.split(delimiter).map((value) => value.trim());

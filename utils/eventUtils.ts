@@ -8,7 +8,7 @@ let data: any;
 export const registerEventCentres = async (payload: EventCentreReg) => {
     try {
         const response = await Axios({
-            url: '/api/event-center-signup',
+            url: '/api/auth/event-centre/signup',
             method: 'post',
             body: payload,
         });
@@ -24,7 +24,7 @@ export const registerEventCentres = async (payload: EventCentreReg) => {
 export const loginEventCentre = async (payload: LoginDetails) => {
     try {
         const response = await Axios({
-            url: '/api/event-center-login',
+            url: '/api/auth/event-centre/login',
             method: 'post',
             body: payload,
         });
@@ -41,7 +41,7 @@ export const loginEventCentre = async (payload: LoginDetails) => {
 export const fetchEventCentre = async () => {
     try {
         const response = await Axios({
-            url: '/api/user/event-center',
+            url: '/api/auth/event-centre/details',
             method: 'get',
         });
         status = 200;
@@ -158,4 +158,20 @@ export const bookEventCentre = async (payload: any) => {
         message = err.response.data.message;
     }
     return { status, message };
+};
+
+export const getEventCentres = async () => {
+    try {
+        const response = await Axios({
+            url: '/api/fetch-event-centres',
+            method: 'get',
+        });
+
+        status = 200;
+        data = response.data.eventCentres;
+    } catch (err: any) {
+        status = err.response.status;
+        message = err.response.data.message;
+    }
+    return { status, data };
 };

@@ -8,7 +8,7 @@ let data: any;
 export const registerUser = async (payload: UserReg) => {
     try {
         const response = await Axios({
-            url: '/api/user-signup',
+            url: '/api/auth/user/signup',
             method: 'post',
             body: payload,
         });
@@ -24,7 +24,7 @@ export const registerUser = async (payload: UserReg) => {
 export const loginUser = async (payload: LoginDetails) => {
     try {
         const response = await Axios({
-            url: '/api/user-login',
+            url: '/api/auth/user/login',
             method: 'post',
             body: payload,
         });
@@ -40,7 +40,7 @@ export const loginUser = async (payload: LoginDetails) => {
 export const fetchUser = async () => {
     try {
         const response = await Axios({
-            url: '/api/user/user-details',
+            url: '/api/auth/user/user-details',
             method: 'get',
         });
 
@@ -51,4 +51,20 @@ export const fetchUser = async () => {
         message = err.response.data.message;
     }
     return { status, data, message };
+};
+
+export const logOut = async () => {
+    try {
+        const response = await Axios({
+            url: '/api/auth/logout',
+            method: 'get',
+        });
+
+        status = 200;
+        message = response.data.message;
+    } catch (err: any) {
+        status = err.response.status;
+        message = err.response.data.message;
+    }
+    return { status, message };
 };
