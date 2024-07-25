@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/prisma';
 import { compare, hash } from 'bcryptjs';
+import { cookies } from 'next/headers';
 
 export async function PATCH(req: NextRequest) {
     const { currentPassword, newPassword, userId } = await req.json();
@@ -35,7 +36,7 @@ export async function PATCH(req: NextRequest) {
             message: 'Password changed successfully',
             status: 200,
         });
-        response.cookies.delete('token');
+        cookies().delete('name');
         return response;
     } catch (error) {
         return NextResponse.json({

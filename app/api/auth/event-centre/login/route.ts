@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { compare } from 'bcryptjs';
 import * as jose from 'jose';
-import { setCookie } from '@/utils/setCookie';
 import prisma from '@/prisma/prisma';
-
+import { cookies } from 'next/headers';
 export async function POST(req: NextRequest) {
     try {
         const { email, password } = await req.json();
@@ -46,7 +45,14 @@ export async function POST(req: NextRequest) {
             message: 'Login successfully',
             status: 200,
         });
-        setCookie(response, 'token', token);
+        cookies().set({
+            name: 'token',
+            value: token,
+            httpOnly: true,
+            path: '/',
+            maxAge: 60 * 60 * 24 * 365 * 1000,
+            expires: new Date(Date.now() + 60 * 60 * 24 * 365 * 1000),
+        });
 
         return response;
     } catch (error) {

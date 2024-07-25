@@ -3,7 +3,8 @@ import { hash } from 'bcryptjs';
 import { UserReg } from '@/types/onboarding';
 import * as jose from 'jose';
 import prisma from '@/prisma/prisma';
-import { setCookie } from '@/utils/setCookie';
+import { cookies } from 'next/headers';
+
 
 export async function POST(req: NextRequest) {
     const { firstName, lastName, email, phoneNumber, password } =
@@ -42,12 +43,18 @@ export async function POST(req: NextRequest) {
         .sign(secret);
 
     const response = NextResponse.json({
-        message: 'Login successfully',
+        message: 'Account created successfully',
         status: 200,
         token,
     });
 
-    setCookie(response, 'token', token);
-
+    cookies().set({
+        name: 'token',
+        value: token,
+        httpOnly: true,
+        path: '/',
+        maxAge: 60 * 60 * 24 * 365 * 1000,
+        expires: new Date(Date.now() + 60 * 60 * 24 * 365 * 1000),
+    });
     return response;
 }

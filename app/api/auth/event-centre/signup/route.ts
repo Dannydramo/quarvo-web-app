@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { hash } from 'bcryptjs';
 import * as jose from 'jose';
 import prisma from '@/prisma/prisma';
-import { setCookie } from '@/utils/setCookie';
+import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
     try {
@@ -49,7 +49,14 @@ export async function POST(req: NextRequest) {
             message: 'Event Centre Account created successfully',
             status: 200,
         });
-        setCookie(response, 'token', token);
+        cookies().set({
+            name: 'token',
+            value: token,
+            httpOnly: true,
+            path: '/',
+            maxAge: 60 * 60 * 24 * 365 * 1000,
+            expires: new Date(Date.now() + 60 * 60 * 24 * 365 * 1000),
+        });
         return response;
     } catch (error) {
         return NextResponse.json({

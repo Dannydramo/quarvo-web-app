@@ -5,7 +5,6 @@ export async function POST(req: NextRequest) {
     try {
         const { eventCentreId, comment, userFullName, rating } =
             await req.json();
-        console.log(eventCentreId, comment, userFullName, rating);
 
         const newReview = await prisma.review.create({
             data: {

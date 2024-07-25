@@ -1,9 +1,9 @@
 import { NextResponse, NextRequest } from 'next/server';
-
+import { cookies } from 'next/headers';
 export const middleware = (request: NextRequest) => {
-    const authToken = request.cookies.has('token');
+    const token = cookies().get('token');
 
-    if (authToken === false) {
+    if (token === undefined) {
         if (
             request.nextUrl.pathname === '/dashboard' ||
             request.nextUrl.pathname === '/bookings' ||
